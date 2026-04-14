@@ -760,8 +760,17 @@ function bindAuthInner() {
 
 /* ───────────── INIT ─────────────────────────────────────── */
 async function init() {
-  safeRender(); // splash
+  // Restore session immédiatement pour éviter le splash si déjà connecté
+  try{
+    const raw = localStorage.getItem("dg_sess");
+    if(raw){ const s=JSON.parse(raw); if(s?.access_token) S.session=s; }
+  } catch(e){ console.warn("session restore error:", e); }
 
+  // Afficher le splash seulement si pas de session rapide, sinon on pourrait le court-circuiter
+  // mais on laisse le splash pour l'expérience utilisateur
+  
+  safeRender(); // Affiche le splash immédiatement
+  
   let prog=0;
   const iv = setInterval(()=>{
     prog = Math.min(prog+2.1,100);
@@ -771,25 +780,20 @@ async function init() {
     if(prog>=100) clearInterval(iv);
   }, 54);
 
-  // Timeout de sécurité : force la sortie du splash après 5s même si les loads échouent
+  // Timeout de sécurité : force la sortie du splash après 4s même si les loads échouent
   const splashTimeout = setTimeout(()=>{
-    S.splash=false;
-    S.loading=false;
-    safeRender();
-  }, 5000);
+    if(S.splash) {
+      S.splash=false;
+      S.loading=false;
+      safeRender();
+    }
+  }, 4000);
 
   try {
-    // Restore session
-    try{
-      const raw = localStorage.getItem("dg_sess");
-      if(raw){ const s=JSON.parse(raw); if(s?.access_token) S.session=s; }
-    }catch(e){ console.warn("session restore error:", e); }
-
     // Parallel loads avec timeout individuel
     const loads = [loadProducts(), loadNotifs()];
     if(S.session) loads.push(loadProfile(), loadReads());
     await Promise.allSettled(loads);
-
   } catch(e) {
     console.warn("init load error:", e);
     S.loading=false;
@@ -797,12 +801,14 @@ async function init() {
 
   clearTimeout(splashTimeout);
   clearInterval(iv);
-
-  await new Promise(r=>setTimeout(r, 3300 - Math.min(Date.now()%3300, 3300)));
+  
+  // Attendre un peu pour que la barre de progression soit agréable
+  await new Promise(r=>setTimeout(r, 300));
   S.splash=false;
   safeRender();
 }
 
+// Démarrer l'application immédiatement
 init();
 </script>
 </body>
