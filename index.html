@@ -55,8 +55,33 @@ select.inp{cursor:pointer;-webkit-appearance:none;}
 </style>
 </head>
 <body>
-<div id="app"><div id="toast-area"></div></div>
+<div id="app"></div>
 <script>
+// AFFICHAGE IMMÉDIAT DU SPLASH (avant même que le JS asynchrone ne bloque)
+(function immediateSplash() {
+  const app = document.getElementById("app");
+  if (app) {
+    app.innerHTML = `
+      <div id="toast-area"></div>
+      <div id="splash-root" style="position:fixed;inset:0;background:radial-gradient(ellipse 90% 70% at 50% 40%,#0D1D40,#070B17);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999;gap:28px;overflow:hidden;">
+        <div style="position:absolute;width:220px;height:220px;border-radius:50%;background:rgba(0,212,255,.07);top:10%;left:5%;filter:blur(55px);animation:dg-fl 4.2s ease-in-out infinite;"></div>
+        <div style="position:absolute;width:160px;height:160px;border-radius:50%;background:rgba(255,184,0,.05);top:62%;left:62%;filter:blur(55px);animation:dg-fl 5.5s ease-in-out infinite;animation-delay:.9s;"></div>
+        <div style="text-align:center;animation:dg-logo 1s cubic-bezier(.22,1,.36,1) both;animation-delay:.3s;padding:0 20px;width:100%;">
+          <div style="font-size:11px;letter-spacing:.38em;color:#00D4FF;font-family:'Syne',sans-serif;font-weight:600;margin-bottom:18px;opacity:.9;">◆ PLATEFORME DIGITALE ◆</div>
+          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(36px,12vw,52px);line-height:1;letter-spacing:-.01em;white-space:nowrap;">
+            <span class="grad-digi">DIGI</span><span class="grad-form">FORM</span>
+          </div>
+          <div style="font-size:12px;color:#5B6A90;margin-top:14px;letter-spacing:.22em;animation:dg-fin .5s ease both;animation-delay:1.2s;">Savoir&nbsp; • &nbsp;Technologie&nbsp; • &nbsp;Excellence</div>
+        </div>
+        <div style="width:180px;height:3px;background:#0D1426;border-radius:3px;overflow:hidden;">
+          <div id="sp-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#00D4FF,#FFB800);border-radius:3px;transition:width .055s linear;box-shadow:0 0 12px rgba(0,212,255,.8);"></div>
+        </div>
+        <div id="sp-lbl" style="font-size:10px;color:#3A4A6E;letter-spacing:.2em;">CHARGEMENT...</div>
+      </div>
+    `;
+  }
+})();
+
 /* ───────────── CONSTANTS ─────────────────────────────────── */
 const SB   = "https://rxhjuetoxyjrairroycb.supabase.co";
 const ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q";
@@ -65,7 +90,7 @@ const TYPES= [{id:"all",label:"Tout",emoji:"🌐",color:"#00D4FF"},{id:"livre",l
 
 /* ───────────── STATE ─────────────────────────────────────── */
 const S = {
-  splash:true,
+  splash:true,      // sera mis à false après chargement
   session: null,
   profile: null,
   tab:"home", trans:false,
@@ -330,26 +355,16 @@ function filteredP() {
   return (S.products||[]).filter(p=>(S.filter==="all"||p.type===S.filter)&&(!S.search||(p.title||"").toLowerCase().includes(S.search.toLowerCase())||(p.description||"").toLowerCase().includes(S.search.toLowerCase())));
 }
 
-/* ───────────── SPLASH ───────────────────────────────────── */
-function tSplash() {
-  return `<div style="position:fixed;inset:0;background:radial-gradient(ellipse 90% 70% at 50% 40%,#0D1D40,#070B17);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999;gap:28px;overflow:hidden;">
-    <div style="position:absolute;width:220px;height:220px;border-radius:50%;background:rgba(0,212,255,.07);top:10%;left:5%;filter:blur(55px);animation:dg-fl 4.2s ease-in-out infinite;"></div>
-    <div style="position:absolute;width:160px;height:160px;border-radius:50%;background:rgba(255,184,0,.05);top:62%;left:62%;filter:blur:55px;animation:dg-fl 5.5s ease-in-out infinite;animation-delay:.9s;"></div>
-    <div style="text-align:center;animation:dg-logo 1s cubic-bezier(.22,1,.36,1) both;animation-delay:.3s;padding:0 20px;width:100%;">
-      <div style="font-size:11px;letter-spacing:.38em;color:#00D4FF;font-family:'Syne',sans-serif;font-weight:600;margin-bottom:18px;opacity:.9;">◆ PLATEFORME DIGITALE ◆</div>
-      <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(36px,12vw,52px);line-height:1;letter-spacing:-.01em;white-space:nowrap;">
-        <span class="grad-digi">DIGI</span><span class="grad-form">FORM</span>
-      </div>
-      <div style="font-size:12px;color:#5B6A90;margin-top:14px;letter-spacing:.22em;animation:dg-fin .5s ease both;animation-delay:1.2s;">Savoir&nbsp; • &nbsp;Technologie&nbsp; • &nbsp;Excellence</div>
-    </div>
-    <div style="width:180px;height:3px;background:#0D1426;border-radius:3px;overflow:hidden;">
-      <div id="sp-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#00D4FF,#FFB800);border-radius:3px;transition:width .055s linear;box-shadow:0 0 12px rgba(0,212,255,.8);"></div>
-    </div>
-    <div id="sp-lbl" style="font-size:10px;color:#3A4A6E;letter-spacing:.2em;">CHARGEMENT...</div>
-  </div>`;
+/* ───────────── SPLASH (déjà affiché, mais fonction pour mise à jour barre) ── */
+function updateSplashProgress(percent) {
+  const bar = document.getElementById("sp-bar");
+  const label = document.getElementById("sp-lbl");
+  if(bar) bar.style.width = Math.min(100, percent) + "%";
+  if(label && percent >= 100) label.textContent = "PRÊT ✓";
+  else if(label) label.textContent = "CHARGEMENT...";
 }
 
-/* ───────────── HEADER ──────────────────────────────────── */
+/* ───────────── HEADER, NAV, ETC ─────────────────────────── */
 function tHeader() {
   const unread = getUnread();
   return `<header style="position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(7,11,23,.96);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.07);padding:10px 14px;z-index:200;display:flex;align-items:center;justify-content:space-between;">
@@ -368,7 +383,6 @@ function tHeader() {
   </header>`;
 }
 
-/* ───────────── BOTTOM NAV ──────────────────────────────── */
 function tNav() {
   const fc = (S.products||[]).filter(p=>S.favs.includes(p.id)).length;
   const nav = [{id:"home",e:"🏠",l:"Accueil"},{id:"catalogue",e:"🗂️",l:"Catalogue"},{id:"favs",e:"❤️",l:"Favoris",b:fc},{id:"profile",e:"👤",l:"Profil"}];
@@ -382,7 +396,6 @@ function tNav() {
   </nav>`;
 }
 
-/* ───────────── NOTIF PANEL ─────────────────────────────── */
 function tNotifPanel() {
   const notifs = S.notifs||[];
   return `
@@ -413,7 +426,6 @@ function tNotifPanel() {
     </div>`;
 }
 
-/* ───────────── AUTH MODAL ──────────────────────────────── */
 function tAuthModal() {
   const isL = S.authMode==="login";
   return `
@@ -454,7 +466,6 @@ function renderAuthInner() {
   bindAuthInner();
 }
 
-/* ───────────── PRODUCT MODAL ───────────────────────────── */
 function tProductModal(p) {
   if(!p) return "";
   const c=tc(p.type||""); const isFav=S.favs.includes(p.id);
@@ -484,7 +495,6 @@ function tProductModal(p) {
     </div>`;
 }
 
-/* ───────────── HOME PAGE ────────────────────────────────── */
 function tHome() {
   const featured=(S.products||[]).filter(p=>p.featured);
   const src=featured.length>0?featured:(S.products||[]).slice(0,5);
@@ -528,7 +538,6 @@ function tHome() {
   </div>`;
 }
 
-/* ───────────── CATALOGUE PAGE ──────────────────────────── */
 function tCatalogue() {
   return `<div class="page" style="padding:16px 13px;">
     <div style="position:relative;margin-bottom:11px;">
@@ -542,7 +551,6 @@ function tCatalogue() {
   </div>`;
 }
 
-/* ───────────── FAVS PAGE ───────────────────────────────── */
 function tFavs() {
   const fp = (S.products||[]).filter(p=>S.favs.includes(p.id));
   return `<div class="page" style="padding:16px 13px;">
@@ -552,7 +560,6 @@ function tFavs() {
   </div>`;
 }
 
-/* ───────────── PROFILE PAGE ────────────────────────────── */
 function tProfile() {
   if(!S.session) return `<div class="page" style="padding:60px 22px;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;">
     <div style="font-size:58px;animation:dg-fl 3s ease-in-out infinite;">👤</div>
@@ -588,7 +595,6 @@ function tProfile() {
   </div>`;
 }
 
-/* ───────────── PAGE LOADER ─────────────────────────────── */
 function tLoader() {
   return `<div style="position:fixed;inset:0;background:rgba(7,11,23,.9);backdrop-filter:blur(12px);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:5000;animation:dg-ov .2s;">
     <div style="position:relative;width:52px;height:52px;">
@@ -599,12 +605,11 @@ function tLoader() {
   </div>`;
 }
 
-/* ───────────── SAFE RENDER ────────────────────────────── */
+/* ───────────── RENDER (appelée quand splash terminé) ───── */
 function safeRender() {
   try { render(); }
   catch(e) {
-    console.error("render() crash:", e);
-    // Fallback minimal pour ne jamais rester en écran noir
+    console.error("render crash:", e);
     const app = document.getElementById("app");
     if(app) app.innerHTML = `<div id="toast-area"></div>
       <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:16px;padding:24px;text-align:center;">
@@ -616,13 +621,19 @@ function safeRender() {
   }
 }
 
-/* ───────────── RENDER ──────────────────────────────────── */
 function render() {
   const app = document.getElementById("app");
   if(!app) return;
+  
+  // On vide le conteneur mais on garde la zone toast
   app.innerHTML = `<div id="toast-area"></div>`;
 
-  if(S.splash) { app.innerHTML += tSplash(); return; }
+  if(S.splash) {
+    // Si splash encore actif, on ne fait rien (déjà affiché au démarrage)
+    // Mais au cas où, on le réaffiche (ne devrait pas arriver)
+    app.innerHTML += tSplash();
+    return;
+  }
 
   let page = "";
   if(S.tab==="home")           page = tHome();
@@ -644,29 +655,41 @@ function render() {
   bindAll();
 }
 
+function tSplash() {
+  return `<div id="splash-root" style="position:fixed;inset:0;background:radial-gradient(ellipse 90% 70% at 50% 40%,#0D1D40,#070B17);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999;gap:28px;overflow:hidden;">
+    <div style="position:absolute;width:220px;height:220px;border-radius:50%;background:rgba(0,212,255,.07);top:10%;left:5%;filter:blur(55px);animation:dg-fl 4.2s ease-in-out infinite;"></div>
+    <div style="position:absolute;width:160px;height:160px;border-radius:50%;background:rgba(255,184,0,.05);top:62%;left:62%;filter:blur(55px);animation:dg-fl 5.5s ease-in-out infinite;animation-delay:.9s;"></div>
+    <div style="text-align:center;animation:dg-logo 1s cubic-bezier(.22,1,.36,1) both;animation-delay:.3s;padding:0 20px;width:100%;">
+      <div style="font-size:11px;letter-spacing:.38em;color:#00D4FF;font-family:'Syne',sans-serif;font-weight:600;margin-bottom:18px;opacity:.9;">◆ PLATEFORME DIGITALE ◆</div>
+      <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(36px,12vw,52px);line-height:1;letter-spacing:-.01em;white-space:nowrap;">
+        <span class="grad-digi">DIGI</span><span class="grad-form">FORM</span>
+      </div>
+      <div style="font-size:12px;color:#5B6A90;margin-top:14px;letter-spacing:.22em;animation:dg-fin .5s ease both;animation-delay:1.2s;">Savoir&nbsp; • &nbsp;Technologie&nbsp; • &nbsp;Excellence</div>
+    </div>
+    <div style="width:180px;height:3px;background:#0D1426;border-radius:3px;overflow:hidden;">
+      <div id="sp-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#00D4FF,#FFB800);border-radius:3px;transition:width .055s linear;box-shadow:0 0 12px rgba(0,212,255,.8);"></div>
+    </div>
+    <div id="sp-lbl" style="font-size:10px;color:#3A4A6E;letter-spacing:.2em;">CHARGEMENT...</div>
+  </div>`;
+}
+
 /* ───────────── BIND EVENTS ─────────────────────────────── */
 function bindAll() {
-  // tabs — boutons ET divs
   document.querySelectorAll("[data-tab]").forEach(el=>el.addEventListener("click",e=>{
     e.stopPropagation();
     const t = el.dataset.tab;
     if(t) switchTab(t);
   }));
-  // filter
   document.querySelectorAll("[data-filter]").forEach(el=>el.addEventListener("click",()=>{S.filter=el.dataset.filter;safeRender();}));
-  // search input (catalogue) — bind via event listener, pas oninput inline
   const sinp = document.getElementById("s-inp");
   if(sinp) sinp.addEventListener("input",()=>{
     S.search=sinp.value;
     const grid=document.getElementById("cat-grid");
     if(grid){grid.innerHTML=tProductGrid(filteredP());bindCards();}
   });
-  // cards
   bindCards();
-  // header
   document.getElementById("bell-btn")?.addEventListener("click",()=>{S.notifOpen=true;safeRender();});
   document.getElementById("profile-btn")?.addEventListener("click",()=>{if(S.session)switchTab("profile");else openAuth();});
-  // notif panel
   document.getElementById("notif-bg")?.addEventListener("click",()=>{S.notifOpen=false;safeRender();});
   document.getElementById("notif-close")?.addEventListener("click",()=>{S.notifOpen=false;safeRender();});
   document.querySelectorAll("[data-nid]").forEach(el=>el.addEventListener("click",async()=>{
@@ -677,18 +700,15 @@ function bindAll() {
     el.style.cursor="default";
     el.querySelector("div[style*='background:#00D4FF']")?.remove();
   }));
-  // auth
   document.getElementById("auth-bg")?.addEventListener("click",()=>{S.authOpen=false;safeRender();});
   document.getElementById("auth-cancel")?.addEventListener("click",()=>{S.authOpen=false;safeRender();});
   document.getElementById("auth-tab-login")?.addEventListener("click",()=>{S.authMode="login";S.authErr="";renderAuthInner();});
   document.getElementById("auth-tab-reg")?.addEventListener("click",()=>{S.authMode="register";S.authErr="";renderAuthInner();});
   bindAuthInner();
-  // product modal
   document.getElementById("pm-bg")?.addEventListener("click",()=>{S.selected=null;safeRender();});
   document.getElementById("pm-close")?.addEventListener("click",()=>{S.selected=null;safeRender();});
   document.getElementById("pm-close2")?.addEventListener("click",()=>{S.selected=null;safeRender();});
   document.getElementById("pm-buy")?.addEventListener("click",()=>{if(!S.session){openAuth();return;}if(S.selected)openWhatsApp(S.selected);});
-  // profile
   document.getElementById("go-login")?.addEventListener("click",()=>openAuth());
   document.getElementById("logout-btn")?.addEventListener("click",doLogout);
   document.getElementById("edit-btn")?.addEventListener("click",()=>{
@@ -758,57 +778,40 @@ function bindAuthInner() {
   document.getElementById("a-pwd2")?.addEventListener("keydown",e=>{if(e.key==="Enter")go();});
 }
 
-/* ───────────── INIT ─────────────────────────────────────── */
+/* ───────────── INITIALISATION PRINCIPALE ────────────────── */
 async function init() {
-  // Restore session immédiatement pour éviter le splash si déjà connecté
-  try{
-    const raw = localStorage.getItem("dg_sess");
-    if(raw){ const s=JSON.parse(raw); if(s?.access_token) S.session=s; }
-  } catch(e){ console.warn("session restore error:", e); }
-
-  // Afficher le splash seulement si pas de session rapide, sinon on pourrait le court-circuiter
-  // mais on laisse le splash pour l'expérience utilisateur
-  
-  safeRender(); // Affiche le splash immédiatement
-  
-  let prog=0;
-  const iv = setInterval(()=>{
-    prog = Math.min(prog+2.1,100);
-    const b=document.getElementById("sp-bar"), l=document.getElementById("sp-lbl");
-    if(b) b.style.width=prog+"%";
-    if(l) l.textContent=prog>=100?"PRÊT ✓":"CHARGEMENT...";
-    if(prog>=100) clearInterval(iv);
-  }, 54);
-
-  // Timeout de sécurité : force la sortie du splash après 4s même si les loads échouent
-  const splashTimeout = setTimeout(()=>{
-    if(S.splash) {
-      S.splash=false;
-      S.loading=false;
-      safeRender();
-    }
-  }, 4000);
-
+  // Restaurer la session si existante
   try {
-    // Parallel loads avec timeout individuel
-    const loads = [loadProducts(), loadNotifs()];
-    if(S.session) loads.push(loadProfile(), loadReads());
-    await Promise.allSettled(loads);
-  } catch(e) {
-    console.warn("init load error:", e);
-    S.loading=false;
-  }
+    const raw = localStorage.getItem("dg_sess");
+    if(raw) { const s = JSON.parse(raw); if(s?.access_token) S.session = s; }
+  } catch(e) { console.warn("session restore error:", e); }
 
-  clearTimeout(splashTimeout);
-  clearInterval(iv);
+  // Animation de la barre de progression
+  let prog = 0;
+  const iv = setInterval(() => {
+    prog = Math.min(prog + 3, 100);
+    updateSplashProgress(prog);
+    if (prog >= 100) clearInterval(iv);
+  }, 60);
+
+  // Charger les données
+  try {
+    const loads = [loadProducts(), loadNotifs()];
+    if (S.session) loads.push(loadProfile(), loadReads());
+    await Promise.allSettled(loads);
+  } catch(e) { console.warn("init load error:", e); }
   
-  // Attendre un peu pour que la barre de progression soit agréable
-  await new Promise(r=>setTimeout(r, 300));
-  S.splash=false;
+  // Attendre un peu pour que la barre atteigne 100% naturellement
+  await new Promise(r => setTimeout(r, 200));
+  clearInterval(iv);
+  updateSplashProgress(100);
+  await new Promise(r => setTimeout(r, 500));
+  
+  // Disparaître le splash
+  S.splash = false;
   safeRender();
 }
 
-// Démarrer l'application immédiatement
 init();
 </script>
 </body>
