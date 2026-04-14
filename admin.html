@@ -3,227 +3,205 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>DIGIFORM — Admin</title>
+<title>DIGIFORM Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{background:#070B17;color:#E8EEFF;font-family:'DM Sans',sans-serif;overscroll-behavior:none;}
-#root{max-width:430px;margin:0 auto;min-height:100vh;position:relative;background:#070B17;}
-::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:#1E2D55;border-radius:3px;}
-
-@keyframes dg-fadein{0%{opacity:0;transform:translateY(16px);}100%{opacity:1;transform:none;}}
-@keyframes dg-float{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
-@keyframes dg-shimmer{0%{background-position:-200%;}100%{background-position:200%;}}
+html,body{width:100%;overscroll-behavior:none;}
+body{background:#070B17;color:#E8EEFF;font-family:'DM Sans',sans-serif;}
+#app{max-width:430px;margin:0 auto;min-height:100vh;position:relative;background:#070B17;display:flex;flex-direction:column;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:#1E2D55;border-radius:3px;}
 @keyframes dg-spin{to{transform:rotate(360deg);}}
-
-.dg-page{animation:dg-fadein .45s cubic-bezier(.22,1,.36,1) both;}
-.dg-shimmer{background:linear-gradient(90deg,#0D1426 25%,#1E2D55 50%,#0D1426 75%);background-size:200%;animation:dg-shimmer 1.5s infinite;}
-.dg-btn{border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;justify-content:center;gap:8px;}
-.dg-btn:hover{transform:translateY(-2px);}.dg-btn:active{transform:scale(.96);}
-.dg-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
-.dg-cyan{background:linear-gradient(135deg,#00D4FF,#0099FF);color:#070B17;}.dg-cyan:hover:not(:disabled){box-shadow:0 8px 24px rgba(0,212,255,.35);}
-.dg-danger{background:rgba(255,80,80,.12);color:#FF5050;border:1px solid rgba(255,80,80,.25)!important;}
-.dg-input{background:#131C35;border:1px solid #1E2D55;border-radius:12px;color:#E8EEFF;font-family:'DM Sans',sans-serif;font-size:14px;padding:12px 16px;width:100%;outline:none;transition:border-color .2s;}
-.dg-input:focus{border-color:#00D4FF;box-shadow:0 0 0 3px rgba(0,212,255,.08);}
-.dg-input::placeholder{color:#3A4A6E;}
-textarea.dg-input{resize:vertical;min-height:80px;}
-select.dg-input{appearance:none;cursor:pointer;}
+@keyframes dg-fin{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+@keyframes dg-fl{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+@keyframes dg-sh{from{background-position:-200%;}to{background-position:200%;}}
+@keyframes dg-ov{from{opacity:0;}to{opacity:1;}}
+.page{animation:dg-fin .42s cubic-bezier(.22,1,.36,1) both;}
+.shim{background:linear-gradient(90deg,#0D1426 25%,#1E2D55 50%,#0D1426 75%);background-size:200%;animation:dg-sh 1.5s infinite;}
+.btn{border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;transition:all .22s;display:inline-flex;align-items:center;justify-content:center;gap:7px;}
+.btn:hover:not(:disabled){transform:translateY(-2px);}
+.btn:active:not(:disabled){transform:scale(.95);}
+.btn:disabled{opacity:.45;cursor:not-allowed;}
+.cy{background:linear-gradient(135deg,#00D4FF,#0099FF);color:#070B17;}
+.cy:hover:not(:disabled){box-shadow:0 8px 24px rgba(0,212,255,.4);}
+.go{background:linear-gradient(135deg,#FFB800,#FF7A00);color:#070B17;}
+.rb{background:rgba(255,80,80,.1);color:#FF5050;border:1px solid rgba(255,80,80,.25)!important;}
+.inp{background:#131C35;border:1px solid #1E2D55;border-radius:12px;color:#E8EEFF;font-family:'DM Sans',sans-serif;font-size:14px;padding:12px 15px;width:100%;outline:none;transition:border-color .2s;display:block;}
+.inp:focus{border-color:#00D4FF;box-shadow:0 0 0 3px rgba(0,212,255,.08);}
+.inp::placeholder{color:#3A4A6E;}
+textarea.inp{resize:vertical;min-height:80px;}
+select.inp{cursor:pointer;-webkit-appearance:none;}
+.grad-digi{background:linear-gradient(135deg,#fff 20%,#B0D8FF 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.grad-form{background:linear-gradient(135deg,#FFB800,#FF6A00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.lbl{font-size:11px;color:#5B6A90;display:block;margin-bottom:5px;}
 </style>
 </head>
 <body>
-<div id="root"></div>
-<script>
-// ── Constants ────────────────────────────────────────────────────────────────
-const SB_URL="https://rxhjuetoxyjrairroycb.supabase.co";
-const SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q";
-const TC={livre:"#FFB800",formation:"#FF6B35",logiciel:"#00E5A0",audio:"#B04FFF"};
-const TYPES=[
-  {id:"all",label:"Tout",emoji:"🌐",color:"#00D4FF"},
-  {id:"livre",label:"Livres",emoji:"📚",color:"#FFB800"},
-  {id:"formation",label:"Formations",emoji:"🎬",color:"#FF6B35"},
-  {id:"logiciel",label:"Logiciels",emoji:"💻",color:"#00E5A0"},
-  {id:"audio",label:"Audio",emoji:"🎧",color:"#B04FFF"},
-];
-const CORRECT_PIN="1234";
+<div id="app">
+  <div id="toast-area"></div>
+  <div id="view"></div>
+</div>
 
-// ── State ────────────────────────────────────────────────────────────────────
-const S={
-  unlocked:false,
-  subTab:"add",
-  products:[],
-  loading:false,
-  saving:false,
-  deletingId:null,
-  featured:false,
-  toast:null,
-  toastTimer:null,
-  sqlCopied:false,
+<script>
+/* ── CONSTANTS ─────────────────────────────────────────── */
+const SB   = "https://rxhjuetoxyjrairroycb.supabase.co";
+const ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q";
+const TC   = {livre:"#FFB800",formation:"#FF6B35",logiciel:"#00E5A0",audio:"#B04FFF"};
+const TYPES= [{id:"all",l:"Tout",e:"🌐",c:"#00D4FF"},{id:"livre",l:"Livres",e:"📚",c:"#FFB800"},{id:"formation",l:"Formations",e:"🎬",c:"#FF6B35"},{id:"logiciel",l:"Logiciels",e:"💻",c:"#00E5A0"},{id:"audio",l:"Audio",e:"🎧",c:"#B04FFF"}];
+
+/* ── STATE ─────────────────────────────────────────────── */
+const S = {
+  session: null,
+  profile: null,
+  sub: "add",
+  products: [],
+  users: [],
+  notifs: [],
+  loadingUsers: false,
+  loadingNotifs: false,
+  featured: false,
+  imgUploading: false,
+  imgPreview: "",
+  imgUrl: "",
+  deleting: null,
+  saving: false,
+  sendingNotif: false,
+  toast: null, toastTimer: null
 };
 
-// ── API ──────────────────────────────────────────────────────────────────────
-async function api(path,opts={}){
-  try{
-    const r=await fetch(`${SB_URL}/rest/v1/${path}`,{...opts,headers:{apikey:SB_KEY,Authorization:`Bearer ${SB_KEY}`,"Content-Type":"application/json",Prefer:opts.method==="POST"?"return=representation":"return=minimal",...(opts.headers||{})}});
-    let data=null;try{data=await r.json();}catch{}
-    return{ok:r.ok,data};
-  }catch(e){return{ok:false,data:null};}
+/* ── API ───────────────────────────────────────────────── */
+const tok = () => S.session?.access_token || ANON;
+
+async function db(path, opts={}) {
+  try {
+    const r = await fetch(`${SB}/rest/v1/${path}`, {
+      ...opts,
+      headers: { apikey:ANON, Authorization:`Bearer ${tok()}`, "Content-Type":"application/json",
+        ...(["POST","PATCH","PUT"].includes(opts.method)?{Prefer:"return=representation"}:{}),
+        ...(opts.headers||{}) }
+    });
+    let data; try{data=await r.json();}catch{}
+    return {ok:r.ok, data};
+  } catch { return {ok:false, data:null}; }
 }
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
-const tc=t=>TC[t]||"#00D4FF";
-const te=t=>TYPES.find(x=>x.id===t)?.emoji||"📦";
-const tp=p=>Number(p).toLocaleString("fr-FR");
-const esc=s=>(s||"").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
-
-// ── Actions ──────────────────────────────────────────────────────────────────
-async function loadProducts(){
-  S.loading=true;renderContent();
-  const{ok,data}=await api("products?order=created_at.desc");
-  if(ok&&Array.isArray(data))S.products=data;
-  S.loading=false;renderContent();
+async function authReq(ep, body) {
+  try {
+    const r = await fetch(`${SB}/auth/v1/${ep}`, {method:"POST",headers:{"Content-Type":"application/json",apikey:ANON},body:JSON.stringify(body)});
+    return await r.json();
+  } catch { return {error:"network"}; }
 }
 
-function showToast(msg,type="success"){
-  if(S.toastTimer)clearTimeout(S.toastTimer);
-  S.toast={msg,type};renderToast();
-  S.toastTimer=setTimeout(()=>{S.toast=null;renderToast();},3000);
+async function uploadImg(file) {
+  try {
+    const ext=(file.name.split(".").pop()||"jpg").toLowerCase();
+    const name=`${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+    const r=await fetch(`${SB}/storage/v1/object/digiform/${name}`,{method:"POST",headers:{Authorization:`Bearer ${tok()}`,apikey:ANON,"Content-Type":file.type,"x-upsert":"true"},body:file});
+    return r.ok?`${SB}/storage/v1/object/public/digiform/${name}`:null;
+  } catch { return null; }
 }
 
-function renderToast(){
-  const el=document.getElementById("toast-area");
-  if(!el)return;
+/* ── HELPERS ───────────────────────────────────────────── */
+const tc = t=>TC[t]||"#00D4FF";
+const te = t=>TYPES.find(x=>x.id===t)?.e||"📦";
+const tp = p=>Number(p).toLocaleString("fr-FR");
+const esc= s=>(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const fmtDate=d=>new Date(d).toLocaleDateString("fr-FR",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});
+const tLogo=(sz=18)=>`<span style="font-family:'Syne',sans-serif;font-weight:800;font-size:${sz}px;line-height:1;"><span class="grad-digi">DIGI</span><span class="grad-form">FORM</span></span>`;
+
+/* ── TOAST ─────────────────────────────────────────────── */
+function showToast(msg,type="success") {
+  if(S.toastTimer) clearTimeout(S.toastTimer);
+  S.toast={msg,type};
+  S.toastTimer=setTimeout(()=>{S.toast=null;renderToast();},3200);
+  renderToast();
+}
+function renderToast() {
+  const el=document.getElementById("toast-area"); if(!el)return;
   if(!S.toast){el.innerHTML="";return;}
-  const bg=S.toast.type==="error"?"linear-gradient(135deg,#FF5050,#CC0000)":"linear-gradient(135deg,#00E5A0,#00B070)";
-  el.innerHTML=`<div style="position:fixed;top:82px;left:50%;transform:translateX(-50%);background:${bg};color:white;padding:10px 22px;border-radius:20px;z-index:9999;font-weight:600;font-size:14px;box-shadow:0 8px 28px rgba(0,0,0,.4);animation:dg-fadein .3s ease;white-space:nowrap;">${S.toast.msg}</div>`;
+  const bg=S.toast.type==="error"?"linear-gradient(135deg,#FF5050,#C00)":"linear-gradient(135deg,#00E5A0,#00A060)";
+  el.innerHTML=`<div style="position:fixed;top:70px;left:50%;transform:translateX(-50%);background:${bg};color:#fff;padding:10px 22px;border-radius:20px;z-index:9999;font-weight:600;font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,.6);animation:dg-fin .3s ease;white-space:nowrap;max-width:90vw;text-align:center;">${S.toast.msg}</div>`;
 }
 
-function checkPin(){
-  const val=document.getElementById("pin-input")?.value||"";
-  if(val===CORRECT_PIN){
-    S.unlocked=true;
-    render();
-    loadProducts();
-  }else{
-    document.getElementById("pin-error")?.style&&(document.getElementById("pin-error").style.display="flex");
-    document.getElementById("pin-input").value="";
-    document.getElementById("pin-input").focus();
-  }
+/* ── DATA ──────────────────────────────────────────────── */
+async function loadProducts() {
+  const {ok,data}=await db("products?order=created_at.desc");
+  if(ok&&Array.isArray(data)) S.products=data;
+}
+async function loadUsers() {
+  S.loadingUsers=true;
+  const {ok,data}=await db("profiles?order=created_at.desc");
+  if(ok&&Array.isArray(data)) S.users=data;
+  S.loadingUsers=false;
+}
+async function loadNotifs() {
+  S.loadingNotifs=true;
+  const {ok,data}=await db("notifications?order=created_at.desc");
+  if(ok&&Array.isArray(data)) S.notifs=data;
+  S.loadingNotifs=false;
 }
 
-async function saveProduct(){
-  const title=(document.getElementById("f-title")?.value||"").trim();
-  const description=(document.getElementById("f-description")?.value||"").trim();
-  const price=(document.getElementById("f-price")?.value||"").trim();
-  const type=document.getElementById("f-type")?.value||"livre";
-  const image_url=(document.getElementById("f-image")?.value||"").trim();
-  const whatsapp_number=(document.getElementById("f-wa")?.value||"").trim();
-  const featured=S.featured;
-
-  if(!title||!price){showToast("⚠️ Titre et prix requis","error");return;}
-  S.saving=true;updateSaveBtn();
-
-  const{ok}=await api("products",{method:"POST",body:JSON.stringify({title,description,price:Number(price),type,image_url,whatsapp_number,featured})});
-  S.saving=false;updateSaveBtn();
-  if(ok){
-    // Reset form
-    ["f-title","f-description","f-price","f-image","f-wa"].forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});
-    document.getElementById("f-type").value="livre";
-    S.featured=false;updateToggle();
-    showToast("✅ Produit publié avec succès !");
-    loadProducts();
-  }else{
-    showToast("❌ Erreur — vérifiez la configuration Supabase","error");
-  }
+/* ── TEMPLATES ─────────────────────────────────────────── */
+function tEmpty(msg,sub="",emoji="📭") {
+  return `<div style="display:flex;flex-direction:column;align-items:center;padding:52px 24px;gap:13px;text-align:center;">
+    <div style="font-size:50px;animation:dg-fl 3s ease-in-out infinite;">${emoji}</div>
+    <div style="font-size:15px;font-weight:600;color:#8899BB;">${esc(msg)}</div>
+    ${sub?`<div style="font-size:12px;color:#3A4A6E;line-height:1.6;">${esc(sub)}</div>`:""}
+  </div>`;
 }
+function tShim(n=3,h=64) { return `<div style="display:flex;flex-direction:column;gap:9px;">${Array.from({length:n},()=>`<div class="shim" style="height:${h}px;border-radius:13px;"></div>`).join("")}</div>`; }
 
-function updateSaveBtn(){
-  const btn=document.getElementById("save-btn");
-  if(!btn)return;
-  btn.disabled=S.saving;
-  btn.textContent=S.saving?"⏳ Publication…":"✅ Publier le produit";
-}
-
-function updateToggle(){
-  const toggle=document.getElementById("featured-toggle");
-  const knob=document.getElementById("featured-knob");
-  if(!toggle||!knob)return;
-  toggle.style.background=S.featured?"linear-gradient(135deg,#00D4FF,#0099FF)":"#1E2D55";
-  knob.style.left=S.featured?"22px":"2px";
-}
-
-async function deleteProduct(id){
-  if(S.deletingId)return;
-  S.deletingId=id;
-  const btn=document.querySelector(`[data-delete="${id}"]`);
-  if(btn)btn.textContent="…";
-  const{ok}=await api(`products?id=eq.${id}`,{method:"DELETE"});
-  S.deletingId=null;
-  if(ok){showToast("🗑️ Produit supprimé","error");loadProducts();}
-  else{showToast("❌ Erreur suppression","error");if(btn)btn.textContent="🗑️";}
-}
-
-function copySql(){
-  const sql=document.getElementById("sql-code")?.textContent||"";
-  navigator.clipboard.writeText(sql).then(()=>{
-    S.sqlCopied=true;
-    const btn=document.getElementById("copy-sql-btn");
-    if(btn)btn.textContent="✅ Copié !";
-    setTimeout(()=>{S.sqlCopied=false;const b=document.getElementById("copy-sql-btn");if(b)b.textContent="📋 Copier";},2500);
-  });
-}
-
-// ── Templates ────────────────────────────────────────────────────────────────
-const SQL_TEXT=`-- 1. Créer la table dans Supabase SQL Editor
-CREATE TABLE products (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  title TEXT NOT NULL,
-  description TEXT,
-  price NUMERIC NOT NULL DEFAULT 0,
-  type TEXT NOT NULL DEFAULT 'livre',
-  image_url TEXT,
-  whatsapp_number TEXT,
-  featured BOOLEAN DEFAULT false,
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- 2. Activer RLS avec accès public
-ALTER TABLE products ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Public access" ON products
-  FOR ALL USING (true) WITH CHECK (true);`;
-
-function tPinScreen(){
-  return`<div class="dg-page" style="padding:60px 32px;display:flex;flex-direction:column;align-items:center;gap:24px;">
-    <div style="font-size:64px;animation:dg-float 3s ease-in-out infinite;">🔐</div>
-    <div style="text-align:center;">
-      <div style="font-size:22px;font-family:'Syne',sans-serif;font-weight:700;margin-bottom:8px;">Zone Admin</div>
-      <div style="color:#5B6A90;font-size:14px;">Code PIN requis pour accéder</div>
+/* ── LOGIN SCREEN ──────────────────────────────────────── */
+function tLogin(err="",busy=false) {
+  const spin=`<span style="display:inline-block;width:14px;height:14px;border:2px solid rgba(0,0,0,.3);border-top-color:#070B17;border-radius:50%;animation:dg-spin .8s linear infinite;margin-right:6px;"></span>`;
+  return `<div class="page" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 22px;">
+    <div style="text-align:center;margin-bottom:28px;">
+      ${tLogo(30)}
+      <div style="font-size:12px;color:#5B6A90;margin-top:6px;letter-spacing:.12em;">PANNEAU ADMINISTRATEUR</div>
     </div>
-    <input id="pin-input" type="password" class="dg-input" style="text-align:center;font-size:28px;letter-spacing:.6em;max-width:240px;" placeholder="••••" maxlength="6" />
-    <div id="pin-error" style="color:#FF5050;font-size:12px;gap:6px;display:none;align-items:center;">❌ Code incorrect — réessayez</div>
-    <button id="pin-btn" class="dg-btn dg-cyan" style="padding:14px 48px;border-radius:14px;font-size:16px;width:100%;max-width:260px;">🔓 Accéder</button>
-    <div style="font-size:11px;color:#3A4A6E;">PIN par défaut : 1234</div>
-    <a href="digiform.html" style="color:#5B6A90;font-size:13px;text-decoration:none;margin-top:8px;">← Retour à l'app</a>
+    <div style="width:100%;max-width:370px;background:#0D1426;border-radius:24px;padding:26px 22px;border:1px solid rgba(255,255,255,.09);">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div><label class="lbl">Email administrateur</label><input id="l-email" class="inp" type="email" placeholder="votre@email.com" autocomplete="email"></div>
+        <div><label class="lbl">Mot de passe</label><input id="l-pwd" class="inp" type="password" placeholder="••••••••" autocomplete="current-password"></div>
+      </div>
+      ${err?`<div style="margin-top:11px;font-size:12px;color:#FF8080;background:rgba(255,80,80,.08);padding:10px 12px;border-radius:10px;line-height:1.55;text-align:center;">${esc(err)}</div>`:""}
+      <button id="l-submit" class="btn cy" style="width:100%;padding:15px;border-radius:14px;font-size:15px;margin-top:14px;" ${busy?"disabled":""}>
+        ${busy?`${spin}Vérification...`:"🔓 Accéder au panneau"}
+      </button>
+    </div>
+    <a href="digiform.html" style="color:#5B6A90;font-size:13px;text-decoration:none;margin-top:18px;">← Retour à l'app</a>
   </div>`;
 }
 
-function tAddForm(){
-  return`<div style="display:flex;flex-direction:column;gap:16px;">
-    <div>
-      <label style="font-size:12px;color:#5B6A90;margin-bottom:6px;display:block;">Titre du produit *</label>
-      <input id="f-title" class="dg-input" placeholder="Ex : Python pour débutants" onfocus="this.style.borderColor='#00D4FF'" onblur="this.style.borderColor='#1E2D55'" />
+/* ── HEADER ────────────────────────────────────────────── */
+function tHeader() {
+  return `<div style="background:rgba(7,11,23,.98);border-bottom:1px solid rgba(255,255,255,.07);padding:10px 13px;display:flex;align-items:center;gap:11px;flex-shrink:0;">
+    <a href="digiform.html" style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);border:none;cursor:pointer;color:#E8EEFF;font-size:18px;display:flex;align-items:center;justify-content:center;text-decoration:none;flex-shrink:0;">←</a>
+    <div style="flex:1;min-width:0;">
+      <div style="line-height:1;">${tLogo(17)}<span style="color:#3A4A6E;font-size:12px;font-family:'DM Sans',sans-serif;margin-left:6px;">Admin</span></div>
+      <div style="font-size:10px;color:#00D4FF;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(S.session?.user?.email||"")}</div>
     </div>
-    <div>
-      <label style="font-size:12px;color:#5B6A90;margin-bottom:6px;display:block;">Description</label>
-      <textarea id="f-description" class="dg-input" placeholder="Description détaillée…" onfocus="this.style.borderColor='#00D4FF'" onblur="this.style.borderColor='#1E2D55'"></textarea>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-      <div>
-        <label style="font-size:12px;color:#5B6A90;margin-bottom:6px;display:block;">Prix (FCFA) *</label>
-        <input id="f-price" type="number" class="dg-input" placeholder="5000" onfocus="this.style.borderColor='#00D4FF'" onblur="this.style.borderColor='#1E2D55'" />
-      </div>
-      <div>
-        <label style="font-size:12px;color:#5B6A90;margin-bottom:6px;display:block;">Type *</label>
-        <select id="f-type" class="dg-input" onfocus="this.style.borderColor='#00D4FF'" onblur="this.style.borderColor='#1E2D55'">
+    <button id="hdr-logout" class="btn rb" style="padding:8px 12px;border-radius:10px;font-size:12px;flex-shrink:0;">🚪</button>
+  </div>`;
+}
+
+/* ── TABS ──────────────────────────────────────────────── */
+function tTabs() {
+  const tabs=[{id:"add",l:"➕ Ajouter"},{id:"list",l:"📋 Produits"},{id:"users",l:"👥 Users"},{id:"notifs",l:"🔔 Notifs"},{id:"sql",l:"⚙️ SQL"}];
+  return `<div style="display:flex;gap:5px;overflow-x:auto;padding:9px 12px;flex-shrink:0;background:rgba(7,11,23,.92);border-bottom:1px solid rgba(255,255,255,.04);">
+    ${tabs.map(t=>`<button data-sub="${t.id}" class="btn" style="flex-shrink:0;padding:8px 12px;border-radius:10px;font-size:12px;white-space:nowrap;border:none;${S.sub===t.id?"background:linear-gradient(135deg,#00D4FF,#0099FF);color:#070B17;":"background:rgba(255,255,255,.06);color:#E8EEFF;"}">${t.l}</button>`).join("")}
+  </div>`;
+}
+
+/* ── ADD PRODUCT ───────────────────────────────────────── */
+function tAddProduct() {
+  return `<div class="page" style="display:flex;flex-direction:column;gap:13px;">
+    <div><label class="lbl">Titre *</label><input id="f-title" class="inp" placeholder="Ex: Python pour débutants"></div>
+    <div><label class="lbl">Description</label><textarea id="f-desc" class="inp" placeholder="Description détaillée…"></textarea></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;">
+      <div><label class="lbl">Prix (FCFA) *</label><input id="f-price" class="inp" type="number" placeholder="5000"></div>
+      <div><label class="lbl">Type *</label>
+        <select id="f-type" class="inp">
           <option value="livre">📚 Livre</option>
           <option value="formation">🎬 Formation</option>
           <option value="logiciel">💻 Logiciel</option>
@@ -231,129 +209,467 @@ function tAddForm(){
         </select>
       </div>
     </div>
+    <!-- Image upload -->
     <div>
-      <label style="font-size:12px;color:#5B6A90;margin-bottom:6px;display:block;">URL de l'image (optionnel)</label>
-      <input id="f-image" class="dg-input" placeholder="https://…" onfocus="this.style.borderColor='#00D4FF'" onblur="this.style.borderColor='#1E2D55'" />
-    </div>
-    <div>
-      <label style="font-size:12px;color:#5B6A90;margin-bottom:6px;display:block;">Numéro WhatsApp (avec indicatif)</label>
-      <input id="f-wa" class="dg-input" placeholder="+2250707070707" onfocus="this.style.borderColor='#00D4FF'" onblur="this.style.borderColor='#1E2D55'" />
-    </div>
-    <div id="featured-row" style="display:flex;align-items:center;gap:12px;background:#0D1426;padding:14px 16px;border-radius:12px;cursor:pointer;border:1px solid rgba(255,255,255,.06);">
-      <div id="featured-toggle" style="width:44px;height:24px;border-radius:12px;background:#1E2D55;position:relative;transition:background .2s;flex-shrink:0;">
-        <div id="featured-knob" style="position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:white;transition:left .2s;box-shadow:0 2px 4px rgba(0,0,0,.3);"></div>
+      <label class="lbl">Image du produit</label>
+      <div id="img-zone" style="width:100%;height:125px;border-radius:13px;border:2px dashed ${S.imgUploading?"#00D4FF":"rgba(255,255,255,.13)"};background:#131C35;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative;transition:border-color .2s;">
+        ${S.imgPreview
+          ? `<img src="${esc(S.imgPreview)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+             <div style="position:absolute;inset:0;background:rgba(7,11,23,.62);display:flex;align-items:center;justify-content:center;">
+               <div style="font-size:13px;color:white;font-weight:600;background:rgba(0,0,0,.45);padding:6px 14px;border-radius:20px;">🔄 Changer l'image</div>
+             </div>`
+          : `<div style="font-size:30px;margin-bottom:7px;">${S.imgUploading?"⏳":"📷"}</div>
+             <div style="font-size:13px;color:${S.imgUploading?"#00D4FF":"#5B6A90"};font-weight:500;">${S.imgUploading?"Téléchargement…":"Cliquez pour uploader"}</div>
+             <div style="font-size:11px;color:#3A4A6E;margin-top:3px;">JPG · PNG · WebP</div>`}
       </div>
-      <span style="font-size:14px;font-weight:500;">🔥 Mettre en vedette (bannière d'accueil)</span>
+      <input type="file" id="img-file" accept="image/*" style="display:none;">
+      <div style="margin-top:7px;"><input id="f-imgurl" class="inp" placeholder="Ou collez une URL d'image…" value="${esc(S.imgUrl.startsWith("http")?S.imgUrl:"")}"></div>
     </div>
-    <button id="save-btn" class="dg-btn dg-cyan" style="padding:16px;border-radius:14px;font-size:16px;margin-top:8px;width:100%;">✅ Publier le produit</button>
+    <div><label class="lbl">WhatsApp (avec indicatif)</label><input id="f-wa" class="inp" placeholder="+2250707070707"></div>
+    <div id="feat-row" style="display:flex;align-items:center;gap:12px;background:#131C35;padding:13px 15px;border-radius:12px;cursor:pointer;border:1px solid rgba(255,255,255,.06);">
+      <div id="feat-tog" style="width:44px;height:24px;border-radius:12px;background:${S.featured?"linear-gradient(135deg,#00D4FF,#0099FF)":"#1E2D55"};position:relative;transition:background .22s;flex-shrink:0;">
+        <div style="position:absolute;top:2px;left:${S.featured?22:2}px;width:20px;height:20px;border-radius:50%;background:white;transition:left .22s;box-shadow:0 2px 6px rgba(0,0,0,.35);"></div>
+      </div>
+      <span style="font-size:13px;font-weight:500;color:#E8EEFF;">🔥 Mettre en vedette (bannière accueil)</span>
+    </div>
+    <button id="f-save" class="btn cy" style="padding:15px;border-radius:13px;font-size:15px;margin-top:4px;" ${S.saving?"disabled":""}>
+      ${S.saving?"⏳ Publication…":"✅ Publier le produit"}
+    </button>
   </div>`;
 }
 
-function tProductList(){
-  if(S.loading)return`<div style="display:flex;flex-direction:column;gap:10px;">${[...Array(3)].map(()=>`<div class="dg-shimmer" style="height:80px;border-radius:14px;"></div>`).join("")}</div>`;
-  if(!S.products.length)return`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 32px;gap:16px;text-align:center;">
-    <div style="font-size:56px;animation:dg-float 3s ease-in-out infinite;">📭</div>
-    <div style="font-size:15px;font-weight:600;color:#8899BB;">Aucun produit publié</div>
-    <div style="font-size:13px;color:#3A4A6E;">Ajoutez des produits via l'onglet Ajouter</div>
-  </div>`;
-  return`<div style="display:flex;flex-direction:column;gap:10px;">
+/* ── PRODUCTS LIST ─────────────────────────────────────── */
+function tProductsList() {
+  if(!S.products.length) return tEmpty("Aucun produit publié","Ajoutez des produits via l'onglet Ajouter","📭");
+  return `<div class="page" style="display:flex;flex-direction:column;gap:9px;">
+    <div style="font-size:12px;color:#5B6A90;margin-bottom:4px;">${S.products.length} produit(s)</div>
     ${S.products.map(p=>{
       const c=tc(p.type);
-      return`<div style="background:#0D1426;border-radius:14px;padding:14px;border:1px solid rgba(255,255,255,.06);display:flex;gap:12px;align-items:center;">
-        <div style="width:54px;height:54px;border-radius:10px;flex-shrink:0;${p.image_url?`background:url(${esc(p.image_url)}) center/cover`:`background:${c}20`};display:flex;align-items:center;justify-content:center;font-size:22px;">${!p.image_url?te(p.type):""}</div>
-        <div style="flex:1;min-width:0;">
-          <div style="font-size:13px;font-weight:600;color:#E8EEFF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(p.title)}</div>
-          <div style="font-size:12px;color:#FFB800;margin-top:2px;">${tp(p.price)} FCFA</div>
-          <div style="font-size:11px;color:${c};margin-top:2px;">${te(p.type)} ${esc(p.type||"")}${p.featured?" · 🔥 Vedette":""}</div>
+      return `<div style="background:#0D1426;border-radius:13px;padding:12px;border:1px solid rgba(255,255,255,.06);display:flex;gap:11px;align-items:center;">
+        <div style="width:50px;height:50px;border-radius:10px;flex-shrink:0;${p.image_url?`background:url(${esc(p.image_url)}) center/cover`:`background:${c}18`};display:flex;align-items:center;justify-content:center;font-size:20px;">
+          ${!p.image_url?te(p.type):""}
         </div>
-        <button data-delete="${p.id}" class="dg-btn dg-danger" style="padding:8px 12px;border-radius:10px;font-size:14px;flex-shrink:0;">${S.deletingId===p.id?"…":"🗑️"}</button>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:12px;font-weight:600;color:#E8EEFF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(p.title)}</div>
+          <div style="font-size:12px;color:#FFB800;margin-top:2px;">${tp(p.price)} FCFA</div>
+          <div style="font-size:10px;color:${c};margin-top:2px;">${te(p.type)} ${esc(p.type||"")}${p.featured?" · 🔥":""}</div>
+        </div>
+        <button data-del="${p.id}" class="btn rb" style="padding:8px 11px;border-radius:9px;font-size:14px;flex-shrink:0;" ${S.deleting===p.id?"disabled":""}>
+          ${S.deleting===p.id?"⏳":"🗑️"}
+        </button>
       </div>`;
     }).join("")}
   </div>`;
 }
 
-function tSetupGuide(){
-  return`<div style="display:flex;flex-direction:column;gap:18px;">
-    <div style="background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);border-radius:14px;padding:16px;">
-      <div style="font-size:15px;font-weight:700;margin-bottom:10px;">📋 Configuration Supabase</div>
-      <div style="font-size:13px;color:#8899BB;line-height:1.8;">
-        1. Ouvrez <strong style="color:#00D4FF;">supabase.com</strong> → votre projet<br>
-        2. Allez dans <strong style="color:#00D4FF;">SQL Editor</strong><br>
-        3. Collez et exécutez le SQL ci-dessous<br>
-        4. Revenez ici et ajoutez vos produits ✅
+/* ── USERS LIST ────────────────────────────────────────── */
+function tUsersList() {
+  if(S.loadingUsers) return tShim(3,64);
+  if(!S.users.length) return tEmpty("Aucun utilisateur","","👥");
+  return `<div class="page" style="display:flex;flex-direction:column;gap:9px;">
+    <div style="font-size:12px;color:#5B6A90;margin-bottom:4px;">${S.users.length} utilisateur(s) inscrit(s)</div>
+    ${S.users.map(u=>`<div style="background:#0D1426;border-radius:13px;padding:12px;border:1px solid ${u.is_admin?"rgba(0,212,255,.2)":"rgba(255,255,255,.06)"};display:flex;gap:11px;align-items:center;">
+      <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#1E2D55,#0D1A3A);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:17px;font-family:'Syne',sans-serif;font-weight:700;color:#00D4FF;flex-shrink:0;">
+        ${(u.full_name||u.email||"?")[0].toUpperCase()}
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;font-weight:600;color:#E8EEFF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(u.full_name||"Sans nom")}</div>
+        <div style="font-size:11px;color:#5B6A90;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(u.email||"")}</div>
+        ${u.phone?`<div style="font-size:10px;color:#3A4A6E;">${esc(u.phone)}</div>`:""}
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;">
+        ${u.is_admin?`<div style="font-size:9px;font-weight:700;color:#00D4FF;background:rgba(0,212,255,.12);padding:2px 7px;border-radius:5px;">ADMIN</div>`:""}
+        <button data-toggle-admin="${u.id}" data-is-admin="${u.is_admin?1:0}" class="btn" style="padding:5px 10px;border-radius:8px;font-size:11px;background:${u.is_admin?"rgba(255,80,80,.1)":"rgba(0,212,255,.1)"};color:${u.is_admin?"#FF5050":"#00D4FF"};border:1px solid ${u.is_admin?"rgba(255,80,80,.22)":"rgba(0,212,255,.22)"};">
+          ${u.is_admin?"Retirer admin":"Rendre admin"}
+        </button>
+      </div>
+    </div>`).join("")}
+  </div>`;
+}
+
+/* ── NOTIF ADMIN ───────────────────────────────────────── */
+function tNotifAdmin() {
+  return `<div class="page" style="display:flex;flex-direction:column;gap:14px;">
+    <div style="background:#0D1426;border-radius:15px;padding:15px;border:1px solid rgba(0,212,255,.12);">
+      <div style="font-size:14px;font-weight:600;color:#E8EEFF;margin-bottom:13px;">📣 Envoyer à tous les utilisateurs</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div><label class="lbl">Titre *</label><input id="n-title" class="inp" placeholder="Ex: Nouvelle formation disponible !"></div>
+        <div><label class="lbl">Message *</label><textarea id="n-body" class="inp" placeholder="Contenu de la notification…"></textarea></div>
+        <button id="n-send" class="btn cy" style="padding:13px;border-radius:11px;font-size:14px;" ${S.sendingNotif?"disabled":""}>
+          ${S.sendingNotif?"⏳ Envoi…":"📣 Envoyer à tous"}
+        </button>
+      </div>
+    </div>
+    <div style="font-size:13px;font-weight:600;color:#5B6A90;">Historique (${S.notifs.length})</div>
+    ${S.loadingNotifs?tShim(2,60):S.notifs.length===0?tEmpty("Aucune notification envoyée","","🔕"):S.notifs.map(n=>`
+      <div style="background:#0D1426;border-radius:12px;padding:13px;border:1px solid rgba(255,255,255,.06);">
+        <div style="font-size:13px;font-weight:600;color:#E8EEFF;margin-bottom:4px;">${esc(n.title)}</div>
+        <div style="font-size:12px;color:#8899BB;line-height:1.65;margin-bottom:6px;">${esc(n.body)}</div>
+        <div style="font-size:10px;color:#3A4A6E;">${fmtDate(n.created_at)}</div>
+      </div>`).join("")}
+  </div>`;
+}
+
+/* ── SQL GUIDE ─────────────────────────────────────────── */
+const SQL_CODE = `-- ================================================
+--  DIGIFORM — SQL COMPLET
+--  Supabase > SQL Editor > Coller > Exécuter
+-- ================================================
+
+-- 1. Profils utilisateurs (lié à auth.users)
+CREATE TABLE IF NOT EXISTS public.profiles (
+  id         UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
+  email      TEXT,
+  full_name  TEXT    DEFAULT '',
+  phone      TEXT    DEFAULT '',
+  is_admin   BOOLEAN DEFAULT false,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 2. Produits
+CREATE TABLE IF NOT EXISTS public.products (
+  id               UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  title            TEXT    NOT NULL,
+  description      TEXT    DEFAULT '',
+  price            NUMERIC NOT NULL DEFAULT 0,
+  type             TEXT    NOT NULL DEFAULT 'livre',
+  image_url        TEXT    DEFAULT '',
+  whatsapp_number  TEXT    DEFAULT '',
+  featured         BOOLEAN DEFAULT false,
+  created_at       TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 3. Notifications broadcast
+CREATE TABLE IF NOT EXISTS public.notifications (
+  id         UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  title      TEXT NOT NULL,
+  body       TEXT NOT NULL,
+  created_by UUID REFERENCES auth.users(id),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 4. Suivi lectures
+CREATE TABLE IF NOT EXISTS public.notification_reads (
+  id              UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id         UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  notification_id UUID REFERENCES public.notifications(id) ON DELETE CASCADE,
+  read_at         TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(user_id, notification_id)
+);
+
+-- 5. RLS
+ALTER TABLE public.profiles           ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.products           ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.notifications      ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.notification_reads ENABLE ROW LEVEL SECURITY;
+
+-- 6. Policies
+DROP POLICY IF EXISTS "profiles_sel"   ON public.profiles;
+DROP POLICY IF EXISTS "profiles_ins"   ON public.profiles;
+DROP POLICY IF EXISTS "profiles_upd"   ON public.profiles;
+DROP POLICY IF EXISTS "profiles_admin" ON public.profiles;
+CREATE POLICY "profiles_sel"   ON public.profiles FOR SELECT  USING (true);
+CREATE POLICY "profiles_ins"   ON public.profiles FOR INSERT  WITH CHECK (auth.uid() = id);
+CREATE POLICY "profiles_upd"   ON public.profiles FOR UPDATE  USING (auth.uid() = id);
+CREATE POLICY "profiles_admin" ON public.profiles FOR ALL
+  USING (EXISTS (SELECT 1 FROM public.profiles p WHERE p.id = auth.uid() AND p.is_admin = true));
+
+DROP POLICY IF EXISTS "products_all" ON public.products;
+CREATE POLICY "products_all" ON public.products FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "notifs_sel" ON public.notifications;
+DROP POLICY IF EXISTS "notifs_ins" ON public.notifications;
+CREATE POLICY "notifs_sel" ON public.notifications FOR SELECT USING (true);
+CREATE POLICY "notifs_ins" ON public.notifications FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "reads_all" ON public.notification_reads;
+CREATE POLICY "reads_all" ON public.notification_reads FOR ALL USING (true) WITH CHECK (true);
+
+-- 7. Trigger auto-profil à l'inscription
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER LANGUAGE plpgsql SECURITY DEFINER AS \$\$
+BEGIN
+  INSERT INTO public.profiles (id, email, full_name)
+  VALUES (
+    NEW.id, NEW.email,
+    COALESCE(NEW.raw_user_meta_data->>'full_name', '')
+  )
+  ON CONFLICT (id) DO NOTHING;
+  RETURN NEW;
+END;
+\$\$;
+
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
+
+-- ================================================
+-- DEVENIR ADMIN (après inscription) :
+--   UPDATE public.profiles
+--   SET is_admin = true
+--   WHERE email = 'votre@email.com';
+-- ================================================
+-- STORAGE :
+--   Dashboard > Storage > New bucket
+--   Nom : digiform   ✅ Public bucket
+-- ================================================`;
+
+function tSqlGuide() {
+  return `<div class="page" style="display:flex;flex-direction:column;gap:14px;">
+    <div style="background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);border-radius:14px;padding:15px;">
+      <div style="font-size:14px;font-weight:700;color:#E8EEFF;margin-bottom:11px;">🔧 Configuration initiale</div>
+      <div style="font-size:13px;color:#8899BB;line-height:2.1;">
+        <strong style="color:#00D4FF;">1.</strong> Supabase Dashboard → SQL Editor<br>
+        <strong style="color:#00D4FF;">2.</strong> Copiez et exécutez le SQL ci-dessous<br>
+        <strong style="color:#FFB800;">3.</strong> Inscrivez-vous sur l'app<br>
+        <strong style="color:#FFB800;">4.</strong> Exécutez la commande UPDATE admin<br>
+        <strong style="color:#00E5A0;">5.</strong> Storage → bucket <strong>digiform</strong> (Public)<br>
+        <strong style="color:#FF6B35;">6.</strong> Rechargez → Prêt ✅
       </div>
     </div>
     <div style="background:#0D1426;border-radius:14px;overflow:hidden;border:1px solid #1E2D55;">
-      <div style="padding:10px 16px;background:#131C35;display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:12px;color:#5B6A90;font-family:monospace;">SQL</span>
-        <button id="copy-sql-btn" class="dg-btn dg-cyan" style="padding:6px 14px;border-radius:8px;font-size:12px;">📋 Copier</button>
+      <div style="padding:10px 13px;background:#131C35;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.06);">
+        <span style="font-size:11px;color:#5B6A90;font-family:monospace;">SQL Complet — DIGIFORM</span>
+        <button id="copy-sql" class="btn cy" style="padding:6px 13px;border-radius:8px;font-size:12px;">📋 Copier</button>
       </div>
-      <pre id="sql-code" style="padding:16px;font-size:11px;color:#8899BB;overflow:auto;line-height:1.7;font-family:monospace;margin:0;white-space:pre-wrap;">${SQL_TEXT}</pre>
+      <pre id="sql-pre" style="padding:13px;font-size:10px;color:#8899BB;overflow:auto;line-height:1.9;font-family:monospace;margin:0;max-height:360px;white-space:pre-wrap;">${esc(SQL_CODE)}</pre>
     </div>
-    <div style="background:rgba(255,184,0,.08);border:1px solid rgba(255,184,0,.2);border-radius:14px;padding:14px;font-size:13px;color:#FFB800;line-height:1.7;">
-      ⚠️ Ce mode utilise un accès public complet. Pour la production, mettez en place une authentification sécurisée.
+    <div style="background:rgba(255,184,0,.08);border:1px solid rgba(255,184,0,.2);border-radius:14px;padding:13px;font-size:12px;color:#FFB800;line-height:1.7;">
+      ⚠️ Accès public configuré. En production, affinez les policies selon les rôles.
     </div>
   </div>`;
 }
 
-// ── Render ───────────────────────────────────────────────────────────────────
-function tHeader(){
-  return`<header style="position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(7,11,23,.96);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);padding:12px 20px;z-index:100;display:flex;align-items:center;justify-content:space-between;">
-    <div>
-      <div style="font-size:18px;font-family:'Syne',sans-serif;font-weight:800;background:linear-gradient(135deg,#FFFFFF,#00D4FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Administration</div>
-      <div style="font-size:11px;color:#5B6A90;margin-top:2px;">Gestion du contenu</div>
-    </div>
-    <a href="digiform.html" style="width:38px;height:38px;border-radius:50%;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2);display:flex;align-items:center;justify-content:center;font-size:17px;text-decoration:none;" title="Retour à l'app">🏠</a>
-  </header>`;
+/* ── MAIN RENDER ───────────────────────────────────────── */
+function renderView() {
+  const el = document.getElementById("view");
+  if(!el) return;
+
+  // Not logged in → show login
+  if(!S.session) { el.innerHTML = tLogin(); bindLogin(); return; }
+
+  el.innerHTML = `
+    <div style="display:flex;flex-direction:column;height:100vh;overflow:hidden;">
+      ${tHeader()}
+      ${tTabs()}
+      <div id="content" style="flex:1;overflow-y:auto;padding:15px 13px;">
+        ${S.sub==="add"?tAddProduct():""}
+        ${S.sub==="list"?tProductsList():""}
+        ${S.sub==="users"?tUsersList():""}
+        ${S.sub==="notifs"?tNotifAdmin():""}
+        ${S.sub==="sql"?tSqlGuide():""}
+      </div>
+    </div>`;
+
+  bindPanel();
 }
 
-function renderContent(){
-  const area=document.getElementById("content-area");
-  if(!area)return;
-  const tabs=[{id:"add",label:"➕ Ajouter"},{id:"list",label:"📋 Produits"},{id:"setup",label:"⚙️ Config"}];
-  area.innerHTML=`<div class="dg-page" style="padding:20px 16px;">
-    <div style="display:flex;gap:8px;margin-bottom:24px;">
-      ${tabs.map(t=>`<button data-sub="${t.id}" class="dg-btn" style="flex:1;padding:10px 0;border-radius:12px;font-size:13px;${S.subTab===t.id?`background:linear-gradient(135deg,#00D4FF,#0099FF);color:#070B17;border:none;`:`background:rgba(255,255,255,.05);color:#E8EEFF;border:1px solid rgba(255,255,255,.08);`}">${t.label}</button>`).join("")}
-    </div>
-    ${S.subTab==="add"?tAddForm():S.subTab==="list"?tProductList():tSetupGuide()}
-  </div>`;
-  bindContentEvents();
-}
-
-function render(){
-  const root=document.getElementById("root");
-  if(!S.unlocked){
-    root.innerHTML=`<div id="toast-area"></div>${tHeader()}<main style="padding-top:72px;min-height:100vh;">${tPinScreen()}</main>`;
-    document.getElementById("pin-btn")?.addEventListener("click",checkPin);
-    document.getElementById("pin-input")?.addEventListener("keydown",e=>{if(e.key==="Enter")checkPin();});
-    return;
+/* ── BIND LOGIN ────────────────────────────────────────── */
+function bindLogin(err="",busy=false) {
+  const submit = async () => {
+    const email=(document.getElementById("l-email")?.value||"").trim();
+    const pwd=document.getElementById("l-pwd")?.value||"";
+    if(!email||!pwd){ rerenderLogin("Remplissez tous les champs"); return; }
+    rerenderLogin("",true);
+    const d = await authReq("token?grant_type=password",{email,password:pwd});
+    if(d.access_token) {
+      S.session={access_token:d.access_token,refresh_token:d.refresh_token,user:d.user};
+      try{localStorage.setItem("dg_adm_sess",JSON.stringify(S.session));}catch{}
+      // check admin
+      const{ok,data}=await db(`profiles?id=eq.${S.session.user.id}`);
+      if(ok&&Array.isArray(data)&&data[0]) {
+        S.profile=data[0];
+        if(!S.profile.is_admin) {
+          S.session=null; localStorage.removeItem("dg_adm_sess");
+          rerenderLogin("❌ Accès refusé — ce compte n'est pas administrateur");
+          return;
+        }
+      }
+      await Promise.all([loadProducts(),loadUsers(),loadNotifs()]);
+      renderView();
+    } else {
+      rerenderLogin(d.error_description||d.message||"Identifiants incorrects");
+    }
+  };
+  function rerenderLogin(err="",busy=false) {
+    document.getElementById("view").innerHTML=tLogin(err,busy);
+    document.getElementById("l-submit")?.addEventListener("click",submit);
+    document.getElementById("l-pwd")?.addEventListener("keydown",e=>{if(e.key==="Enter")submit();});
   }
-  root.innerHTML=`<div id="toast-area"></div>${tHeader()}<main style="padding-top:72px;padding-bottom:32px;min-height:100vh;"><div id="content-area"></div></main>`;
-  renderContent();
+  document.getElementById("l-submit")?.addEventListener("click",submit);
+  document.getElementById("l-pwd")?.addEventListener("keydown",e=>{if(e.key==="Enter")submit();});
 }
 
-function bindContentEvents(){
-  // Sub tabs
-  document.querySelectorAll("[data-sub]").forEach(el=>{
-    el.addEventListener("click",()=>{S.subTab=el.dataset.sub;renderContent();});
+/* ── BIND PANEL ────────────────────────────────────────── */
+function bindPanel() {
+  // logout
+  document.getElementById("hdr-logout")?.addEventListener("click",()=>{
+    S.session=null;S.profile=null;localStorage.removeItem("dg_adm_sess");renderView();
   });
-  // Save btn
-  const sb=document.getElementById("save-btn");
-  if(sb)sb.addEventListener("click",saveProduct);
-  // Featured toggle
-  const fr=document.getElementById("featured-row");
-  if(fr)fr.addEventListener("click",()=>{S.featured=!S.featured;updateToggle();});
-  // Delete buttons
-  document.querySelectorAll("[data-delete]").forEach(el=>{
-    el.addEventListener("click",()=>deleteProduct(el.dataset.delete));
-  });
-  // Copy SQL
-  const cs=document.getElementById("copy-sql-btn");
-  if(cs)cs.addEventListener("click",copySql);
+
+  // sub tabs
+  document.querySelectorAll("[data-sub]").forEach(el=>el.addEventListener("click",async()=>{
+    S.sub=el.dataset.sub;
+    if(S.sub==="users"&&!S.users.length){S.loadingUsers=true;renderContent();await loadUsers();}
+    if(S.sub==="notifs"){S.loadingNotifs=true;renderContent();await loadNotifs();}
+    renderContent();
+  }));
+
+  bindContent();
 }
 
-// ── Init ─────────────────────────────────────────────────────────────────────
-render();
+function renderContent() {
+  const el=document.getElementById("content");
+  if(!el) return;
+  el.innerHTML=
+    S.sub==="add"?tAddProduct():
+    S.sub==="list"?tProductsList():
+    S.sub==="users"?tUsersList():
+    S.sub==="notifs"?tNotifAdmin():
+    S.sub==="sql"?tSqlGuide():"";
+
+  // Also re-render tabs to update active state
+  const tabsEl=document.querySelector("[data-sub]")?.closest("div");
+  if(tabsEl&&tabsEl.parentElement) {
+    const tabs=[{id:"add",l:"➕ Ajouter"},{id:"list",l:"📋 Produits"},{id:"users",l:"👥 Users"},{id:"notifs",l:"🔔 Notifs"},{id:"sql",l:"⚙️ SQL"}];
+    tabsEl.parentElement.innerHTML=`<div style="display:flex;gap:5px;overflow-x:auto;padding:9px 12px;flex-shrink:0;background:rgba(7,11,23,.92);border-bottom:1px solid rgba(255,255,255,.04);">
+      ${tabs.map(t=>`<button data-sub="${t.id}" class="btn" style="flex-shrink:0;padding:8px 12px;border-radius:10px;font-size:12px;white-space:nowrap;border:none;${S.sub===t.id?"background:linear-gradient(135deg,#00D4FF,#0099FF);color:#070B17;":"background:rgba(255,255,255,.06);color:#E8EEFF;"}">${t.l}</button>`).join("")}
+    </div>`;
+    document.querySelectorAll("[data-sub]").forEach(el=>el.addEventListener("click",async()=>{
+      S.sub=el.dataset.sub;
+      if(S.sub==="users"){S.loadingUsers=true;renderContent();await loadUsers();}
+      if(S.sub==="notifs"){S.loadingNotifs=true;renderContent();await loadNotifs();}
+      renderContent();
+    }));
+  }
+  bindContent();
+}
+
+function bindContent() {
+  // ADD PRODUCT
+  if(S.sub==="add") {
+    // image zone click
+    document.getElementById("img-zone")?.addEventListener("click",()=>document.getElementById("img-file")?.click());
+    document.getElementById("img-file")?.addEventListener("change",async e=>{
+      const file=e.target.files?.[0]; if(!file) return;
+      // preview
+      const reader=new FileReader();
+      reader.onload=ev=>{S.imgPreview=ev.target.result;const iz=document.getElementById("img-zone");if(iz){iz.innerHTML=`<img src="${ev.target.result}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"><div style="position:absolute;inset:0;background:rgba(7,11,23,.62);display:flex;align-items:center;justify-content:center;"><div style="font-size:13px;color:white;font-weight:600;background:rgba(0,0,0,.45);padding:6px 14px;border-radius:20px;">⏳ Téléchargement…</div></div>`;}};
+      reader.readAsDataURL(file);
+      S.imgUploading=true;
+      const url=await uploadImg(file);
+      S.imgUploading=false;
+      if(url){S.imgUrl=url;S.imgPreview=url;document.getElementById("f-imgurl").value=url;const overlay=document.querySelector("#img-zone div");if(overlay)overlay.innerHTML=`<div style="font-size:13px;color:white;font-weight:600;background:rgba(0,0,0,.45);padding:6px 14px;border-radius:20px;">✅ Image uploadée</div>`;}
+      else{S.imgPreview="";S.imgUrl="";showToast("❌ Upload échoué — vérifiez le bucket 'digiform'","error");const iz=document.getElementById("img-zone");if(iz)iz.innerHTML=`<div style="font-size:30px;margin-bottom:7px;">📷</div><div style="font-size:13px;color:#5B6A90;">Cliquez pour uploader</div>`;}
+    });
+    document.getElementById("f-imgurl")?.addEventListener("input",e=>{S.imgUrl=e.target.value;S.imgPreview=e.target.value;});
+    // featured toggle
+    document.getElementById("feat-row")?.addEventListener("click",()=>{
+      S.featured=!S.featured;
+      const tog=document.getElementById("feat-tog");
+      if(tog){tog.style.background=S.featured?"linear-gradient(135deg,#00D4FF,#0099FF)":"#1E2D55";tog.firstElementChild.style.left=S.featured?"22px":"2px";}
+    });
+    // save
+    document.getElementById("f-save")?.addEventListener("click",async()=>{
+      const title=(document.getElementById("f-title")?.value||"").trim();
+      const price=document.getElementById("f-price")?.value||"";
+      const desc=(document.getElementById("f-desc")?.value||"").trim();
+      const type=document.getElementById("f-type")?.value||"livre";
+      const image_url=S.imgUrl||(document.getElementById("f-imgurl")?.value||"").trim();
+      const wa=(document.getElementById("f-wa")?.value||"").trim();
+      if(!title||!price){showToast("⚠️ Titre et prix requis","error");return;}
+      S.saving=true;const btn=document.getElementById("f-save");if(btn){btn.disabled=true;btn.textContent="⏳ Publication…";}
+      const{ok}=await db("products",{method:"POST",body:JSON.stringify({title,description:desc,price:Number(price),type,image_url,whatsapp_number:wa,featured:S.featured})});
+      S.saving=false;
+      if(ok){
+        S.imgUrl="";S.imgPreview="";S.featured=false;
+        await loadProducts();
+        showToast("✅ Produit publié !");
+        renderContent();
+      } else {
+        showToast("❌ Erreur — exécutez le SQL d'abord","error");
+        if(btn){btn.disabled=false;btn.textContent="✅ Publier le produit";}
+      }
+    });
+  }
+
+  // LIST
+  if(S.sub==="list") {
+    document.querySelectorAll("[data-del]").forEach(el=>el.addEventListener("click",async()=>{
+      const id=el.dataset.del; S.deleting=id; el.disabled=true; el.textContent="⏳";
+      const{ok}=await db(`products?id=eq.${id}`,{method:"DELETE"});
+      S.deleting=null;
+      if(ok){await loadProducts();showToast("🗑️ Produit supprimé");renderContent();}
+      else{showToast("❌ Erreur suppression","error");el.disabled=false;el.textContent="🗑️";}
+    }));
+  }
+
+  // USERS
+  if(S.sub==="users") {
+    document.querySelectorAll("[data-toggle-admin]").forEach(el=>el.addEventListener("click",async()=>{
+      const uid=el.dataset.toggleAdmin; const isAdmin=el.dataset.isAdmin==="1";
+      el.disabled=true; el.textContent="⏳";
+      const{ok}=await db(`profiles?id=eq.${uid}`,{method:"PATCH",body:JSON.stringify({is_admin:!isAdmin})});
+      if(ok){const u=S.users.find(x=>x.id===uid);if(u){u.is_admin=!isAdmin;}showToast(`✅ Rôle mis à jour`);renderContent();}
+      else{showToast("❌ Erreur","error");el.disabled=false;el.textContent=isAdmin?"Retirer admin":"Rendre admin";}
+    }));
+  }
+
+  // NOTIFS
+  if(S.sub==="notifs") {
+    document.getElementById("n-send")?.addEventListener("click",async()=>{
+      const title=(document.getElementById("n-title")?.value||"").trim();
+      const body=(document.getElementById("n-body")?.value||"").trim();
+      if(!title||!body){showToast("⚠️ Titre et message requis","error");return;}
+      S.sendingNotif=true;const btn=document.getElementById("n-send");if(btn){btn.disabled=true;btn.textContent="⏳ Envoi…";}
+      const{ok}=await db("notifications",{method:"POST",body:JSON.stringify({title,body,created_by:S.session.user.id})});
+      S.sendingNotif=false;
+      if(ok){
+        document.getElementById("n-title").value="";
+        document.getElementById("n-body").value="";
+        await loadNotifs();
+        showToast("✅ Notification envoyée à tous !");
+        renderContent();
+      } else {
+        showToast("❌ Erreur envoi","error");
+        if(btn){btn.disabled=false;btn.textContent="📣 Envoyer à tous";}
+      }
+    });
+  }
+
+  // SQL
+  if(S.sub==="sql") {
+    document.getElementById("copy-sql")?.addEventListener("click",()=>{
+      navigator.clipboard.writeText(SQL_CODE).then(()=>{
+        const btn=document.getElementById("copy-sql");
+        if(btn){btn.textContent="✅ Copié !";setTimeout(()=>{btn.textContent="📋 Copier";},2500);}
+      });
+    });
+  }
+}
+
+/* ── INIT ──────────────────────────────────────────────── */
+async function init() {
+  // restore admin session
+  try {
+    const s=JSON.parse(localStorage.getItem("dg_adm_sess")||"null");
+    if(s?.access_token) {
+      S.session=s;
+      const{ok,data}=await db(`profiles?id=eq.${s.user.id}`);
+      if(ok&&Array.isArray(data)&&data[0]&&data[0].is_admin) {
+        S.profile=data[0];
+        await Promise.all([loadProducts(),loadUsers(),loadNotifs()]);
+      } else {
+        S.session=null; localStorage.removeItem("dg_adm_sess");
+      }
+    }
+  } catch { S.session=null; }
+  renderView();
+}
+
+init();
 </script>
 </body>
 </html>
