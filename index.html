@@ -2,198 +2,367 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
 <title>DIGIFORM · Plateforme Digitale</title>
-<link rel="stylesheet" href="df.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
-/* ── HERO LANDING ── */
-.landing{min-height:100vh;display:flex;flex-direction:column;}
-.hero-section{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px 40px;text-align:center;position:relative;overflow:hidden;}
-.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 30%,rgba(0,212,255,.08),transparent),radial-gradient(ellipse 60% 40% at 80% 80%,rgba(255,184,0,.05),transparent);pointer-events:none;}
-.hero-orbs{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
-.orb{position:absolute;border-radius:50%;filter:blur(60px);}
-.hero-tag{font-size:.7rem;letter-spacing:.22em;color:var(--t3);font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+/* ══ RESET & BASE ══ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#04080F;--s1:#0A1020;--s2:#101828;--s3:#182035;--s4:#1E2D4A;
+  --cyan:#00D4FF;--c2:#0099FF;--gold:#FFB800;--g2:#FF7A00;
+  --green:#00E5A0;--red:#FF4F6A;
+  --tx:#E8EEFF;--t2:#8899BB;--t3:#4B5E80;--t4:#2A3A58;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%;}
+body{
+  background:var(--bg);color:var(--tx);
+  font-family:'Epilogue',sans-serif;
+  min-height:100vh;overflow-x:hidden;
+  /* centrer sur PC, plein écran sur mobile */
+  max-width:430px;margin:0 auto;
+}
+@keyframes rise{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+@keyframes pop{from{opacity:0;transform:scale(.93);}to{opacity:1;transform:scale(1);}}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+@keyframes shimmer{from{background-position:-200%;}to{background-position:200%;}}
+
+/* ══ GRADIENT TEXT ══ */
+.gc{
+  background:linear-gradient(135deg,#ffffff 20%,#9DCFFF 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.gg{
+  background:linear-gradient(135deg,var(--gold),var(--g2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+/* ══ HERO ══ */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:48px 20px 40px;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 90% 55% at 50% 5%,rgba(0,212,255,.09),transparent),
+    radial-gradient(ellipse 70% 40% at 85% 95%,rgba(155,109,255,.06),transparent);
+}
+/* Orbes décoratifs */
+.orb{position:absolute;border-radius:50%;filter:blur(55px);pointer-events:none;}
+
+/* ══ TAG ══ */
+.hero-tag{
+  display:flex;align-items:center;gap:10px;
+  font-size:.65rem;letter-spacing:.2em;color:var(--t3);font-weight:700;
+  text-transform:uppercase;margin-bottom:24px;
+  width:100%;
+}
 .hero-tag::before,.hero-tag::after{content:'';flex:1;height:1px;background:var(--s4);}
-.hero-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(3rem,12vw,5rem);line-height:1;letter-spacing:-.03em;margin-bottom:6px;}
-.hero-sub{font-size:clamp(.75rem,2.5vw,.95rem);color:var(--t3);letter-spacing:.14em;margin-bottom:28px;}
-.hero-desc{font-size:clamp(.9rem,3vw,1.1rem);color:var(--t2);line-height:1.8;max-width:320px;margin:0 auto 36px;}
-.hero-btns{display:flex;flex-direction:column;gap:12px;width:100%;max-width:280px;}
-.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--s4);border-radius:14px;overflow:hidden;margin:36px 0 0;width:100%;max-width:340px;}
-.hs-cell{background:var(--s1);padding:14px 10px;text-align:center;}
-.hs-num{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;}
-.hs-lbl{font-size:.65rem;color:var(--t3);margin-top:3px;text-transform:uppercase;letter-spacing:.06em;}
 
-/* ── FEATURES ── */
-.features{padding:40px 20px;background:var(--s1);border-top:1px solid var(--s4);}
-.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;}
-.feat-card{background:var(--s2);border:1px solid var(--s4);border-radius:16px;padding:18px 14px;transition:all .22s;}
-.feat-card:hover{border-color:rgba(0,212,255,.25);transform:translateY(-2px);}
-.feat-ico{font-size:1.8rem;margin-bottom:10px;}
-.feat-title{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;margin-bottom:5px;}
-.feat-desc{font-size:.78rem;color:var(--t2);line-height:1.6;}
+/* ══ LOGO — clé du fix : on le contient proprement ══ */
+.logo-block{
+  width:100%;
+  display:flex;flex-direction:column;align-items:center;
+  margin-bottom:10px;
+}
+.logo-text{
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  /* Taille responsive : jamais plus large que l'écran */
+  font-size:clamp(2.8rem, 18vw, 4.5rem);
+  line-height:1;
+  letter-spacing:-.03em;
+  /* empêche le débordement */
+  white-space:nowrap;
+  width:100%;
+  text-align:center;
+}
+.logo-sub{
+  font-size:.68rem;color:var(--t3);
+  letter-spacing:.18em;margin-top:6px;text-transform:uppercase;
+}
 
-/* ── TESTIMONIALS ── */
-.testi{padding:36px 20px;}
-.testi-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:6px;margin-top:16px;}
-.testi-card{flex-shrink:0;width:220px;background:var(--s1);border:1px solid var(--s4);border-radius:14px;padding:16px;}
-.testi-stars{color:var(--gold);font-size:.85rem;margin-bottom:8px;}
-.testi-text{font-size:.8rem;color:var(--t2);line-height:1.65;margin-bottom:10px;font-style:italic;}
-.testi-name{font-size:.78rem;font-weight:700;color:var(--tx);}
-.testi-job{font-size:.7rem;color:var(--t3);}
+/* ══ DESC ══ */
+.hero-desc{
+  font-size:clamp(.9rem,3.5vw,1.05rem);
+  color:var(--t2);line-height:1.8;
+  max-width:300px;margin:0 auto 36px;
+}
 
-/* ── CTA BOTTOM ── */
-.cta-bottom{padding:36px 20px;background:linear-gradient(145deg,#0A1828,#060E1E);border-top:1px solid rgba(0,212,255,.1);text-align:center;}
-.cta-bottom h2{margin-bottom:10px;}
-.cta-bottom p{margin-bottom:24px;max-width:280px;margin-left:auto;margin-right:auto;}
+/* ══ BUTTONS ══ */
+.hero-btns{
+  display:flex;flex-direction:column;gap:12px;
+  width:100%;max-width:320px;
+}
+.btn{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  padding:15px 20px;border-radius:14px;
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(.88rem,3.5vw,1rem);
+  border:none;cursor:pointer;text-decoration:none;
+  transition:all .22s;width:100%;
+  /* empêche le texte de déborder */
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.btn:hover{transform:translateY(-2px);}
+.btn:active{transform:scale(.97);}
+.btn-cy{background:linear-gradient(135deg,var(--cyan),var(--c2));color:#04080F;}
+.btn-cy:hover{box-shadow:0 8px 26px rgba(0,212,255,.4);}
+.btn-ghost{background:rgba(255,255,255,.06);color:var(--tx);border:1px solid rgba(255,255,255,.1);}
+.btn-ghost:hover{background:rgba(255,255,255,.1);}
+.btn-text{background:none;border:none;color:var(--t3);font-size:.85rem;font-weight:500;cursor:pointer;padding:8px 0;}
+.btn-text:hover{color:var(--cyan);}
 
-/* ── FOOTER ── */
-footer{padding:24px 20px;background:var(--bg);border-top:1px solid var(--s4);text-align:center;}
-.foot-logo{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:10px;}
-.foot-links{display:flex;gap:20px;justify-content:center;margin-bottom:12px;}
-.foot-links a{font-size:.78rem;color:var(--t3);}
+/* ══ STATS ══ */
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--s4);
+  border-radius:16px;overflow:hidden;
+  margin-top:36px;width:100%;max-width:340px;
+}
+.sc{background:var(--s1);padding:16px 8px;text-align:center;}
+.sn{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(1.3rem,5vw,1.6rem);
+  font-weight:800;
+}
+.sl{font-size:.6rem;color:var(--t3);margin-top:4px;text-transform:uppercase;letter-spacing:.07em;}
+
+/* ══ SECTIONS ══ */
+.section{padding:40px 20px;}
+.section-alt{background:var(--s1);border-top:1px solid var(--s4);border-bottom:1px solid var(--s4);}
+.section-title{
+  font-family:'Syne',sans-serif;font-size:clamp(1.2rem,5vw,1.5rem);
+  font-weight:800;margin-bottom:8px;text-align:center;
+}
+.section-sub{font-size:.85rem;color:var(--t2);text-align:center;line-height:1.7;margin-bottom:24px;}
+
+/* ══ FEATURES GRID ══ */
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+.feat{
+  background:var(--s2);border:1px solid var(--s4);
+  border-radius:16px;padding:16px 13px;transition:all .22s;
+}
+.feat:hover{border-color:rgba(0,212,255,.25);transform:translateY(-2px);}
+.feat-ico{font-size:1.7rem;margin-bottom:8px;display:block;}
+.feat-title{
+  font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;
+  margin-bottom:4px;color:var(--tx);
+}
+.feat-desc{font-size:.75rem;color:var(--t2);line-height:1.6;}
+
+/* ══ TESTIMONIALS ══ */
+.testi-scroll{
+  display:flex;gap:11px;overflow-x:auto;
+  padding-bottom:6px;margin-top:0;
+  -webkit-overflow-scrolling:touch;
+}
+.testi-scroll::-webkit-scrollbar{height:0;}
+.tcard{
+  flex-shrink:0;width:210px;
+  background:var(--s2);border:1px solid var(--s4);
+  border-radius:14px;padding:15px;
+}
+.tcard-stars{color:var(--gold);font-size:.82rem;margin-bottom:7px;}
+.tcard-text{font-size:.77rem;color:var(--t2);line-height:1.65;margin-bottom:10px;font-style:italic;}
+.tcard-name{font-size:.78rem;font-weight:700;}
+.tcard-job{font-size:.7rem;color:var(--t3);margin-top:1px;}
+
+/* ══ CTA BOTTOM ══ */
+.cta-bottom{
+  padding:40px 20px;text-align:center;
+  background:linear-gradient(145deg,#0A1828,#060E1E);
+  border-top:1px solid rgba(0,212,255,.1);
+}
+.cta-bottom .section-title{margin-bottom:10px;}
+.cta-bottom p{font-size:.85rem;color:var(--t2);margin-bottom:24px;line-height:1.7;}
+
+/* ══ FOOTER ══ */
+footer{
+  padding:24px 20px;background:var(--bg);
+  border-top:1px solid var(--s4);text-align:center;
+}
+.foot-logo{
+  font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;
+  margin-bottom:12px;
+}
+.foot-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
+.foot-links a{font-size:.78rem;color:var(--t3);text-decoration:none;}
+.foot-links a:hover{color:var(--cyan);}
 .foot-copy{font-size:.7rem;color:var(--t4);}
+
+/* ══ RESPONSIVE PC ══ */
+@media(min-width:430px){
+  body{box-shadow:0 0 60px rgba(0,0,0,.6);}
+}
 </style>
 </head>
 <body>
-<div class="df-page landing">
 
-  <!-- HERO -->
-  <section class="hero-section">
-    <div class="hero-bg"></div>
-    <div class="hero-orbs">
-      <div class="orb" style="width:240px;height:240px;background:rgba(0,212,255,.07);top:-60px;left:-60px;animation:float 5s ease-in-out infinite;"></div>
-      <div class="orb" style="width:180px;height:180px;background:rgba(255,184,0,.05);bottom:80px;right:-50px;animation:float 6.5s ease-in-out infinite;animation-delay:1s;"></div>
-      <div class="orb" style="width:130px;height:130px;background:rgba(155,109,255,.06);top:50%;left:60%;animation:float 4s ease-in-out infinite;animation-delay:2s;"></div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <!-- Orbes -->
+  <div class="orb" style="width:220px;height:220px;background:rgba(0,212,255,.07);top:-70px;left:-60px;animation:float 5s ease-in-out infinite;"></div>
+  <div class="orb" style="width:160px;height:160px;background:rgba(255,184,0,.05);bottom:120px;right:-50px;animation:float 6.5s ease-in-out infinite;animation-delay:1s;"></div>
+
+  <div class="hero-tag">◆ Plateforme Digitale Africaine ◆</div>
+
+  <!-- LOGO — contenu dans son bloc, taille responsive -->
+  <div class="logo-block">
+    <div class="logo-text">
+      <span class="gc">DIGI</span><span class="gg">FORM</span>
     </div>
+    <div class="logo-sub">Livres &middot; Formations &middot; Logiciels &middot; Audio</div>
+  </div>
 
-    <div class="hero-tag">◆ PLATEFORME DIGITALE AFRICAINE ◆</div>
-    <div class="hero-logo"><span class="gc">DIGI</span><span class="gg">FORM</span></div>
-    <div class="hero-sub">LIVRES · FORMATIONS · LOGICIELS · AUDIO</div>
-    <p class="hero-desc">La plateforme digitale qui connecte les professionnels d'Afrique et met en avant vos produits numériques.</p>
+  <p class="hero-desc">
+    La plateforme digitale qui connecte les professionnels d'Afrique et met en avant vos produits num&eacute;riques.
+  </p>
 
-    <div class="hero-btns">
-      <a href="auth.html?mode=register" class="btn btn-cy btn-xl" style="font-size:1rem;font-weight:800;">✨ Rejoindre gratuitement</a>
-      <a href="auth.html?mode=login" class="btn btn-ghost btn-xl" style="font-size:.95rem;">🔑 Se connecter</a>
-      <a href="dashboard.html" class="btn btn-xl" style="background:none;color:var(--t2);font-size:.85rem;padding:10px;">👀 Parcourir le catalogue →</a>
+  <div class="hero-btns" id="hero-btns">
+    <!-- Rempli par JS selon si connecté ou non -->
+  </div>
+
+  <div class="stats">
+    <div class="sc"><div class="sn" id="s-members" style="color:var(--cyan);">—</div><div class="sl">Membres</div></div>
+    <div class="sc"><div class="sn" id="s-products" style="color:var(--gold);">—</div><div class="sl">Produits</div></div>
+    <div class="sc"><div class="sn" style="color:var(--green);">10K+</div><div class="sl">Contacts</div></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section section-alt">
+  <div class="section-title">Pourquoi <span class="gc">DIGIFORM</span> ?</div>
+  <div class="section-sub">Tout ce dont vous avez besoin pour développer votre activité digitale.</div>
+  <div class="feat-grid">
+    <div class="feat">
+      <span class="feat-ico">📚</span>
+      <div class="feat-title">Catalogue digital</div>
+      <div class="feat-desc">Livres, formations, logiciels et audio réunis.</div>
     </div>
-
-    <div class="hero-stats">
-      <div class="hs-cell"><div class="hs-num" style="color:var(--cyan);" id="stat-members">—</div><div class="hs-lbl">Membres</div></div>
-      <div class="hs-cell"><div class="hs-num" style="color:var(--gold);" id="stat-products">—</div><div class="hs-lbl">Produits</div></div>
-      <div class="hs-cell"><div class="hs-num" style="color:var(--green);">10K+</div><div class="hs-lbl">Contacts</div></div>
+    <div class="feat">
+      <span class="feat-ico">🌐</span>
+      <div class="feat-title">Réseau pro</div>
+      <div class="feat-desc">10 000+ contacts pro d'Afrique de l'Ouest.</div>
     </div>
-  </section>
-
-  <!-- FEATURES -->
-  <section class="features">
-    <div class="sec-title">Pourquoi DIGIFORM ?</div>
-    <div class="feat-grid">
-      <div class="feat-card">
-        <div class="feat-ico">📚</div>
-        <div class="feat-title">Catalogue digital</div>
-        <div class="feat-desc">Livres, formations, logiciels et audio au même endroit.</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-ico">🌐</div>
-        <div class="feat-title">Réseau pro</div>
-        <div class="feat-desc">10 000+ contacts professionnels d'Afrique de l'Ouest.</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-ico">💬</div>
-        <div class="feat-title">WhatsApp direct</div>
-        <div class="feat-desc">Contactez n'importe quel membre en un seul clic.</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-ico">📲</div>
-        <div class="feat-title">Export contacts</div>
-        <div class="feat-desc">Téléchargez les contacts en CSV ou VCF directement dans votre téléphone.</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-ico">🔔</div>
-        <div class="feat-title">Notifications</div>
-        <div class="feat-desc">Restez informé des nouveaux produits et membres.</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-ico">🔒</div>
-        <div class="feat-title">Sécurisé</div>
-        <div class="feat-desc">Votre visibilité dans le réseau est entièrement contrôlable.</div>
-      </div>
+    <div class="feat">
+      <span class="feat-ico">💬</span>
+      <div class="feat-title">WhatsApp direct</div>
+      <div class="feat-desc">Contactez un membre en un seul clic.</div>
     </div>
-  </section>
-
-  <!-- TESTIMONIALS -->
-  <section class="testi">
-    <div class="sec-title">Ils utilisent DIGIFORM</div>
-    <div class="testi-scroll">
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <div class="testi-text">"DIGIFORM m'a permis de trouver des clients pour mes formations en moins d'une semaine."</div>
-        <div class="testi-name">Aminata K.</div>
-        <div class="testi-job">Formatrice · Abidjan</div>
-      </div>
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <div class="testi-text">"Le réseau de contacts est une mine d'or. J'ai exporté 500 numéros WhatsApp en 30 secondes."</div>
-        <div class="testi-name">Jean-Paul M.</div>
-        <div class="testi-job">Marketing Digital · Douala</div>
-      </div>
-      <div class="testi-card">
-        <div class="testi-stars">★★★★☆</div>
-        <div class="testi-text">"Interface propre, rapide, et le catalogue de livres numériques est excellent."</div>
-        <div class="testi-name">Fatou D.</div>
-        <div class="testi-job">Entrepreneuriat · Dakar</div>
-      </div>
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <div class="testi-text">"J'ai vendu mon logiciel à 3 clients via WhatsApp grâce aux membres du réseau."</div>
-        <div class="testi-name">Kofi A.</div>
-        <div class="testi-job">Développeur · Cotonou</div>
-      </div>
+    <div class="feat">
+      <span class="feat-ico">📲</span>
+      <div class="feat-title">Export contacts</div>
+      <div class="feat-desc">Téléchargez en CSV ou VCF directement.</div>
     </div>
-  </section>
-
-  <!-- CTA BOTTOM -->
-  <section class="cta-bottom">
-    <h2><span class="gc">Prêt à rejoindre</span><br/>le réseau ?</h2>
-    <p>Inscription gratuite · Visible en 2 minutes · 10 000+ professionnels</p>
-    <a href="auth.html?mode=register" class="btn btn-cy btn-xl" style="max-width:280px;margin:0 auto;font-size:1rem;font-weight:800;">✨ Créer mon compte gratuit</a>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="foot-logo"><span class="gc">DIGI</span><span class="gg">FORM</span></div>
-    <div class="foot-links">
-      <a href="dashboard.html">Catalogue</a>
-      <a href="network.html">Réseau</a>
-      <a href="contacts.html">Contacts</a>
-      <a href="auth.html">Connexion</a>
+    <div class="feat">
+      <span class="feat-ico">🔔</span>
+      <div class="feat-title">Notifications</div>
+      <div class="feat-desc">Restez informé des nouveautés.</div>
     </div>
-    <div class="foot-copy">© 2026 DIGIFORM · Tous droits réservés · DF</div>
-  </footer>
+    <div class="feat">
+      <span class="feat-ico">🔒</span>
+      <div class="feat-title">Privé &amp; sécurisé</div>
+      <div class="feat-desc">Votre visibilité est entièrement contrôlable.</div>
+    </div>
+  </div>
+</section>
 
-</div>
-<div id="df-toast"></div>
-<script src="df.js"></script>
+<!-- TESTIMONIALS -->
+<section class="section">
+  <div class="section-title">Ils utilisent <span class="gg">DIGIFORM</span></div>
+  <div class="testi-scroll">
+    <div class="tcard">
+      <div class="tcard-stars">★★★★★</div>
+      <div class="tcard-text">« DIGIFORM m'a permis de trouver des clients pour mes formations en moins d'une semaine. »</div>
+      <div class="tcard-name">Aminata K.</div>
+      <div class="tcard-job">Formatrice · Abidjan</div>
+    </div>
+    <div class="tcard">
+      <div class="tcard-stars">★★★★★</div>
+      <div class="tcard-text">« Le réseau de contacts est une mine d'or. 500 numéros WhatsApp en 30 secondes. »</div>
+      <div class="tcard-name">Jean-Paul M.</div>
+      <div class="tcard-job">Marketing Digital · Douala</div>
+    </div>
+    <div class="tcard">
+      <div class="tcard-stars">★★★★☆</div>
+      <div class="tcard-text">« Interface propre, rapide, et le catalogue de livres numériques est excellent. »</div>
+      <div class="tcard-name">Fatou D.</div>
+      <div class="tcard-job">Entrepreneuriat · Dakar</div>
+    </div>
+    <div class="tcard">
+      <div class="tcard-stars">★★★★★</div>
+      <div class="tcard-text">« J'ai vendu mon logiciel à 3 clients via WhatsApp grâce aux membres du réseau. »</div>
+      <div class="tcard-name">Kofi A.</div>
+      <div class="tcard-job">Développeur · Cotonou</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BOTTOM -->
+<section class="cta-bottom">
+  <div class="section-title">Prêt à rejoindre<br/><span class="gc">le réseau ?</span></div>
+  <p>Inscription gratuite &middot; Visible en 2 minutes &middot; 10 000+ professionnels</p>
+  <div style="display:flex;flex-direction:column;gap:10px;max-width:300px;margin:0 auto;">
+    <a href="auth.html?mode=register" class="btn btn-cy" style="font-size:.95rem;">✨ Créer mon compte gratuit</a>
+    <a href="dashboard.html" class="btn btn-ghost" style="font-size:.88rem;">👀 Parcourir le catalogue</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-logo"><span class="gc">DIGI</span><span class="gg">FORM</span></div>
+  <div class="foot-links">
+    <a href="dashboard.html">Catalogue</a>
+    <a href="network.html">Réseau</a>
+    <a href="contacts.html">Contacts</a>
+    <a href="blog.html">Blog</a>
+    <a href="auth.html">Connexion</a>
+  </div>
+  <div class="foot-copy">© 2026 DIGIFORM &middot; Tous droits réservés &middot; DF</div>
+</footer>
+
 <script>
-// Redirect if already logged in
-const s = DF.getSession();
-if (s) {
-  document.querySelector('.hero-btns').innerHTML = `
-    <a href="dashboard.html" class="btn btn-cy btn-xl" style="font-size:1rem;font-weight:800;">🏠 Accéder à mon espace</a>
-    <a href="network.html" class="btn btn-ghost btn-xl">🌐 Voir le réseau</a>`;
+/* ══ SESSION ══ */
+function getSess(){try{return JSON.parse(localStorage.getItem('dg_sess')||'null');}catch{return null;}}
+const sess = getSess();
+
+/* ══ BOUTONS HERO selon connexion ══ */
+const heroEl = document.getElementById('hero-btns');
+if(sess){
+  heroEl.innerHTML=`
+    <a href="dashboard.html" class="btn btn-cy">🏠 Accéder à mon espace</a>
+    <a href="network.html"   class="btn btn-ghost">🌐 Voir le réseau</a>`;
+}else{
+  heroEl.innerHTML=`
+    <a href="auth.html?mode=register" class="btn btn-cy">✨ Rejoindre gratuitement</a>
+    <a href="auth.html?mode=login"    class="btn btn-ghost">🔑 Se connecter</a>
+    <a href="dashboard.html" class="btn-text">👀 Parcourir le catalogue →</a>`;
 }
 
-// Load live stats
-async function loadStats() {
-  const [r1, r2] = await Promise.all([
-    DF.db('profiles?select=id', {headers:{'Prefer':'count=exact'}}),
-    DF.db('products?select=id', {headers:{'Prefer':'count=exact'}})
-  ]);
-  // Supabase returns count in header but we count array length here
-  const m = document.getElementById('stat-members');
-  const p = document.getElementById('stat-products');
-  if (r1.ok && Array.isArray(r1.data)) m.textContent = r1.data.length + '+';
-  if (r2.ok && Array.isArray(r2.data)) p.textContent = r2.data.length + '+';
+/* ══ STATS LIVE ══ */
+const SB   = 'https://rxhjuetoxyjrairroycb.supabase.co';
+const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q';
+
+async function loadStats(){
+  try{
+    const [r1,r2] = await Promise.all([
+      fetch(`${SB}/rest/v1/profiles?select=id`,{headers:{apikey:ANON,Authorization:`Bearer ${ANON}`}}),
+      fetch(`${SB}/rest/v1/products?select=id`,{headers:{apikey:ANON,Authorization:`Bearer ${ANON}`}})
+    ]);
+    const m = await r1.json();
+    const p = await r2.json();
+    if(Array.isArray(m)) document.getElementById('s-members').textContent = m.length>0 ? m.length+'+' : '0';
+    if(Array.isArray(p)) document.getElementById('s-products').textContent = p.length>0 ? p.length+'+' : '0';
+  }catch{}
 }
 loadStats();
 </script>
