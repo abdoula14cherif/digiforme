@@ -2,36 +2,115 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
-<title>DIGIFORM · Ma Boutique</title>
-<link rel="stylesheet" href="df.css"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>DIGIFORM · Boutique</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
-.shop-hero{background:linear-gradient(145deg,#141008,#0C0A04);border-radius:20px;border:1px solid rgba(255,184,0,.15);padding:22px 18px;margin-bottom:18px;position:relative;overflow:hidden;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#04080F;--s1:#0A1020;--s2:#101828;--s3:#182035;--s4:#1E2D4A;
+  --cyan:#00D4FF;--c2:#0099FF;--gold:#FFB800;--g2:#FF7A00;
+  --green:#00E5A0;--red:#FF4F6A;--purple:#9B6DFF;
+  --tx:#E8EEFF;--t2:#8899BB;--t3:#4B5E80;--t4:#2A3A58;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%;}
+body{background:var(--bg);color:var(--tx);font-family:'Epilogue',sans-serif;min-height:100vh;overflow-x:hidden;max-width:430px;margin:0 auto;}
+*::-webkit-scrollbar{width:3px;}*::-webkit-scrollbar-thumb{background:var(--s4);border-radius:3px;}
+@keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+
+.gc{background:linear-gradient(135deg,#fff 10%,#9DCFFF 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.gg{background:linear-gradient(135deg,var(--gold),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+/* HEADER */
+#hdr{position:sticky;top:0;z-index:200;background:rgba(4,8,15,.96);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);padding:11px 15px;display:flex;align-items:center;gap:10px;}
+.hdr-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.25rem;line-height:1;letter-spacing:-.02em;white-space:nowrap;}
+.hdr-sub{font-size:.6rem;color:var(--t3);margin-top:2px;letter-spacing:.07em;text-transform:uppercase;}
+.hback{width:36px;height:36px;flex-shrink:0;border-radius:50%;background:var(--s2);border:1px solid var(--s4);color:var(--tx);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .2s;}
+.hback:hover{border-color:rgba(0,212,255,.3);color:var(--cyan);}
+
+/* PAGE */
+.pg{padding:14px 13px 90px;animation:rise .38s cubic-bezier(.22,1,.36,1) both;}
+
+/* SHOP HERO */
+.shop-hero{background:linear-gradient(148deg,#141008,#0C0A04);border-radius:20px;border:1px solid rgba(255,184,0,.18);padding:20px 16px;margin-bottom:18px;position:relative;overflow:hidden;}
 .shop-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 20% 80%,rgba(255,184,0,.07),transparent);pointer-events:none;}
-.shop-steps{display:flex;flex-direction:column;gap:10px;margin-bottom:18px;}
+.shop-hero-tag{font-size:.6rem;letter-spacing:.16em;color:var(--t3);font-weight:700;text-transform:uppercase;margin-bottom:8px;}
+.shop-hero-title{font-family:'Syne',sans-serif;font-size:clamp(1.3rem,5vw,1.6rem);font-weight:800;line-height:1.2;margin-bottom:8px;}
+.shop-hero-sub{font-size:.82rem;color:var(--t2);line-height:1.65;margin-bottom:14px;}
+.hero-tags{display:flex;gap:7px;flex-wrap:wrap;}
+
+/* BADGE */
+.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:999px;font-size:.68rem;font-weight:700;font-family:'Syne',sans-serif;}
+.badge-go{background:rgba(255,184,0,.12);color:var(--gold);border:1px solid rgba(255,184,0,.25);}
+.badge-gr{background:rgba(0,229,160,.12);color:var(--green);border:1px solid rgba(0,229,160,.25);}
+.badge-cy{background:rgba(0,212,255,.12);color:var(--cyan);border:1px solid rgba(0,212,255,.25);}
+
+/* STEPS */
+.stitle{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.stitle::before{content:'';width:3px;height:13px;border-radius:2px;background:linear-gradient(180deg,var(--gold),var(--g2));flex-shrink:0;}
+.steps{display:flex;flex-direction:column;gap:10px;margin-bottom:18px;}
 .step{display:flex;align-items:flex-start;gap:12px;background:var(--s1);border:1px solid var(--s4);border-radius:14px;padding:14px;}
 .step-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.85rem;flex-shrink:0;}
 .step-title{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;margin-bottom:3px;}
-.step-sub{font-size:.78rem;color:var(--t2);line-height:1.55;}
-.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
-.plan-card{background:var(--s1);border:1px solid var(--s4);border-radius:16px;padding:16px;text-align:center;transition:all .22s;}
-.plan-card.featured{border-color:var(--gold);background:linear-gradient(145deg,#141008,#0C0A04);}
-.plan-price{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;margin:8px 0 4px;}
-.plan-name{font-size:.72rem;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
-.plan-features{font-size:.75rem;color:var(--t2);line-height:2;text-align:left;}
-.plan-features li{list-style:none;padding-left:0;}
-.plan-features li::before{content:'✅ ';font-size:.7rem;}
-.coming-card{background:var(--s1);border:2px dashed var(--s4);border-radius:16px;padding:28px 18px;text-align:center;margin-bottom:12px;}
+.step-sub{font-size:.76rem;color:var(--t2);line-height:1.6;}
+
+/* COMING SOON CARD */
+.coming-card{background:var(--s1);border:2px dashed var(--s4);border-radius:18px;padding:28px 18px;text-align:center;margin-bottom:16px;position:relative;}
+.co-ico{font-size:2.8rem;animation:float 3s ease-in-out infinite;display:block;margin-bottom:12px;}
+.co-title{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;margin-bottom:6px;}
+.co-sub{font-size:.82rem;color:var(--t2);line-height:1.65;margin-bottom:16px;}
+.co-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+
+/* PRICING */
+.pricing{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+.plan{background:var(--s1);border:1px solid var(--s4);border-radius:16px;padding:16px;text-align:center;}
+.plan.featured{border-color:rgba(255,184,0,.3);background:linear-gradient(145deg,#141008,#0C0A04);}
+.plan-ico{font-size:1.5rem;margin-bottom:6px;}
+.plan-name{font-size:.65rem;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
+.plan-price{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:10px;}
+.plan-feats{list-style:none;text-align:left;}
+.plan-feats li{font-size:.73rem;color:var(--t2);line-height:2.1;display:flex;align-items:center;gap:5px;}
+.plan-feats li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;}
+
+/* NOTIFY CARD */
+.notify-card{background:var(--s1);border:1px solid var(--s4);border-radius:16px;padding:20px;text-align:center;}
+.notify-card p{font-size:.82rem;color:var(--t2);margin-bottom:14px;line-height:1.65;}
+.inp{background:var(--s2);border:1.5px solid var(--s4);border-radius:12px;color:var(--tx);font-family:'Epilogue',sans-serif;font-size:.88rem;padding:12px 15px;width:100%;outline:none;margin-bottom:10px;transition:border-color .2s;}
+.inp:focus{border-color:var(--gold);}
+.inp::placeholder{color:var(--t3);}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 18px;border-radius:11px;font-family:'Epilogue',sans-serif;font-weight:700;font-size:.82rem;border:none;cursor:pointer;text-decoration:none;transition:all .22s;white-space:nowrap;}
+.btn:hover{transform:translateY(-2px);}
+.btn-cy{background:linear-gradient(135deg,var(--cyan),var(--c2));color:#04080F;}
+.btn-go{background:linear-gradient(135deg,var(--gold),var(--g2));color:#04080F;}
+.btn-go:hover{box-shadow:0 6px 20px rgba(255,184,0,.4);}
+.btn-xl{width:100%;padding:13px;border-radius:13px;font-size:.9rem;font-weight:800;}
+
+/* NAV */
+#nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(4,8,15,.97);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.06);padding:5px 6px 18px;display:flex;z-index:500;}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:7px 4px;background:none;border:none;color:var(--t3);font-family:'Epilogue',sans-serif;position:relative;transition:color .2s;text-decoration:none;}
+.nb-ico{font-size:1.2rem;}
+.nb-lbl{font-size:.58rem;font-weight:600;}
+
+/* TOAST */
+#toast{position:fixed;top:72px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:999px;z-index:9999;font-weight:700;font-size:.82rem;box-shadow:0 12px 36px rgba(0,0,0,.6);white-space:nowrap;max-width:90vw;text-align:center;display:none;}
+#toast.show{display:block;animation:rise .3s ease;}
+#toast.ok{background:linear-gradient(135deg,var(--green),#00A070);color:#04080F;}
+#toast.err{background:linear-gradient(135deg,var(--red),#C00);color:#fff;}
+#toast.inf{background:linear-gradient(135deg,var(--cyan),var(--c2));color:#04080F;}
+
+@media(min-width:430px){body{box-shadow:0 0 60px rgba(0,0,0,.6);}#nav,#hdr{max-width:430px;}}
 </style>
 </head>
 <body>
-<div class="df-page">
 
-<header id="df-hdr">
-  <a href="dashboard.html" class="hdr-icon-btn" style="background:var(--s2);border:1px solid var(--s4);text-decoration:none;">←</a>
-  <div style="flex:1;padding-left:8px;">
+<header id="hdr">
+  <a class="hback" href="digiform.html">&#8592;</a>
+  <div style="flex:1;min-width:0;padding-left:8px;">
     <div class="hdr-logo"><span class="gc">DIGI</span><span class="gg">FORM</span></div>
-    <div class="hdr-sub">MA BOUTIQUE · VENDEURS</div>
+    <div class="hdr-sub">MA BOUTIQUE &middot; VENDEURS</div>
   </div>
 </header>
 
@@ -39,66 +118,66 @@
 
   <!-- HERO -->
   <div class="shop-hero">
-    <div class="sec-title" style="color:var(--gold);">Votre espace vendeur</div>
-    <h2 style="margin-bottom:8px;"><span class="gg">Vendez</span> vos<br/>produits digitaux</h2>
-    <p style="font-size:.85rem;margin-bottom:16px;">Livres, formations, logiciels, audio — publiez et vendez directement via WhatsApp à toute la communauté DIGIFORM.</p>
-    <div style="display:flex;gap:8px;">
-      <span class="badge badge-go">🔥 Bientôt</span>
-      <span class="badge badge-gr">✅ Gratuit pour les membres</span>
+    <div class="shop-hero-tag">&#9670; ESPACE VENDEUR &#9670;</div>
+    <div class="shop-hero-title">Vendez vos<br/><span class="gg">produits digitaux</span></div>
+    <div class="shop-hero-sub">Livres, formations, logiciels, audio — publiez et vendez directement via WhatsApp &agrave; toute la communaut&eacute; DIGIFORM.</div>
+    <div class="hero-tags">
+      <span class="badge badge-go">Bient&ocirc;t disponible</span>
+      <span class="badge badge-gr">Gratuit pour les membres</span>
     </div>
   </div>
 
   <!-- HOW IT WORKS -->
-  <div class="sec-title">Comment ça marche ?</div>
-  <div class="shop-steps">
+  <div class="stitle">Comment &ccedil;a marche ?</div>
+  <div class="steps">
     <div class="step">
       <div class="step-num" style="background:rgba(0,212,255,.15);color:var(--cyan);">1</div>
-      <div><div class="step-title">Créez votre produit</div><div class="step-sub">Renseignez le titre, la description, le prix et une image de couverture.</div></div>
+      <div><div class="step-title">Cr&eacute;ez votre produit</div><div class="step-sub">Titre, description, prix et image de couverture.</div></div>
     </div>
     <div class="step">
       <div class="step-num" style="background:rgba(255,184,0,.15);color:var(--gold);">2</div>
-      <div><div class="step-title">Ajoutez votre WhatsApp</div><div class="step-sub">Les acheteurs vous contactent directement sur WhatsApp pour finaliser l'achat.</div></div>
+      <div><div class="step-title">Ajoutez votre WhatsApp</div><div class="step-sub">Les acheteurs vous contactent directement pour finaliser.</div></div>
     </div>
     <div class="step">
       <div class="step-num" style="background:rgba(0,229,160,.15);color:var(--green);">3</div>
-      <div><div class="step-title">Recevez les commandes</div><div class="step-sub">Votre produit est visible dans le catalogue par tous les membres DIGIFORM.</div></div>
+      <div><div class="step-title">Visible dans le catalogue</div><div class="step-sub">Votre produit est vu par tous les membres DIGIFORM.</div></div>
     </div>
     <div class="step">
       <div class="step-num" style="background:rgba(155,109,255,.15);color:var(--purple);">4</div>
-      <div><div class="step-title">Gérez vos ventes</div><div class="step-sub">Tableau de bord complet pour suivre vos produits et performances.</div></div>
+      <div><div class="step-title">G&eacute;rez vos ventes</div><div class="step-sub">Tableau de bord pour suivre vos produits et performances.</div></div>
     </div>
   </div>
 
   <!-- COMING SOON -->
   <div class="coming-card">
-    <div style="font-size:2.5rem;margin-bottom:12px;animation:float 3s ease-in-out infinite;">🛍️</div>
-    <h3 style="margin-bottom:6px;">Espace vendeur</h3>
-    <p style="font-size:.82rem;margin-bottom:16px;">La gestion de boutique personnelle arrive prochainement. En attendant, contactez l'administrateur pour publier vos produits.</p>
-    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
-      <a href="auth.html" class="btn btn-cy btn-sm" style="text-decoration:none;">✅ S'inscrire</a>
-      <a href="admin.html" class="btn btn-go btn-sm" style="text-decoration:none;">📦 Admin : Ajouter produit</a>
+    <span class="co-ico">&#128717;</span>
+    <div class="co-title">Espace vendeur</div>
+    <div class="co-sub">La gestion de boutique personnelle arrive prochainement. En attendant, contactez l'administrateur pour publier vos produits.</div>
+    <div class="co-btns">
+      <a href="auth.html" class="btn btn-cy">S'inscrire</a>
+      <a href="digiform.html" class="btn btn-go">Voir le catalogue</a>
     </div>
   </div>
 
   <!-- PRICING -->
-  <div class="sec-title">Tarifs futurs</div>
-  <div class="pricing-grid">
-    <div class="plan-card">
-      <div style="font-size:1.5rem;">🆓</div>
+  <div class="stitle">Tarifs futurs</div>
+  <div class="pricing">
+    <div class="plan">
+      <div class="plan-ico">&#128082;</div>
       <div class="plan-name">Gratuit</div>
       <div class="plan-price" style="color:var(--green);">0 F</div>
-      <ul class="plan-features">
+      <ul class="plan-feats">
         <li>3 produits max</li>
-        <li>Visible réseau</li>
+        <li>Visible r&eacute;seau</li>
         <li>WhatsApp direct</li>
       </ul>
     </div>
-    <div class="plan-card featured">
-      <div style="font-size:1.5rem;">⭐</div>
+    <div class="plan featured">
+      <div class="plan-ico">&#11088;</div>
       <div class="plan-name">Pro</div>
-      <div class="plan-price" style="color:var(--gold);">2 900 F<span style="font-size:.7rem;color:var(--t3);">/mois</span></div>
-      <ul class="plan-features">
-        <li>Produits illimités</li>
+      <div class="plan-price" style="color:var(--gold);">2 900 F<span style="font-size:.65rem;color:var(--t3);">/mois</span></div>
+      <ul class="plan-feats">
+        <li>Illimit&eacute;</li>
         <li>Mise en vedette</li>
         <li>Statistiques</li>
         <li>Support prioritaire</li>
@@ -106,24 +185,34 @@
     </div>
   </div>
 
-  <div class="card" style="text-align:center;margin-top:4px;">
-    <p style="font-size:.85rem;margin-bottom:14px;">Intéressé par la version vendeur ? Laissez votre contact et on vous prévient en premier.</p>
-    <div class="inp-group">
-      <input class="inp" type="tel" placeholder="Votre WhatsApp (+225…)" id="wa-inp"/>
-    </div>
-    <button class="btn btn-go btn-xl" style="font-size:.9rem;font-weight:800;" onclick="notifyMe()">🔔 Me prévenir</button>
+  <!-- NOTIFY -->
+  <div class="notify-card">
+    <div style="font-size:1.6rem;margin-bottom:10px;">&#128276;</div>
+    <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;margin-bottom:8px;">Me pr&eacute;venir &agrave; l'ouverture</div>
+    <p>Laissez votre WhatsApp et on vous pr&eacute;vient en premier d&egrave;s que l'espace vendeur ouvre.</p>
+    <input class="inp" type="tel" placeholder="Votre WhatsApp (+225...)" id="wa-inp"/>
+    <button class="btn btn-go btn-xl" onclick="notifyMe()">Je veux &ecirc;tre pr&eacute;venu</button>
   </div>
 
 </div>
 
-<div id="df-toast"></div>
-<script src="df.js"></script>
+<!-- NAV -->
+<nav id="nav">
+  <a class="nb" href="digiform.html"><span class="nb-ico">&#127968;</span><span class="nb-lbl">Accueil</span></a>
+  <a class="nb" href="digiform.html"><span class="nb-ico">&#128193;</span><span class="nb-lbl">Catalogue</span></a>
+  <a class="nb" href="network.html"><span class="nb-ico">&#127760;</span><span class="nb-lbl">R&eacute;seau</span></a>
+  <a class="nb" href="profile.html"><span class="nb-ico">&#128100;</span><span class="nb-lbl">Profil</span></a>
+</nav>
+
+<div id="toast"></div>
 <script>
-function notifyMe() {
-  const wa = document.getElementById('wa-inp').value.trim();
-  if (!wa) { DF.toast('Entrez votre numéro WhatsApp', 'err'); return; }
-  DF.toast(`✅ ${wa} enregistré ! On vous prévient dès l'ouverture de l'espace vendeur · DF`, 'ok');
-  document.getElementById('wa-inp').value = '';
+let toTm;
+function toast(msg,t='ok'){clearTimeout(toTm);const e=document.getElementById('toast');e.textContent=msg;e.className='show '+t;toTm=setTimeout(()=>e.classList.remove('show'),3500);}
+function notifyMe(){
+  const v=document.getElementById('wa-inp').value.trim();
+  if(!v){toast('Entrez votre numéro WhatsApp','err');return;}
+  toast(`${v} enregistré ! On vous prévient dès l'ouverture · DF`,'ok');
+  document.getElementById('wa-inp').value='';
 }
 </script>
 </body>
