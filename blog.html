@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+<title>DIGIFORM · Blog</title>
+<link rel="stylesheet" href="df.css"/>
+<style>
+.blog-hero{background:linear-gradient(148deg,#0A1828,#06101E);border-radius:20px;border:1px solid rgba(155,109,255,.15);padding:22px 18px;margin-bottom:18px;position:relative;overflow:hidden;}
+.blog-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 80% 20%,rgba(155,109,255,.07),transparent);pointer-events:none;}
+.cat-tabs{display:flex;gap:7px;overflow-x:auto;padding-bottom:5px;margin-bottom:16px;}
+.cat-tab{flex-shrink:0;padding:7px 14px;border-radius:999px;font-size:.78rem;font-weight:600;cursor:pointer;border:1px solid var(--s4);background:var(--s2);color:var(--t2);transition:all .2s;white-space:nowrap;}
+.cat-tab.on{background:linear-gradient(135deg,var(--purple),#6B3EFF);color:#fff;border-color:transparent;}
+.article-card{background:var(--s1);border:1px solid var(--s4);border-radius:16px;overflow:hidden;margin-bottom:12px;transition:all .22s;cursor:pointer;animation:rise .4s ease both;}
+.article-card:hover{border-color:rgba(155,109,255,.3);transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.4);}
+.article-img{height:140px;background:linear-gradient(145deg,var(--s3),var(--s2));display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden;}
+.article-img-label{position:absolute;top:10px;left:10px;}
+.article-body{padding:14px;}
+.article-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:var(--tx);line-height:1.35;margin-bottom:6px;}
+.article-excerpt{font-size:.78rem;color:var(--t2);line-height:1.65;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.article-meta{display:flex;align-items:center;justify-content:space-between;}
+.article-author{display:flex;align-items:center;gap:7px;}
+.article-author-av{width:24px;height:24px;border-radius:50%;background:var(--s4);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;font-family:'Syne',sans-serif;}
+.article-author-name{font-size:.72rem;color:var(--t3);}
+.article-date{font-size:.7rem;color:var(--t4);}
+.article-read{font-size:.7rem;color:var(--purple);font-weight:600;}
+/* FEATURED — large card top */
+.article-featured{background:linear-gradient(145deg,#120A28,#0A0620);border:1px solid rgba(155,109,255,.2);border-radius:18px;padding:20px 16px;margin-bottom:14px;position:relative;overflow:hidden;}
+.article-featured::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 80% 20%,rgba(155,109,255,.08),transparent);pointer-events:none;}
+.af-ico{font-size:3rem;margin-bottom:10px;}
+.af-tag{margin-bottom:8px;}
+.af-title{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;line-height:1.25;margin-bottom:8px;}
+.af-excerpt{font-size:.82rem;color:var(--t2);line-height:1.7;margin-bottom:14px;}
+/* COMING SOON overlay */
+.coming-soon{position:absolute;inset:0;background:rgba(4,8,15,.88);backdrop-filter:blur(4px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border-radius:16px;}
+.cs-ico{font-size:2.5rem;animation:float 3s ease-in-out infinite;}
+.cs-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;}
+.cs-sub{font-size:.8rem;color:var(--t2);text-align:center;max-width:200px;line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="df-page">
+
+<header id="df-hdr">
+  <a href="dashboard.html" class="hdr-icon-btn" style="background:var(--s2);border:1px solid var(--s4);text-decoration:none;">←</a>
+  <div style="flex:1;padding-left:8px;">
+    <div class="hdr-logo"><span class="gc">DIGI</span><span class="gg">FORM</span></div>
+    <div class="hdr-sub">BLOG · RESSOURCES</div>
+  </div>
+  <button class="hdr-icon-btn" style="background:var(--s2);border:1px solid var(--s4);" onclick="DF.toast('Recherche blog bientôt disponible', 'inf')">🔍</button>
+</header>
+
+<div class="pg">
+
+  <!-- HERO -->
+  <div class="blog-hero">
+    <div class="sec-title" style="color:var(--purple);">Blog & Ressources</div>
+    <h2 style="margin-bottom:8px;">Développez vos<br/><span style="color:var(--purple);">compétences</span></h2>
+    <p style="font-size:.85rem;margin-bottom:0;">Conseils, tutoriels et actualités du marketing digital africain.</p>
+  </div>
+
+  <!-- CATEGORIES -->
+  <div class="cat-tabs">
+    <div class="cat-tab on">📚 Tous</div>
+    <div class="cat-tab">📣 Marketing</div>
+    <div class="cat-tab">🔍 SEO</div>
+    <div class="cat-tab">💻 Techno</div>
+    <div class="cat-tab">💰 Business</div>
+    <div class="cat-tab">🎓 Formation</div>
+  </div>
+
+  <!-- FEATURED (coming soon overlay) -->
+  <div class="article-featured" style="position:relative;">
+    <div class="af-ico">📣</div>
+    <div class="af-tag"><span class="badge badge-re">🔥 À LA UNE</span></div>
+    <div class="af-title">Comment développer son réseau digital en Afrique de l'Ouest en 2026</div>
+    <div class="af-excerpt">Le digital africain connaît une croissance exponentielle. Découvrez les stratégies qui fonctionnent vraiment pour construire une présence en ligne impactante dans nos marchés…</div>
+    <button class="btn btn-cy btn-sm">Lire l'article →</button>
+    <!-- COMING SOON -->
+    <div class="coming-soon">
+      <div class="cs-ico">✍️</div>
+      <div class="cs-title">Articles en rédaction</div>
+      <div class="cs-sub">Notre équipe prépare du contenu de qualité pour vous.</div>
+      <span class="badge badge-cy">Bientôt disponible</span>
+    </div>
+  </div>
+
+  <!-- ARTICLE CARDS (coming soon) -->
+  <div style="position:relative;">
+    <div class="article-card">
+      <div class="article-img" style="background:linear-gradient(145deg,#0A1F14,#061210);">🔍</div>
+      <div class="article-body">
+        <div class="article-title">10 stratégies SEO qui marchent en Afrique</div>
+        <div class="article-excerpt">Le référencement naturel a ses spécificités sur les marchés francophones africains. Voici les techniques les plus efficaces…</div>
+        <div class="article-meta">
+          <div class="article-author">
+            <div class="article-author-av" style="background:rgba(0,229,160,.15);color:var(--green);">D</div>
+            <span class="article-author-name">Équipe DF</span>
+          </div>
+          <span class="article-read">5 min de lecture</span>
+        </div>
+      </div>
+    </div>
+    <div class="article-card">
+      <div class="article-img" style="background:linear-gradient(145deg,#1A0A08,#120806);">📱</div>
+      <div class="article-body">
+        <div class="article-title">WhatsApp Business : le guide complet pour les pros</div>
+        <div class="article-excerpt">WhatsApp est l'outil de vente numéro 1 en Afrique de l'Ouest. Maîtrisez-le pour doubler vos conversions…</div>
+        <div class="article-meta">
+          <div class="article-author">
+            <div class="article-author-av" style="background:rgba(255,184,0,.15);color:var(--gold);">A</div>
+            <span class="article-author-name">Équipe DF</span>
+          </div>
+          <span class="article-read">8 min de lecture</span>
+        </div>
+      </div>
+    </div>
+    <!-- COMING SOON overlay sur les articles -->
+    <div class="coming-soon" style="border-radius:14px;">
+      <div class="cs-ico">📝</div>
+      <div class="cs-title">Bientôt disponible</div>
+      <div class="cs-sub">Les articles seront publiés prochainement. Activez les notifications.</div>
+      <a href="notifications.html" class="btn btn-cy btn-sm" style="text-decoration:none;">🔔 M'alerter</a>
+    </div>
+  </div>
+
+  <!-- NEWSLETTER -->
+  <div class="card" style="margin-top:20px;background:linear-gradient(145deg,#0A0620,#06041A);border-color:rgba(155,109,255,.2);text-align:center;padding:22px;">
+    <div style="font-size:2rem;margin-bottom:10px;">💌</div>
+    <h3 style="margin-bottom:6px;">Newsletter DIGIFORM</h3>
+    <p style="font-size:.82rem;margin-bottom:16px;">Recevez les meilleurs conseils chaque semaine directement dans votre boîte mail.</p>
+    <div class="inp-group">
+      <input class="inp" type="email" placeholder="votre@email.com" id="nl-email"/>
+    </div>
+    <button class="btn btn-xl" style="background:linear-gradient(135deg,var(--purple),#6B3EFF);color:#fff;font-size:.9rem;font-weight:800;" onclick="subscribeNL()">✉️ S'abonner gratuitement</button>
+  </div>
+
+</div>
+
+<div id="df-toast"></div>
+<script src="df.js"></script>
+<script>
+// Cat tabs interaction
+document.querySelectorAll('.cat-tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.cat-tab').forEach(x => x.classList.remove('on'));
+    t.classList.add('on');
+    DF.toast('Cette catégorie sera disponible prochainement', 'inf');
+  });
+});
+function subscribeNL() {
+  const email = document.getElementById('nl-email').value.trim();
+  if (!email) { DF.toast('Entrez votre email', 'err'); return; }
+  DF.toast(`✅ ${email} abonné à la newsletter · DF`, 'ok');
+  document.getElementById('nl-email').value = '';
+}
+</script>
+</body>
+</html>
