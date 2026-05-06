@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+<title>DIGIFORM · Ma Boutique</title>
+<link rel="stylesheet" href="df.css"/>
+<style>
+.shop-hero{background:linear-gradient(145deg,#141008,#0C0A04);border-radius:20px;border:1px solid rgba(255,184,0,.15);padding:22px 18px;margin-bottom:18px;position:relative;overflow:hidden;}
+.shop-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 20% 80%,rgba(255,184,0,.07),transparent);pointer-events:none;}
+.shop-steps{display:flex;flex-direction:column;gap:10px;margin-bottom:18px;}
+.step{display:flex;align-items:flex-start;gap:12px;background:var(--s1);border:1px solid var(--s4);border-radius:14px;padding:14px;}
+.step-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.85rem;flex-shrink:0;}
+.step-title{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;margin-bottom:3px;}
+.step-sub{font-size:.78rem;color:var(--t2);line-height:1.55;}
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+.plan-card{background:var(--s1);border:1px solid var(--s4);border-radius:16px;padding:16px;text-align:center;transition:all .22s;}
+.plan-card.featured{border-color:var(--gold);background:linear-gradient(145deg,#141008,#0C0A04);}
+.plan-price{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;margin:8px 0 4px;}
+.plan-name{font-size:.72rem;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+.plan-features{font-size:.75rem;color:var(--t2);line-height:2;text-align:left;}
+.plan-features li{list-style:none;padding-left:0;}
+.plan-features li::before{content:'✅ ';font-size:.7rem;}
+.coming-card{background:var(--s1);border:2px dashed var(--s4);border-radius:16px;padding:28px 18px;text-align:center;margin-bottom:12px;}
+</style>
+</head>
+<body>
+<div class="df-page">
+
+<header id="df-hdr">
+  <a href="dashboard.html" class="hdr-icon-btn" style="background:var(--s2);border:1px solid var(--s4);text-decoration:none;">←</a>
+  <div style="flex:1;padding-left:8px;">
+    <div class="hdr-logo"><span class="gc">DIGI</span><span class="gg">FORM</span></div>
+    <div class="hdr-sub">MA BOUTIQUE · VENDEURS</div>
+  </div>
+</header>
+
+<div class="pg">
+
+  <!-- HERO -->
+  <div class="shop-hero">
+    <div class="sec-title" style="color:var(--gold);">Votre espace vendeur</div>
+    <h2 style="margin-bottom:8px;"><span class="gg">Vendez</span> vos<br/>produits digitaux</h2>
+    <p style="font-size:.85rem;margin-bottom:16px;">Livres, formations, logiciels, audio — publiez et vendez directement via WhatsApp à toute la communauté DIGIFORM.</p>
+    <div style="display:flex;gap:8px;">
+      <span class="badge badge-go">🔥 Bientôt</span>
+      <span class="badge badge-gr">✅ Gratuit pour les membres</span>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="sec-title">Comment ça marche ?</div>
+  <div class="shop-steps">
+    <div class="step">
+      <div class="step-num" style="background:rgba(0,212,255,.15);color:var(--cyan);">1</div>
+      <div><div class="step-title">Créez votre produit</div><div class="step-sub">Renseignez le titre, la description, le prix et une image de couverture.</div></div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:rgba(255,184,0,.15);color:var(--gold);">2</div>
+      <div><div class="step-title">Ajoutez votre WhatsApp</div><div class="step-sub">Les acheteurs vous contactent directement sur WhatsApp pour finaliser l'achat.</div></div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:rgba(0,229,160,.15);color:var(--green);">3</div>
+      <div><div class="step-title">Recevez les commandes</div><div class="step-sub">Votre produit est visible dans le catalogue par tous les membres DIGIFORM.</div></div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:rgba(155,109,255,.15);color:var(--purple);">4</div>
+      <div><div class="step-title">Gérez vos ventes</div><div class="step-sub">Tableau de bord complet pour suivre vos produits et performances.</div></div>
+    </div>
+  </div>
+
+  <!-- COMING SOON -->
+  <div class="coming-card">
+    <div style="font-size:2.5rem;margin-bottom:12px;animation:float 3s ease-in-out infinite;">🛍️</div>
+    <h3 style="margin-bottom:6px;">Espace vendeur</h3>
+    <p style="font-size:.82rem;margin-bottom:16px;">La gestion de boutique personnelle arrive prochainement. En attendant, contactez l'administrateur pour publier vos produits.</p>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+      <a href="auth.html" class="btn btn-cy btn-sm" style="text-decoration:none;">✅ S'inscrire</a>
+      <a href="admin.html" class="btn btn-go btn-sm" style="text-decoration:none;">📦 Admin : Ajouter produit</a>
+    </div>
+  </div>
+
+  <!-- PRICING -->
+  <div class="sec-title">Tarifs futurs</div>
+  <div class="pricing-grid">
+    <div class="plan-card">
+      <div style="font-size:1.5rem;">🆓</div>
+      <div class="plan-name">Gratuit</div>
+      <div class="plan-price" style="color:var(--green);">0 F</div>
+      <ul class="plan-features">
+        <li>3 produits max</li>
+        <li>Visible réseau</li>
+        <li>WhatsApp direct</li>
+      </ul>
+    </div>
+    <div class="plan-card featured">
+      <div style="font-size:1.5rem;">⭐</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-price" style="color:var(--gold);">2 900 F<span style="font-size:.7rem;color:var(--t3);">/mois</span></div>
+      <ul class="plan-features">
+        <li>Produits illimités</li>
+        <li>Mise en vedette</li>
+        <li>Statistiques</li>
+        <li>Support prioritaire</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="text-align:center;margin-top:4px;">
+    <p style="font-size:.85rem;margin-bottom:14px;">Intéressé par la version vendeur ? Laissez votre contact et on vous prévient en premier.</p>
+    <div class="inp-group">
+      <input class="inp" type="tel" placeholder="Votre WhatsApp (+225…)" id="wa-inp"/>
+    </div>
+    <button class="btn btn-go btn-xl" style="font-size:.9rem;font-weight:800;" onclick="notifyMe()">🔔 Me prévenir</button>
+  </div>
+
+</div>
+
+<div id="df-toast"></div>
+<script src="df.js"></script>
+<script>
+function notifyMe() {
+  const wa = document.getElementById('wa-inp').value.trim();
+  if (!wa) { DF.toast('Entrez votre numéro WhatsApp', 'err'); return; }
+  DF.toast(`✅ ${wa} enregistré ! On vous prévient dès l'ouverture de l'espace vendeur · DF`, 'ok');
+  document.getElementById('wa-inp').value = '';
+}
+</script>
+</body>
+</html>
