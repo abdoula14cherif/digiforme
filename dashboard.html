@@ -646,12 +646,35 @@ async function loadReads(){
   const{ok,data}=await db(`notification_reads?user_id=eq.${session.user.id}&select=notification_id`,{},session.access_token);
   if(ok&&Array.isArray(data))reads=data.map(r=>r.notification_id);
 }
-async function loadMembers(){
-  const{ok,data}=await db('profiles?order=created_at.asc&select=id,full_name,profession,phone,show_in_network,created_at');
-  if(ok&&Array.isArray(data)){
-    members=data.filter(m=>m.show_in_network!==false&&(m.full_name||m.phone));
-    netJobs=[...new Set(members.map(m=>m.profession).filter(Boolean))];
+/* Chargement paginé - charge TOUS les contacts (>1000) */
+async function fetchAllPages(path, tok){
+  const PAGE=1000; let result=[], offset=0, done=false;
+  while(!done){
+    try{
+      const r=await fetch(`${SB}/rest/v1/${path}`,{
+        headers:{apikey:ANON,Authorization:`Bearer ${tok||ANON}`,'Range-Unit':'items','Range':`${offset}-${offset+PAGE-1}`,'Prefer':'count=none'}
+      });
+      const d=await r.json();
+      if(!Array.isArray(d)||d.length===0){done=true;}
+      else{result=[...result,...d];if(d.length<PAGE)done=true;else offset+=PAGE;}
+    }catch{done=true;}
   }
+  return result;
+}
+
+async function loadMembers(){
+  const tok=session?.access_token||ANON;
+  // Charger membres inscrits
+  const d1=await fetchAllPages('profiles?order=created_at.asc&select=id,full_name,profession,phone,show_in_network,created_at',tok);
+  const registeredMembers=d1.filter(m=>m.show_in_network!==false&&(m.full_name||m.phone));
+  // Charger contacts pré-importés
+  const d2=await fetchAllPages('pre_contacts?order=full_name.asc&select=id,full_name,profession,phone,email,country_code,created_at',tok);
+  const pre=d2.map(c=>({...c,source:'import',show_in_network:true}));
+  // Fusionner sans doublons
+  const mPh=new Set(registeredMembers.map(m=>m.phone).filter(Boolean));
+  const filteredPre=pre.filter(c=>!c.phone||!mPh.has(c.phone));
+  members=[...registeredMembers,...filteredPre];
+  netJobs=[...new Set(members.map(m=>m.profession).filter(Boolean))];
 }
 
 let toastTm;
