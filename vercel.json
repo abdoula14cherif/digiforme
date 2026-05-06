@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "routes": [
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/dashboard", "dest": "/dashboard.html" },
+    { "src": "/auth", "dest": "/auth.html" },
+    { "src": "/network", "dest": "/network.html" },
+    { "src": "/profile", "dest": "/profile.html" },
+    { "src": "/contacts", "dest": "/contacts.html" },
+    { "src": "/notifications", "dest": "/notifications.html" },
+    { "src": "/blog", "dest": "/blog.html" },
+    { "src": "/shop", "dest": "/shop.html" },
+    { "src": "/admin", "dest": "/admin.html" },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
