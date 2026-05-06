@@ -6,7 +6,6 @@
 <title>DIGIFORM · Plateforme Digitale</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
-/* ══ RESET & BASE ══ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
   --bg:#04080F;--s1:#0A1020;--s2:#101828;--s3:#182035;--s4:#1E2D4A;
@@ -19,32 +18,20 @@ body{
   background:var(--bg);color:var(--tx);
   font-family:'Epilogue',sans-serif;
   min-height:100vh;overflow-x:hidden;
-  /* centrer sur PC, plein écran sur mobile */
   max-width:430px;margin:0 auto;
 }
-@keyframes rise{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
-@keyframes pop{from{opacity:0;transform:scale(.93);}to{opacity:1;transform:scale(1);}}
+
+@keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
 @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
 @keyframes shimmer{from{background-position:-200%;}to{background-position:200%;}}
-
-/* ══ GRADIENT TEXT ══ */
-.gc{
-  background:linear-gradient(135deg,#ffffff 20%,#9DCFFF 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-}
-.gg{
-  background:linear-gradient(135deg,var(--gold),var(--g2));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-}
 
 /* ══ HERO ══ */
 .hero{
   min-height:100vh;
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
-  padding:48px 20px 40px;
+  /* padding horizontal suffisant pour ne JAMAIS déborder */
+  padding:50px 20px 40px;
   text-align:center;
   position:relative;overflow:hidden;
 }
@@ -54,314 +41,267 @@ body{
     radial-gradient(ellipse 90% 55% at 50% 5%,rgba(0,212,255,.09),transparent),
     radial-gradient(ellipse 70% 40% at 85% 95%,rgba(155,109,255,.06),transparent);
 }
-/* Orbes décoratifs */
 .orb{position:absolute;border-radius:50%;filter:blur(55px);pointer-events:none;}
 
-/* ══ TAG ══ */
+/* TAG */
 .hero-tag{
-  display:flex;align-items:center;gap:10px;
-  font-size:.65rem;letter-spacing:.2em;color:var(--t3);font-weight:700;
-  text-transform:uppercase;margin-bottom:24px;
-  width:100%;
+  font-size:.65rem;letter-spacing:.18em;color:var(--t3);font-weight:700;
+  text-transform:uppercase;margin-bottom:22px;
+  display:flex;align-items:center;gap:10px;width:100%;
 }
 .hero-tag::before,.hero-tag::after{content:'';flex:1;height:1px;background:var(--s4);}
 
-/* ══ LOGO — clé du fix : on le contient proprement ══ */
-.logo-block{
+/* ══ LOGO SVG — solution définitive au débordement ══ */
+.logo-svg-wrap{
   width:100%;
-  display:flex;flex-direction:column;align-items:center;
-  margin-bottom:10px;
+  max-width:340px;
+  margin:0 auto 10px;
+  display:block;
 }
-.logo-text{
-  font-family:'Syne',sans-serif;
-  font-weight:800;
-  /* Taille responsive : jamais plus large que l'écran */
-  font-size:clamp(2.8rem, 18vw, 4.5rem);
-  line-height:1;
-  letter-spacing:-.03em;
-  /* empêche le débordement */
-  white-space:nowrap;
+.logo-svg-wrap svg{
   width:100%;
-  text-align:center;
+  height:auto;
+  display:block;
+  overflow:visible;
 }
+
 .logo-sub{
-  font-size:.68rem;color:var(--t3);
-  letter-spacing:.18em;margin-top:6px;text-transform:uppercase;
+  font-size:.65rem;color:var(--t3);
+  letter-spacing:.16em;margin-bottom:24px;
+  text-transform:uppercase;
 }
 
-/* ══ DESC ══ */
+/* DESC */
 .hero-desc{
-  font-size:clamp(.9rem,3.5vw,1.05rem);
+  font-size:.95rem;
   color:var(--t2);line-height:1.8;
-  max-width:300px;margin:0 auto 36px;
+  max-width:300px;margin:0 auto 32px;
 }
 
-/* ══ BUTTONS ══ */
+/* ══ BOUTONS — simples, sans emojis ══ */
 .hero-btns{
-  display:flex;flex-direction:column;gap:12px;
-  width:100%;max-width:320px;
+  display:flex;flex-direction:column;gap:11px;
+  width:100%;max-width:300px;
 }
-.btn{
-  display:flex;align-items:center;justify-content:center;gap:9px;
+.btn-main{
+  display:block;width:100%;
   padding:15px 20px;border-radius:14px;
   font-family:'Syne',sans-serif;font-weight:800;
-  font-size:clamp(.88rem,3.5vw,1rem);
+  font-size:.95rem;letter-spacing:.01em;
   border:none;cursor:pointer;text-decoration:none;
-  transition:all .22s;width:100%;
-  /* empêche le texte de déborder */
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  transition:all .22s;text-align:center;
+  /* Pas de débordement */
+  overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
 }
-.btn:hover{transform:translateY(-2px);}
-.btn:active{transform:scale(.97);}
-.btn-cy{background:linear-gradient(135deg,var(--cyan),var(--c2));color:#04080F;}
-.btn-cy:hover{box-shadow:0 8px 26px rgba(0,212,255,.4);}
-.btn-ghost{background:rgba(255,255,255,.06);color:var(--tx);border:1px solid rgba(255,255,255,.1);}
-.btn-ghost:hover{background:rgba(255,255,255,.1);}
-.btn-text{background:none;border:none;color:var(--t3);font-size:.85rem;font-weight:500;cursor:pointer;padding:8px 0;}
-.btn-text:hover{color:var(--cyan);}
+.btn-main:hover{transform:translateY(-2px);}
+.btn-main:active{transform:scale(.97);}
+.btn-primary{background:linear-gradient(135deg,var(--cyan),var(--c2));color:#04080F;}
+.btn-primary:hover{box-shadow:0 8px 26px rgba(0,212,255,.4);}
+.btn-secondary{background:rgba(255,255,255,.07);color:var(--tx);border:1px solid rgba(255,255,255,.12);}
+.btn-secondary:hover{background:rgba(255,255,255,.12);}
+.btn-link{
+  background:none;border:none;
+  color:var(--t3);font-size:.83rem;
+  cursor:pointer;padding:7px 0;
+  font-family:'Epilogue',sans-serif;
+  text-decoration:none;display:block;
+  text-align:center;
+}
+.btn-link:hover{color:var(--cyan);}
 
 /* ══ STATS ══ */
 .stats{
   display:grid;grid-template-columns:repeat(3,1fr);
-  gap:1px;background:var(--s4);
-  border-radius:16px;overflow:hidden;
-  margin-top:36px;width:100%;max-width:340px;
+  gap:1px;background:var(--s4);border-radius:15px;overflow:hidden;
+  margin-top:32px;width:100%;max-width:340px;
 }
-.sc{background:var(--s1);padding:16px 8px;text-align:center;}
+.sc{background:var(--s1);padding:15px 8px;text-align:center;}
 .sn{
   font-family:'Syne',sans-serif;
-  font-size:clamp(1.3rem,5vw,1.6rem);
-  font-weight:800;
+  font-size:clamp(1.2rem,4.5vw,1.5rem);
+  font-weight:800;display:block;
 }
-.sl{font-size:.6rem;color:var(--t3);margin-top:4px;text-transform:uppercase;letter-spacing:.07em;}
+.sl{font-size:.58rem;color:var(--t3);margin-top:3px;text-transform:uppercase;letter-spacing:.07em;}
 
-/* ══ SECTIONS ══ */
-.section{padding:40px 20px;}
+/* ══ FEATURES ══ */
+.section{padding:36px 20px;}
 .section-alt{background:var(--s1);border-top:1px solid var(--s4);border-bottom:1px solid var(--s4);}
 .section-title{
-  font-family:'Syne',sans-serif;font-size:clamp(1.2rem,5vw,1.5rem);
-  font-weight:800;margin-bottom:8px;text-align:center;
+  font-family:'Syne',sans-serif;
+  font-size:clamp(1.15rem,4.5vw,1.4rem);
+  font-weight:800;margin-bottom:6px;text-align:center;
 }
-.section-sub{font-size:.85rem;color:var(--t2);text-align:center;line-height:1.7;margin-bottom:24px;}
-
-/* ══ FEATURES GRID ══ */
-.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
-.feat{
-  background:var(--s2);border:1px solid var(--s4);
-  border-radius:16px;padding:16px 13px;transition:all .22s;
-}
+.section-sub{font-size:.83rem;color:var(--t2);text-align:center;line-height:1.7;margin-bottom:22px;}
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.feat{background:var(--s2);border:1px solid var(--s4);border-radius:15px;padding:15px 12px;transition:all .22s;}
 .feat:hover{border-color:rgba(0,212,255,.25);transform:translateY(-2px);}
-.feat-ico{font-size:1.7rem;margin-bottom:8px;display:block;}
-.feat-title{
-  font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;
-  margin-bottom:4px;color:var(--tx);
-}
-.feat-desc{font-size:.75rem;color:var(--t2);line-height:1.6;}
+.feat-ico{font-size:1.6rem;margin-bottom:8px;display:block;}
+.feat-title{font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;margin-bottom:4px;}
+.feat-desc{font-size:.73rem;color:var(--t2);line-height:1.6;}
 
 /* ══ TESTIMONIALS ══ */
-.testi-scroll{
-  display:flex;gap:11px;overflow-x:auto;
-  padding-bottom:6px;margin-top:0;
-  -webkit-overflow-scrolling:touch;
-}
+.testi-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:5px;margin-top:0;-webkit-overflow-scrolling:touch;}
 .testi-scroll::-webkit-scrollbar{height:0;}
-.tcard{
-  flex-shrink:0;width:210px;
-  background:var(--s2);border:1px solid var(--s4);
-  border-radius:14px;padding:15px;
-}
-.tcard-stars{color:var(--gold);font-size:.82rem;margin-bottom:7px;}
-.tcard-text{font-size:.77rem;color:var(--t2);line-height:1.65;margin-bottom:10px;font-style:italic;}
-.tcard-name{font-size:.78rem;font-weight:700;}
-.tcard-job{font-size:.7rem;color:var(--t3);margin-top:1px;}
+.tcard{flex-shrink:0;width:200px;background:var(--s2);border:1px solid var(--s4);border-radius:13px;padding:14px;}
+.tcard-stars{color:var(--gold);font-size:.8rem;margin-bottom:7px;}
+.tcard-text{font-size:.75rem;color:var(--t2);line-height:1.65;margin-bottom:9px;font-style:italic;}
+.tcard-name{font-size:.76rem;font-weight:700;}
+.tcard-job{font-size:.68rem;color:var(--t3);margin-top:1px;}
 
 /* ══ CTA BOTTOM ══ */
-.cta-bottom{
-  padding:40px 20px;text-align:center;
+.cta-section{
+  padding:36px 20px;text-align:center;
   background:linear-gradient(145deg,#0A1828,#060E1E);
   border-top:1px solid rgba(0,212,255,.1);
 }
-.cta-bottom .section-title{margin-bottom:10px;}
-.cta-bottom p{font-size:.85rem;color:var(--t2);margin-bottom:24px;line-height:1.7;}
+.cta-btns{display:flex;flex-direction:column;gap:10px;max-width:280px;margin:0 auto;}
 
 /* ══ FOOTER ══ */
-footer{
-  padding:24px 20px;background:var(--bg);
-  border-top:1px solid var(--s4);text-align:center;
-}
+footer{padding:22px 20px;background:var(--bg);border-top:1px solid var(--s4);text-align:center;}
 .foot-logo{
-  font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
   margin-bottom:12px;
 }
-.foot-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
-.foot-links a{font-size:.78rem;color:var(--t3);text-decoration:none;}
+.foot-links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;}
+.foot-links a{font-size:.75rem;color:var(--t3);text-decoration:none;}
 .foot-links a:hover{color:var(--cyan);}
-.foot-copy{font-size:.7rem;color:var(--t4);}
+.foot-copy{font-size:.68rem;color:var(--t4);}
 
-/* ══ RESPONSIVE PC ══ */
-@media(min-width:430px){
-  body{box-shadow:0 0 60px rgba(0,0,0,.6);}
-}
+@media(min-width:430px){body{box-shadow:0 0 60px rgba(0,0,0,.6);}}
 </style>
 </head>
 <body>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
-  <!-- Orbes -->
-  <div class="orb" style="width:220px;height:220px;background:rgba(0,212,255,.07);top:-70px;left:-60px;animation:float 5s ease-in-out infinite;"></div>
-  <div class="orb" style="width:160px;height:160px;background:rgba(255,184,0,.05);bottom:120px;right:-50px;animation:float 6.5s ease-in-out infinite;animation-delay:1s;"></div>
+  <div class="orb" style="width:200px;height:200px;background:rgba(0,212,255,.07);top:-60px;left:-60px;animation:float 5s ease-in-out infinite;"></div>
+  <div class="orb" style="width:160px;height:160px;background:rgba(255,184,0,.05);bottom:120px;right:-50px;animation:float 6.5s ease-in-out infinite;animation-delay:1.2s;"></div>
 
-  <div class="hero-tag">◆ Plateforme Digitale Africaine ◆</div>
+  <div class="hero-tag">&#9670; Plateforme Digitale Africaine &#9670;</div>
 
-  <!-- LOGO — contenu dans son bloc, taille responsive -->
-  <div class="logo-block">
-    <div class="logo-text">
-      <span class="gc">DIGI</span><span class="gg">FORM</span>
-    </div>
-    <div class="logo-sub">Livres &middot; Formations &middot; Logiciels &middot; Audio</div>
+  <!-- LOGO EN SVG — taille exacte, jamais de débordement -->
+  <div class="logo-svg-wrap">
+    <svg viewBox="0 0 320 72" xmlns="http://www.w3.org/2000/svg" aria-label="DIGIFORM">
+      <defs>
+        <linearGradient id="gcyan" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#ffffff"/>
+          <stop offset="100%" style="stop-color:#9DCFFF"/>
+        </linearGradient>
+        <linearGradient id="ggold" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#FFB800"/>
+          <stop offset="100%" style="stop-color:#FF7A00"/>
+        </linearGradient>
+      </defs>
+      <text x="2" y="62" font-family="Syne, sans-serif" font-weight="800" font-size="68" letter-spacing="-2" fill="url(#gcyan)">DIGI</text>
+      <text x="164" y="62" font-family="Syne, sans-serif" font-weight="800" font-size="68" letter-spacing="-2" fill="url(#ggold)">FORM</text>
+    </svg>
   </div>
 
-  <p class="hero-desc">
-    La plateforme digitale qui connecte les professionnels d'Afrique et met en avant vos produits num&eacute;riques.
-  </p>
+  <div class="logo-sub">Livres &middot; Formations &middot; Logiciels &middot; Audio</div>
 
-  <div class="hero-btns" id="hero-btns">
-    <!-- Rempli par JS selon si connecté ou non -->
-  </div>
+  <p class="hero-desc">La plateforme digitale qui connecte les professionnels d'Afrique et met en avant vos produits num&eacute;riques.</p>
+
+  <!-- Boutons remplis par JS -->
+  <div class="hero-btns" id="hero-btns"></div>
 
   <div class="stats">
-    <div class="sc"><div class="sn" id="s-members" style="color:var(--cyan);">—</div><div class="sl">Membres</div></div>
-    <div class="sc"><div class="sn" id="s-products" style="color:var(--gold);">—</div><div class="sl">Produits</div></div>
-    <div class="sc"><div class="sn" style="color:var(--green);">10K+</div><div class="sl">Contacts</div></div>
+    <div class="sc"><span class="sn" id="s-members" style="color:var(--cyan);">—</span><span class="sl">Membres</span></div>
+    <div class="sc"><span class="sn" id="s-products" style="color:var(--gold);">—</span><span class="sl">Produits</span></div>
+    <div class="sc"><span class="sn" style="color:var(--green);">10K+</span><span class="sl">Contacts</span></div>
   </div>
 </section>
 
 <!-- FEATURES -->
 <section class="section section-alt">
-  <div class="section-title">Pourquoi <span class="gc">DIGIFORM</span> ?</div>
-  <div class="section-sub">Tout ce dont vous avez besoin pour développer votre activité digitale.</div>
+  <div class="section-title">Pourquoi DIGIFORM ?</div>
+  <div class="section-sub">Tout ce dont vous avez besoin pour d&eacute;velopper votre activit&eacute; digitale.</div>
   <div class="feat-grid">
-    <div class="feat">
-      <span class="feat-ico">📚</span>
-      <div class="feat-title">Catalogue digital</div>
-      <div class="feat-desc">Livres, formations, logiciels et audio réunis.</div>
-    </div>
-    <div class="feat">
-      <span class="feat-ico">🌐</span>
-      <div class="feat-title">Réseau pro</div>
-      <div class="feat-desc">10 000+ contacts pro d'Afrique de l'Ouest.</div>
-    </div>
-    <div class="feat">
-      <span class="feat-ico">💬</span>
-      <div class="feat-title">WhatsApp direct</div>
-      <div class="feat-desc">Contactez un membre en un seul clic.</div>
-    </div>
-    <div class="feat">
-      <span class="feat-ico">📲</span>
-      <div class="feat-title">Export contacts</div>
-      <div class="feat-desc">Téléchargez en CSV ou VCF directement.</div>
-    </div>
-    <div class="feat">
-      <span class="feat-ico">🔔</span>
-      <div class="feat-title">Notifications</div>
-      <div class="feat-desc">Restez informé des nouveautés.</div>
-    </div>
-    <div class="feat">
-      <span class="feat-ico">🔒</span>
-      <div class="feat-title">Privé &amp; sécurisé</div>
-      <div class="feat-desc">Votre visibilité est entièrement contrôlable.</div>
-    </div>
+    <div class="feat"><span class="feat-ico">&#128218;</span><div class="feat-title">Catalogue digital</div><div class="feat-desc">Livres, formations, logiciels et audio r&eacute;unis.</div></div>
+    <div class="feat"><span class="feat-ico">&#127760;</span><div class="feat-title">R&eacute;seau pro</div><div class="feat-desc">10 000+ contacts pro d'Afrique de l'Ouest.</div></div>
+    <div class="feat"><span class="feat-ico">&#128172;</span><div class="feat-title">WhatsApp direct</div><div class="feat-desc">Contactez un membre en un seul clic.</div></div>
+    <div class="feat"><span class="feat-ico">&#128242;</span><div class="feat-title">Export contacts</div><div class="feat-desc">T&eacute;l&eacute;chargez en CSV ou VCF directement.</div></div>
+    <div class="feat"><span class="feat-ico">&#128276;</span><div class="feat-title">Notifications</div><div class="feat-desc">Restez inform&eacute; des nouveaut&eacute;s.</div></div>
+    <div class="feat"><span class="feat-ico">&#128274;</span><div class="feat-title">S&eacute;curis&eacute;</div><div class="feat-desc">Votre visibilit&eacute; est enti&egrave;rement contr&ocirc;lable.</div></div>
   </div>
 </section>
 
 <!-- TESTIMONIALS -->
 <section class="section">
-  <div class="section-title">Ils utilisent <span class="gg">DIGIFORM</span></div>
+  <div class="section-title">Ils utilisent DIGIFORM</div>
   <div class="testi-scroll">
-    <div class="tcard">
-      <div class="tcard-stars">★★★★★</div>
-      <div class="tcard-text">« DIGIFORM m'a permis de trouver des clients pour mes formations en moins d'une semaine. »</div>
-      <div class="tcard-name">Aminata K.</div>
-      <div class="tcard-job">Formatrice · Abidjan</div>
-    </div>
-    <div class="tcard">
-      <div class="tcard-stars">★★★★★</div>
-      <div class="tcard-text">« Le réseau de contacts est une mine d'or. 500 numéros WhatsApp en 30 secondes. »</div>
-      <div class="tcard-name">Jean-Paul M.</div>
-      <div class="tcard-job">Marketing Digital · Douala</div>
-    </div>
-    <div class="tcard">
-      <div class="tcard-stars">★★★★☆</div>
-      <div class="tcard-text">« Interface propre, rapide, et le catalogue de livres numériques est excellent. »</div>
-      <div class="tcard-name">Fatou D.</div>
-      <div class="tcard-job">Entrepreneuriat · Dakar</div>
-    </div>
-    <div class="tcard">
-      <div class="tcard-stars">★★★★★</div>
-      <div class="tcard-text">« J'ai vendu mon logiciel à 3 clients via WhatsApp grâce aux membres du réseau. »</div>
-      <div class="tcard-name">Kofi A.</div>
-      <div class="tcard-job">Développeur · Cotonou</div>
-    </div>
+    <div class="tcard"><div class="tcard-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="tcard-text">&#171;&nbsp;DIGIFORM m'a permis de trouver des clients pour mes formations en moins d'une semaine.&nbsp;&#187;</div><div class="tcard-name">Aminata K.</div><div class="tcard-job">Formatrice &middot; Abidjan</div></div>
+    <div class="tcard"><div class="tcard-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="tcard-text">&#171;&nbsp;Le r&eacute;seau de contacts est une mine d'or. 500 num&eacute;ros WhatsApp en 30 secondes.&nbsp;&#187;</div><div class="tcard-name">Jean-Paul M.</div><div class="tcard-job">Marketing &middot; Douala</div></div>
+    <div class="tcard"><div class="tcard-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div><div class="tcard-text">&#171;&nbsp;Interface propre, rapide, et le catalogue de livres num&eacute;riques est excellent.&nbsp;&#187;</div><div class="tcard-name">Fatou D.</div><div class="tcard-job">Entrepreneuriat &middot; Dakar</div></div>
+    <div class="tcard"><div class="tcard-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="tcard-text">&#171;&nbsp;J'ai vendu mon logiciel &agrave; 3 clients via WhatsApp gr&acirc;ce aux membres du r&eacute;seau.&nbsp;&#187;</div><div class="tcard-name">Kofi A.</div><div class="tcard-job">D&eacute;veloppeur &middot; Cotonou</div></div>
   </div>
 </section>
 
-<!-- CTA BOTTOM -->
-<section class="cta-bottom">
-  <div class="section-title">Prêt à rejoindre<br/><span class="gc">le réseau ?</span></div>
-  <p>Inscription gratuite &middot; Visible en 2 minutes &middot; 10 000+ professionnels</p>
-  <div style="display:flex;flex-direction:column;gap:10px;max-width:300px;margin:0 auto;">
-    <a href="auth.html?mode=register" class="btn btn-cy" style="font-size:.95rem;">✨ Créer mon compte gratuit</a>
-    <a href="dashboard.html" class="btn btn-ghost" style="font-size:.88rem;">👀 Parcourir le catalogue</a>
+<!-- CTA -->
+<section class="cta-section">
+  <div class="section-title" style="margin-bottom:8px;">Pr&ecirc;t &agrave; rejoindre le r&eacute;seau ?</div>
+  <p style="font-size:.83rem;color:var(--t2);margin-bottom:22px;line-height:1.7;">Inscription gratuite &middot; Visible en 2 minutes &middot; 10 000+ professionnels</p>
+  <div class="cta-btns">
+    <a href="auth.html?mode=register" class="btn-main btn-primary">Cr&eacute;er mon compte gratuit</a>
+    <a href="digiform.html" class="btn-main btn-secondary">Parcourir le catalogue</a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="foot-logo"><span class="gc">DIGI</span><span class="gg">FORM</span></div>
+  <div class="foot-logo">
+    <svg viewBox="0 0 200 40" width="140" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="fc" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#fff"/><stop offset="100%" style="stop-color:#9DCFFF"/></linearGradient>
+        <linearGradient id="fg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#FFB800"/><stop offset="100%" style="stop-color:#FF7A00"/></linearGradient>
+      </defs>
+      <text x="1" y="32" font-family="Syne,sans-serif" font-weight="800" font-size="36" letter-spacing="-1" fill="url(#fc)">DIGI</text>
+      <text x="101" y="32" font-family="Syne,sans-serif" font-weight="800" font-size="36" letter-spacing="-1" fill="url(#fg)">FORM</text>
+    </svg>
+  </div>
   <div class="foot-links">
-    <a href="dashboard.html">Catalogue</a>
-    <a href="network.html">Réseau</a>
+    <a href="digiform.html">Catalogue</a>
+    <a href="network.html">R&eacute;seau</a>
     <a href="contacts.html">Contacts</a>
     <a href="blog.html">Blog</a>
     <a href="auth.html">Connexion</a>
   </div>
-  <div class="foot-copy">© 2026 DIGIFORM &middot; Tous droits réservés &middot; DF</div>
+  <div class="foot-copy">&copy; 2026 DIGIFORM &middot; Tous droits r&eacute;serv&eacute;s &middot; DF</div>
 </footer>
 
 <script>
-/* ══ SESSION ══ */
-function getSess(){try{return JSON.parse(localStorage.getItem('dg_sess')||'null');}catch{return null;}}
-const sess = getSess();
+const SB='https://rxhjuetoxyjrairroycb.supabase.co';
+const ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q';
 
-/* ══ BOUTONS HERO selon connexion ══ */
-const heroEl = document.getElementById('hero-btns');
+/* Session */
+function getSess(){try{return JSON.parse(localStorage.getItem('dg_sess')||'null');}catch{return null;}}
+const sess=getSess();
+
+/* Boutons hero selon état connexion */
+const el=document.getElementById('hero-btns');
 if(sess){
-  heroEl.innerHTML=`
-    <a href="dashboard.html" class="btn btn-cy">🏠 Accéder à mon espace</a>
-    <a href="network.html"   class="btn btn-ghost">🌐 Voir le réseau</a>`;
+  el.innerHTML=`
+    <a href="digiform.html" class="btn-main btn-primary">Acc&eacute;der &agrave; mon espace</a>
+    <a href="network.html"  class="btn-main btn-secondary">Voir le r&eacute;seau</a>`;
 }else{
-  heroEl.innerHTML=`
-    <a href="auth.html?mode=register" class="btn btn-cy">✨ Rejoindre gratuitement</a>
-    <a href="auth.html?mode=login"    class="btn btn-ghost">🔑 Se connecter</a>
-    <a href="dashboard.html" class="btn-text">👀 Parcourir le catalogue →</a>`;
+  el.innerHTML=`
+    <a href="auth.html?mode=register" class="btn-main btn-primary">Rejoindre gratuitement</a>
+    <a href="auth.html?mode=login"    class="btn-main btn-secondary">Se connecter</a>
+    <a href="digiform.html" class="btn-link">Parcourir le catalogue &#8594;</a>`;
 }
 
-/* ══ STATS LIVE ══ */
-const SB   = 'https://rxhjuetoxyjrairroycb.supabase.co';
-const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q';
-
+/* Stats live */
 async function loadStats(){
   try{
-    const [r1,r2] = await Promise.all([
-      fetch(`${SB}/rest/v1/profiles?select=id`,{headers:{apikey:ANON,Authorization:`Bearer ${ANON}`}}),
-      fetch(`${SB}/rest/v1/products?select=id`,{headers:{apikey:ANON,Authorization:`Bearer ${ANON}`}})
+    const h={apikey:ANON,Authorization:`Bearer ${ANON}`};
+    const [r1,r2]=await Promise.all([
+      fetch(`${SB}/rest/v1/profiles?select=id`,{headers:h}),
+      fetch(`${SB}/rest/v1/products?select=id`,{headers:h})
     ]);
-    const m = await r1.json();
-    const p = await r2.json();
-    if(Array.isArray(m)) document.getElementById('s-members').textContent = m.length>0 ? m.length+'+' : '0';
-    if(Array.isArray(p)) document.getElementById('s-products').textContent = p.length>0 ? p.length+'+' : '0';
+    const m=await r1.json(),p=await r2.json();
+    if(Array.isArray(m)&&m.length>0) document.getElementById('s-members').textContent=m.length+'+';
+    else document.getElementById('s-members').textContent='0';
+    if(Array.isArray(p)&&p.length>0) document.getElementById('s-products').textContent=p.length+'+';
+    else document.getElementById('s-products').textContent='0';
   }catch{}
 }
 loadStats();
