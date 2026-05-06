@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>DIGIFORM · Mon Profil</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#04080F;--s1:#0A1020;--s2:#101828;--s3:#182035;--s4:#1E2D4A;
+  --cyan:#00D4FF;--c2:#0099FF;--gold:#FFB800;--g2:#FF7A00;
+  --green:#00E5A0;--red:#FF4F6A;
+  --tx:#E8EEFF;--t2:#8899BB;--t3:#4B5E80;--t4:#2A3A58;
+}
+html,body{min-height:100vh;background:var(--bg);color:var(--tx);font-family:'Epilogue',sans-serif;overflow-x:hidden;}
+body{max-width:430px;margin:0 auto;}
+@keyframes rise{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+@keyframes pop{from{opacity:0;transform:scale(.93);}to{opacity:1;transform:none;}}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+@keyframes spin{to{transform:rotate(360deg);}}
+.gc{background:linear-gradient(135deg,#fff 10%,#9DCFFF 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.gg{background:linear-gradient(135deg,var(--gold),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+/* HEADER */
+#hdr{position:sticky;top:0;z-index:200;background:rgba(4,8,15,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);padding:11px 15px;display:flex;align-items:center;gap:10px;}
+.hdr-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.25rem;line-height:1;letter-spacing:-.02em;}
+.hdr-sub{font-size:.6rem;color:var(--t3);margin-top:2px;letter-spacing:.07em;text-transform:uppercase;}
+.hico{width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1rem;border:none;cursor:pointer;transition:all .2s;text-decoration:none;}
+
+/* PAGE */
+.pg{padding:14px 13px 100px;animation:rise .38s cubic-bezier(.22,1,.36,1) both;}
+
+/* HERO PROFIL */
+.phero{background:linear-gradient(148deg,#0A1828,#060E1E);border-radius:20px;border:1px solid rgba(0,212,255,.12);padding:22px 16px;margin-bottom:14px;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;overflow:hidden;}
+.phero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(0,212,255,.07),transparent);pointer-events:none;}
+.pav{width:76px;height:76px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:1.9rem;margin-bottom:11px;border:3px solid rgba(0,212,255,.3);position:relative;z-index:1;}
+.pav-edit{position:absolute;bottom:-2px;right:-2px;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--c2));border:2px solid var(--s1);display:flex;align-items:center;justify-content:center;font-size:.7rem;cursor:pointer;z-index:2;}
+.pname{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:3px;z-index:1;}
+.pemail{font-size:.78rem;color:var(--t3);margin-bottom:10px;z-index:1;}
+.pbadges{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;z-index:1;}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;font-size:.68rem;font-weight:700;font-family:'Syne',sans-serif;}
+.b-cy{background:rgba(0,212,255,.12);color:var(--cyan);border:1px solid rgba(0,212,255,.25);}
+.b-go{background:rgba(255,184,0,.12);color:var(--gold);border:1px solid rgba(255,184,0,.25);}
+.b-gr{background:rgba(0,229,160,.12);color:var(--green);border:1px solid rgba(0,229,160,.25);}
+.b-re{background:rgba(255,79,106,.12);color:var(--red);border:1px solid rgba(255,79,106,.25);}
+
+/* ACTIVITY */
+.act-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.act-card{background:var(--s1);border:1px solid var(--s4);border-radius:14px;padding:14px;text-align:center;}
+.act-num{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:3px;}
+.act-lbl{font-size:.65rem;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;}
+
+/* CARDS */
+.card{background:var(--s1);border:1px solid var(--s4);border-radius:16px;padding:15px;margin-bottom:11px;}
+.card-title{font-size:.68rem;font-weight:700;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:7px;}
+.card-title::before{content:'';width:3px;height:13px;border-radius:2px;background:linear-gradient(180deg,var(--cyan),var(--c2));flex-shrink:0;}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--s4);}
+.info-row:last-child{border-bottom:none;padding-bottom:0;}
+.info-lbl{font-size:.78rem;color:var(--t3);}
+.info-val{font-size:.8rem;color:var(--tx);text-align:right;max-width:58%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500;}
+
+/* EDIT SECTION */
+.edit-sec{background:var(--s1);border:1px solid rgba(0,212,255,.18);border-radius:16px;padding:15px;margin-bottom:11px;display:none;flex-direction:column;gap:11px;animation:rise .3s ease;}
+.edit-sec.show{display:flex;}
+.ig{margin-bottom:0;}
+.il{font-size:.68rem;font-weight:700;color:var(--t3);display:block;margin-bottom:5px;letter-spacing:.06em;text-transform:uppercase;}
+.inp{background:var(--s2);border:1.5px solid var(--s4);border-radius:12px;color:var(--tx);font-family:'Epilogue',sans-serif;font-size:.88rem;padding:11px 14px;width:100%;outline:none;transition:border-color .2s,box-shadow .2s;display:block;}
+.inp:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,212,255,.1);}
+.inp::placeholder{color:var(--t3);}
+select.inp{cursor:pointer;-webkit-appearance:none;}
+.edit-row{display:flex;gap:8px;}
+
+/* TOGGLE */
+.tog-row{display:flex;align-items:center;gap:11px;background:var(--s2);padding:12px 13px;border-radius:12px;cursor:pointer;border:1px solid var(--s4);}
+.tog-sw{width:42px;height:22px;border-radius:11px;background:var(--s4);position:relative;transition:background .22s;flex-shrink:0;}
+.tog-sw.on{background:linear-gradient(135deg,var(--cyan),var(--c2));}
+.tog-knob{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .22s;box-shadow:0 2px 5px rgba(0,0,0,.3);}
+.tog-sw.on .tog-knob{left:22px;}
+.tog-lbl{font-size:.83rem;font-weight:500;color:var(--tx);}
+
+/* QUICK LINKS */
+.qlink{display:flex;align-items:center;gap:10px;padding:12px;background:var(--s2);border-radius:12px;border:1px solid var(--s4);text-decoration:none;color:var(--tx);transition:border-color .2s;margin-bottom:7px;}
+.qlink:hover{border-color:rgba(0,212,255,.3);}
+.qlink:last-child{margin-bottom:0;}
+.qlink-ico{font-size:1.3rem;flex-shrink:0;}
+.qlink-title{font-size:.85rem;font-weight:700;}
+.qlink-sub{font-size:.72rem;color:var(--t3);}
+.qlink-arr{margin-left:auto;font-size:.9rem;color:var(--t3);}
+
+/* ADMIN LINK */
+.admin-link{display:flex;align-items:center;gap:11px;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.18);border-radius:14px;padding:14px;margin-bottom:10px;text-decoration:none;transition:all .2s;}
+.admin-link:hover{background:rgba(0,212,255,.12);}
+
+/* BUTTONS */
+.btn{border:none;cursor:pointer;font-family:'Epilogue',sans-serif;font-weight:700;transition:all .2s;display:inline-flex;align-items:center;justify-content:center;gap:6px;}
+.btn:hover:not(:disabled){transform:translateY(-2px);}
+.btn:active:not(:disabled){transform:scale(.96);}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
+.btn-cy{background:linear-gradient(135deg,var(--cyan),var(--c2));color:#04080F;}
+.btn-cy:hover:not(:disabled){box-shadow:0 6px 20px rgba(0,212,255,.4);}
+.btn-ghost{background:rgba(255,255,255,.06);color:var(--tx);border:1px solid rgba(255,255,255,.1);}
+.btn-red{background:rgba(255,79,106,.1);color:var(--red);border:1px solid rgba(255,79,106,.3)!important;}
+.btn-xl{width:100%;padding:13px;border-radius:13px;font-size:.9rem;font-weight:800;}
+.btn-sm{padding:8px 14px;border-radius:10px;font-size:.78rem;}
+.spin-sm{display:inline-block;width:13px;height:13px;border:2px solid rgba(0,0,0,.2);border-top-color:#04080F;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;}
+
+/* NAV */
+#nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(4,8,15,.97);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.06);padding:5px 6px 18px;display:flex;z-index:500;}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:7px 4px;background:none;border:none;color:var(--t3);font-family:'Epilogue',sans-serif;position:relative;transition:color .2s;text-decoration:none;}
+.nb.on{color:var(--cyan);}
+.nb-dot{position:absolute;top:0;left:50%;transform:translateX(-50%);width:18px;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--cyan),var(--c2));display:none;}
+.nb.on .nb-dot{display:block;}
+.nb-ico{font-size:1.25rem;transition:transform .25s cubic-bezier(.34,1.56,.64,1);}
+.nb.on .nb-ico{transform:scale(1.2);}
+.nb-lbl{font-size:.6rem;font-weight:600;letter-spacing:.02em;}
+.nb.on .nb-lbl{font-weight:700;}
+
+/* TOAST */
+#toast{position:fixed;top:72px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:999px;z-index:9999;font-weight:700;font-size:.82rem;box-shadow:0 12px 36px rgba(0,0,0,.6);white-space:nowrap;max-width:90vw;text-align:center;display:none;}
+#toast.show{display:block;animation:rise .3s ease;}
+#toast.ok{background:linear-gradient(135deg,var(--green),#00A070);color:#04080F;}
+#toast.err{background:linear-gradient(135deg,var(--red),#C00);color:#fff;}
+#toast.inf{background:linear-gradient(135deg,var(--cyan),var(--c2));color:#04080F;}
+
+/* EMPTY */
+.empty{display:flex;flex-direction:column;align-items:center;padding:60px 24px;gap:14px;text-align:center;}
+.empty-ico{font-size:3.5rem;animation:float 4s ease-in-out infinite;}
+
+@media(min-width:430px){body{box-shadow:0 0 60px rgba(0,0,0,.6);}#nav,#hdr{max-width:430px;}}
+</style>
+</head>
+<body>
+
+<header id="hdr">
+  <div style="flex:1;min-width:0;">
+    <div class="hdr-logo"><span class="gc">DIGI</span><span class="gg">FORM</span></div>
+    <div class="hdr-sub">MON PROFIL</div>
+  </div>
+  <a href="notifications.html" class="hico" style="background:rgba(255,184,0,.08);border:1px solid rgba(255,184,0,.2);color:var(--gold);" title="Notifications">🔔</a>
+</header>
+
+<div class="pg">
+
+  <!-- GATE -->
+  <div id="gate" style="display:none;">
+    <div class="empty">
+      <div class="empty-ico">👤</div>
+      <div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;">Connectez-vous</div>
+      <div style="font-size:.85rem;color:var(--t2);line-height:1.7;max-width:230px;">Créez un compte ou connectez-vous pour gérer votre profil.</div>
+      <a href="auth.html" class="btn btn-cy btn-sm" style="margin-top:8px;text-decoration:none;">🔑 Se connecter</a>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div id="main" style="display:none;">
+
+    <!-- HERO -->
+    <div class="phero">
+      <div class="pav" id="pav">
+        <div class="pav-edit" onclick="toggleEdit()">✏️</div>
+      </div>
+      <div class="pname" id="pname">—</div>
+      <div class="pemail" id="pemail">—</div>
+      <div class="pbadges" id="pbadges"></div>
+    </div>
+
+    <!-- ACTIVITY -->
+    <div class="act-grid">
+      <div class="act-card">
+        <div class="act-num" id="act-favs" style="color:var(--red);">0</div>
+        <div class="act-lbl">Favoris</div>
+      </div>
+      <div class="act-card">
+        <div class="act-num" id="act-since" style="color:var(--cyan);font-size:.95rem;">—</div>
+        <div class="act-lbl">Membre depuis</div>
+      </div>
+    </div>
+
+    <!-- EDIT SECTION -->
+    <div class="edit-sec" id="edit-sec">
+      <div style="font-size:.82rem;font-weight:700;color:var(--tx);">✏️ Modifier le profil</div>
+      <div class="ig"><label class="il">Nom complet</label><input class="inp" id="e-name" placeholder="Votre nom complet"/></div>
+      <div class="ig"><label class="il">Téléphone WhatsApp</label><input class="inp" id="e-phone" placeholder="+225…" type="tel"/></div>
+      <div class="ig"><label class="il">Profession</label>
+        <select class="inp" id="e-job">
+          <option value="">— Choisir —</option>
+          <option>Marketing Digital</option><option>SEO / SEA</option><option>Réseaux Sociaux</option>
+          <option>Design / Branding</option><option>Développement Web</option><option>E-commerce</option>
+          <option>Content Marketing</option><option>Email Marketing</option><option>Analytics / Data</option>
+          <option>Consultant Digital</option><option>Formation / Coach</option><option>Vidéo / Photo</option>
+          <option>Audio / Podcast</option><option>Autre</option>
+        </select>
+      </div>
+      <div class="tog-row" onclick="toggleVis()">
+        <div class="tog-sw on" id="vis-sw"><div class="tog-knob"></div></div>
+        <span class="tog-lbl">👥 Visible dans le réseau</span>
+      </div>
+      <div class="edit-row">
+        <button class="btn btn-cy" style="flex:1;padding:12px;border-radius:12px;font-size:.88rem;" id="save-btn" onclick="saveProfile()">✅ Sauvegarder</button>
+        <button class="btn btn-ghost" style="flex:1;padding:12px;border-radius:12px;font-size:.88rem;" onclick="toggleEdit()">Annuler</button>
+      </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="card">
+      <div class="card-title">Informations du compte</div>
+      <div class="info-row"><span class="info-lbl">📧 Email</span><span class="info-val" id="i-email">—</span></div>
+      <div class="info-row"><span class="info-lbl">📱 Téléphone</span><span class="info-val" id="i-phone">—</span></div>
+      <div class="info-row"><span class="info-lbl">💼 Profession</span><span class="info-val" id="i-job">—</span></div>
+      <div class="info-row"><span class="info-lbl">👥 Visibilité</span><span class="info-val" id="i-vis">—</span></div>
+      <div class="info-row"><span class="info-lbl">📅 Inscription</span><span class="info-val" id="i-date">—</span></div>
+    </div>
+
+    <!-- QUICK LINKS -->
+    <div class="card">
+      <div class="card-title">Accès rapide</div>
+      <a href="network.html" class="qlink"><div class="qlink-ico">🌐</div><div><div class="qlink-title">Réseau DIGIFORM</div><div class="qlink-sub">Voir les membres et contacts</div></div><div class="qlink-arr">→</div></a>
+      <a href="contacts.html" class="qlink"><div class="qlink-ico">📲</div><div><div class="qlink-title">Exporter les contacts</div><div class="qlink-sub">CSV, VCF, WhatsApp</div></div><div class="qlink-arr">→</div></a>
+      <a href="dashboard.html" class="qlink"><div class="qlink-ico">🛍️</div><div><div class="qlink-title">Catalogue digital</div><div class="qlink-sub">Livres, formations, logiciels</div></div><div class="qlink-arr">→</div></a>
+      <a href="notifications.html" class="qlink"><div class="qlink-ico">🔔</div><div><div class="qlink-title">Notifications</div><div class="qlink-sub">Voir toutes les notifications</div></div><div class="qlink-arr">→</div></a>
+      <a href="blog.html" class="qlink"><div class="qlink-ico">📝</div><div><div class="qlink-title">Blog & Ressources</div><div class="qlink-sub">Articles et conseils</div></div><div class="qlink-arr">→</div></a>
+      <a href="shop.html" class="qlink"><div class="qlink-ico">🛒</div><div><div class="qlink-title">Ma Boutique</div><div class="qlink-sub">Vendre mes produits</div></div><div class="qlink-arr">→</div></a>
+    </div>
+
+    <!-- ADMIN -->
+    <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">
+      <span style="font-size:1.5rem;">⚙️</span>
+      <div><div style="font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:var(--tx);">Panneau Administrateur</div><div style="font-size:.75rem;color:var(--t3);">Gérer produits, membres, notifications</div></div>
+      <div style="margin-left:auto;font-size:.9rem;color:var(--t3);">→</div>
+    </a>
+
+    <!-- LOGOUT -->
+    <button class="btn btn-red btn-xl" onclick="logout()">🚪 Se déconnecter</button>
+
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nb" href="dashboard.html"><div class="nb-dot"></div><span class="nb-ico">🏠</span><span class="nb-lbl">Accueil</span></a>
+  <a class="nb" href="dashboard.html"><div class="nb-dot"></div><span class="nb-ico">🗂️</span><span class="nb-lbl">Catalogue</span></a>
+  <a class="nb" href="network.html"><div class="nb-dot"></div><span class="nb-ico">🌐</span><span class="nb-lbl">Réseau</span></a>
+  <a class="nb on" href="profile.html"><div class="nb-dot"></div><span class="nb-ico">👤</span><span class="nb-lbl">Profil</span></a>
+</nav>
+
+<div id="toast"></div>
+
+<script>
+const SB   = 'https://rxhjuetoxyjrairroycb.supabase.co';
+const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q';
+const COLS = ['#00D4FF','#FFB800','#00E5A0','#9B6DFF','#FF6B35','#FF4F6A'];
+
+function getSess(){try{return JSON.parse(localStorage.getItem('dg_sess')||'null');}catch{return null;}}
+const sess = getSess();
+
+let profile = null, visOn = true, toTm;
+
+function toast(msg,t='ok'){clearTimeout(toTm);const e=document.getElementById('toast');e.textContent=msg;e.className='show '+t;toTm=setTimeout(()=>e.classList.remove('show'),4000);}
+
+function ini(n){return(n||'?').split(' ').map(w=>w[0]).filter(Boolean).slice(0,2).join('').toUpperCase();}
+
+async function init(){
+  if(!sess){document.getElementById('gate').style.display='block';return;}
+  document.getElementById('main').style.display='block';
+  try{
+    const r=await fetch(`${SB}/rest/v1/profiles?id=eq.${sess.user.id}`,{headers:{apikey:ANON,Authorization:`Bearer ${sess.access_token}`}});
+    const d=await r.json();
+    if(Array.isArray(d)&&d[0])profile=d[0];
+  }catch{}
+  render();
+}
+
+function render(){
+  const p=profile||{};
+  const name=p.full_name||sess?.user?.email?.split('@')[0]||'?';
+  const email=sess?.user?.email||'—';
+  const col=COLS[0];
+  const avEl=document.getElementById('pav');
+  // avatar text node (first text inside)
+  avEl.childNodes[0]?.nodeType===3?avEl.childNodes[0].textContent=ini(name):avEl.insertBefore(document.createTextNode(ini(name)),avEl.firstChild);
+  avEl.style.background=`${col}20`;avEl.style.color=col;
+  document.getElementById('pname').textContent=name;
+  document.getElementById('pemail').textContent=email;
+  // badges
+  const badges=[];
+  if(p.is_admin)badges.push('<span class="badge b-cy">⚙️ Admin</span>');
+  if(p.profession)badges.push(`<span class="badge b-go">💼 ${p.profession}</span>`);
+  if(p.show_in_network!==false)badges.push('<span class="badge b-gr">👥 Visible</span>');
+  document.getElementById('pbadges').innerHTML=badges.join('');
+  // activity
+  const favs=[];try{const f=JSON.parse(localStorage.getItem('dg_favs')||'[]');favs.push(...f);}catch{}
+  document.getElementById('act-favs').textContent=favs.length;
+  const since=sess?.user?.created_at?new Date(sess.user.created_at).toLocaleDateString('fr-FR',{month:'short',year:'numeric'}):'—';
+  document.getElementById('act-since').textContent=since;
+  // info rows
+  document.getElementById('i-email').textContent=email;
+  document.getElementById('i-phone').textContent=p.phone||'Non renseigné';
+  document.getElementById('i-job').textContent=p.profession||'Non renseignée';
+  document.getElementById('i-vis').innerHTML=p.show_in_network!==false?'<span style="color:var(--green);">✅ Visible</span>':'<span style="color:var(--red);">🔒 Masqué</span>';
+  document.getElementById('i-date').textContent=since;
+  // edit defaults
+  document.getElementById('e-name').value=p.full_name||'';
+  document.getElementById('e-phone').value=p.phone||'';
+  document.getElementById('e-job').value=p.profession||'';
+  visOn=p.show_in_network!==false;
+  updateVisSw();
+  // admin
+  if(p.is_admin)document.getElementById('admin-link').style.display='flex';
+}
+
+function toggleEdit(){document.getElementById('edit-sec').classList.toggle('show');}
+
+function toggleVis(){visOn=!visOn;updateVisSw();}
+function updateVisSw(){const sw=document.getElementById('vis-sw');sw.classList.toggle('on',visOn);sw.querySelector('.tog-knob').style.left=visOn?'22px':'2px';}
+
+async function saveProfile(){
+  const btn=document.getElementById('save-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spin-sm"></span> Sauvegarde…';
+  const name=document.getElementById('e-name').value.trim();
+  const phone=document.getElementById('e-phone').value.trim();
+  const job=document.getElementById('e-job').value;
+  try{
+    const r=await fetch(`${SB}/rest/v1/profiles?id=eq.${sess.user.id}`,{
+      method:'PATCH',
+      headers:{apikey:ANON,Authorization:`Bearer ${sess.access_token}`,'Content-Type':'application/json',Prefer:'return=representation'},
+      body:JSON.stringify({full_name:name,phone,profession:job,show_in_network:visOn,updated_at:new Date().toISOString()})
+    });
+    btn.disabled=false;btn.textContent='✅ Sauvegarder';
+    if(r.ok){
+      if(!profile)profile={};
+      Object.assign(profile,{full_name:name,phone,profession:job,show_in_network:visOn});
+      toggleEdit();render();
+      toast('✅ Profil mis à jour !','ok');
+    }else{toast(`❌ Erreur ${r.status} — Exécutez le SQL dans Config`,'err');}
+  }catch{btn.disabled=false;btn.textContent='✅ Sauvegarder';toast('❌ Erreur réseau','err');}
+}
+
+function logout(){
+  try{localStorage.removeItem('dg_sess');}catch{}
+  toast('👋 À bientôt !','inf');
+  setTimeout(()=>window.location.replace('index.html'),800);
+}
+
+init();
+</script>
+</body>
+</html>
