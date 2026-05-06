@@ -32,10 +32,12 @@ body{background:#070B17;color:#E8EEFF;font-family:'DM Sans',sans-serif;}
 .inp::placeholder{color:#3A4A6E;}
 textarea.inp{resize:vertical;min-height:80px;}
 select.inp{cursor:pointer;-webkit-appearance:none;}
-.g-c{background:linear-gradient(135deg,#fff 20%,#B0D8FF 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.g-f{background:linear-gradient(135deg,#FFB800,#FF6A00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .lbl{font-size:11px;color:#5B6A90;display:block;margin-bottom:5px;font-weight:600;letter-spacing:.04em;}
 .card{background:#0D1426;border-radius:15px;padding:15px;border:1px solid rgba(255,255,255,.07);margin-bottom:12px;}
+/* LOGO */
+.logo-digi{font-family:'Syne',sans-serif;font-weight:800;line-height:1;background:linear-gradient(135deg,#fff 20%,#B0D8FF 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.logo-form{font-family:'Syne',sans-serif;font-weight:800;line-height:1;background:linear-gradient(135deg,#FFB800,#FF6A00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+/* USER EDIT MODAL */
 #user-edit-overlay{position:fixed;inset:0;background:rgba(7,11,23,.88);backdrop-filter:blur(14px);z-index:9000;display:none;align-items:flex-end;justify-content:center;}
 #user-edit-overlay.show{display:flex;animation:dg-ov .25s;}
 #user-edit-modal{width:100%;max-width:430px;background:#0D1426;border-radius:24px 24px 0 0;border:1px solid rgba(255,255,255,.09);border-bottom:none;padding:22px 18px 40px;animation:dg-bt .3s cubic-bezier(.22,1,.36,1);}
@@ -55,7 +57,6 @@ const ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI
 const TC={livre:'#FFB800',formation:'#FF6B35',logiciel:'#00E5A0',audio:'#B04FFF'};
 const TYPES=[{id:'all',l:'Tout',e:'🌐'},{id:'livre',l:'Livres',e:'📚'},{id:'formation',l:'Formations',e:'🎬'},{id:'logiciel',l:'Logiciels',e:'💻'},{id:'audio',l:'Audio',e:'🎧'}];
 const BUCKETS=['digiform','public','avatars','images','media'];
-
 const S={session:null,profile:null,sub:'add',products:[],allUsers:[],notifs:[],userFilter:'all',sendingNotif:false,saving:false,deleting:null,featured:false,imgUrl:'',imgPreview:'',activeBucket:null};
 
 const tok=()=>S.session?.access_token||ANON;
@@ -64,7 +65,7 @@ async function db(path,opts={}){
     const r=await fetch(`${SB}/rest/v1/${path}`,{...opts,headers:{apikey:ANON,Authorization:`Bearer ${tok()}`,'Content-Type':'application/json',...(['POST','PATCH','PUT'].includes(opts.method)?{Prefer:'return=representation'}:{}),...(opts.headers||{})}});
     let data;try{data=await r.json();}catch{}
     return{ok:r.ok,data,status:r.status};
-  }catch(e){console.error(e);return{ok:false,data:null,status:0};}
+  }catch(e){return{ok:false,data:null,status:0};}
 }
 async function authReq(ep,body){
   try{const r=await fetch(`${SB}/auth/v1/${ep}`,{method:'POST',headers:{'Content-Type':'application/json',apikey:ANON},body:JSON.stringify(body)});return await r.json();}
@@ -81,13 +82,12 @@ async function uploadImg(file){
   for(const b of BUCKETS){const u=await tryUp(file,b,name);if(u){S.activeBucket=b;return u;}}
   return null;
 }
-
 const tc=t=>TC[t]||'#00D4FF';
 const te=t=>TYPES.find(x=>x.id===t)?.e||'📦';
 const tp=p=>Number(p).toLocaleString('fr-FR');
 const esc=s=>(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const fmtDate=d=>new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
-const tLogo=(sz=18)=>`<span style="font-family:'Syne',sans-serif;font-weight:800;font-size:${sz}px;line-height:1;"><span class="g-c">DIGI</span><span class="g-f">FORM</span></span>`;
+const tLogo=(sz=18)=>`<span style="display:inline-flex;align-items:center;"><span class="logo-digi" style="font-size:${sz}px;">DIGI</span><span class="logo-form" style="font-size:${sz}px;">FORM</span></span>`;
 const spin=()=>`<span style="display:inline-block;width:14px;height:14px;border:2px solid rgba(0,0,0,.25);border-top-color:#070B17;border-radius:50%;animation:dg-spin .8s linear infinite;vertical-align:middle;"></span>`;
 const spinW=()=>`<span style="display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.2);border-top-color:#E8EEFF;border-radius:50%;animation:dg-spin .8s linear infinite;vertical-align:middle;"></span>`;
 
@@ -99,54 +99,54 @@ function showToast(msg,type='success'){
   el.innerHTML=`<div style="position:fixed;top:68px;left:50%;transform:translateX(-50%);background:${c[type]||c.info};color:#fff;padding:11px 22px;border-radius:20px;z-index:9999;font-weight:700;font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,.6);animation:dg-fin .3s ease;white-space:nowrap;max-width:92vw;text-align:center;">${msg}</div>`;
   _tt=setTimeout(()=>{el.innerHTML='';},3500);
 }
-
 async function loadProducts(){const{ok,data}=await db('products?order=created_at.desc');if(ok&&Array.isArray(data))S.products=data;}
 async function loadUsers(){const{ok,data}=await db('profiles?order=created_at.desc');if(ok&&Array.isArray(data))S.allUsers=data;}
 async function loadNotifs(){const{ok,data}=await db('notifications?order=created_at.desc');if(ok&&Array.isArray(data))S.notifs=data;}
-
 function tEmpty(msg,sub='',emoji='📭'){return`<div style="display:flex;flex-direction:column;align-items:center;padding:48px 24px;gap:13px;text-align:center;"><div style="font-size:50px;animation:dg-fl 3s ease-in-out infinite;">${emoji}</div><div style="font-size:15px;font-weight:600;color:#8899BB;">${esc(msg)}</div>${sub?`<div style="font-size:12px;color:#3A4A6E;line-height:1.6;">${sub}</div>`:''}</div>`;}
-function tShim(n=3,h=64){return`<div style="display:flex;flex-direction:column;gap:9px;">${Array.from({length:n},()=>`<div class="shim" style="height:${h}px;border-radius:13px;"></div>`).join('')}</div>`;}
 
-/* ── LOGIN ── */
+/* LOGIN */
 function tLogin(err='',busy=false){
-  return`<div class="page" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 22px;">
-    <div style="text-align:center;margin-bottom:28px;">${tLogo(30)}<div style="font-size:12px;color:#5B6A90;margin-top:6px;letter-spacing:.12em;">PANNEAU ADMINISTRATEUR</div></div>
+  return`<div class="page" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 22px;background:#070B17;">
+    <div style="text-align:center;margin-bottom:28px;">
+      <div style="font-size:30px;">${tLogo(30)}</div>
+      <div style="font-size:12px;color:#5B6A90;margin-top:6px;letter-spacing:.12em;text-transform:uppercase;">Panneau Administrateur</div>
+    </div>
     <div style="width:100%;max-width:370px;background:#0D1426;border-radius:24px;padding:26px 22px;border:1px solid rgba(255,255,255,.09);">
       <div style="display:flex;flex-direction:column;gap:12px;">
         <div><label class="lbl">Email</label><input id="l-email" class="inp" type="email" placeholder="votre@email.com" autocomplete="email"></div>
         <div><label class="lbl">Mot de passe</label><input id="l-pwd" class="inp" type="password" placeholder="••••••••"></div>
       </div>
-      ${err?`<div style="margin-top:11px;font-size:12px;color:#FF8080;background:rgba(255,80,80,.08);padding:10px 12px;border-radius:10px;line-height:1.55;text-align:center;">${esc(err)}</div>`:''}
-      <button id="l-submit" class="btn cy" style="width:100%;padding:15px;border-radius:14px;font-size:15px;margin-top:14px;" ${busy?'disabled':''}>${busy?`${spin()} Vérification…`:'🔓 Accéder au panneau'}</button>
+      ${err?`<div style="margin-top:11px;font-size:12px;color:#FF8080;background:rgba(255,80,80,.08);padding:10px 12px;border-radius:10px;text-align:center;">${esc(err)}</div>`:''}
+      <button id="l-submit" class="btn cy" style="width:100%;padding:15px;border-radius:14px;font-size:15px;margin-top:14px;" ${busy?'disabled':''}>${busy?`${spin()} Vérification…`:'Accéder au panneau'}</button>
     </div>
-    <a href="digiform.html" style="color:#5B6A90;font-size:13px;text-decoration:none;margin-top:18px;">← Retour à l'app</a>
+    <a href="dashboard.html" style="color:#5B6A90;font-size:13px;text-decoration:none;margin-top:18px;">← Retour à l'app</a>
   </div>`;
 }
 
 function tHeader(){
-  return`<div style="background:rgba(7,11,23,.98);border-bottom:1px solid rgba(255,255,255,.07);padding:10px 13px;display:flex;align-items:center;gap:11px;flex-shrink:0;">
-    <a href="digiform.html" style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:#E8EEFF;font-size:18px;text-decoration:none;flex-shrink:0;">←</a>
+  return`<div style="background:rgba(7,11,23,.98);border-bottom:1px solid rgba(255,255,255,.07);padding:10px 13px;display:flex;align-items:center;gap:11px;flex-shrink:0;position:sticky;top:0;z-index:100;">
+    <a href="dashboard.html" style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:#E8EEFF;font-size:18px;text-decoration:none;flex-shrink:0;">&#8592;</a>
     <div style="flex:1;min-width:0;">
-      <div>${tLogo(17)}<span style="color:#3A4A6E;font-size:12px;font-family:'DM Sans',sans-serif;margin-left:6px;">Admin</span></div>
+      <div style="display:flex;align-items:center;gap:6px;">${tLogo(17)}<span style="color:#3A4A6E;font-size:12px;font-family:'DM Sans',sans-serif;">Admin</span></div>
       <div style="font-size:10px;color:#00D4FF;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(S.session?.user?.email||'')}</div>
     </div>
-    <button id="hdr-logout" class="btn rb" style="padding:8px 12px;border-radius:10px;font-size:12px;flex-shrink:0;">🚪 Déco</button>
+    <button id="hdr-logout" class="btn rb" style="padding:8px 12px;border-radius:10px;font-size:12px;flex-shrink:0;">Déco</button>
   </div>`;
 }
 
 function tTabs(){
-  const tabs=[{id:'add',l:'➕ Ajouter'},{id:'list',l:'📋 Produits'},{id:'users',l:'👥 Utilisateurs'},{id:'notifs',l:'🔔 Notifs'},{id:'sql',l:'⚙️ Setup'}];
+  const tabs=[{id:'add',l:'Ajouter'},{id:'list',l:'Produits'},{id:'users',l:'Membres'},{id:'notifs',l:'Notifs'},{id:'sql',l:'Setup'}];
   return`<div style="display:flex;gap:5px;overflow-x:auto;padding:8px 11px;flex-shrink:0;background:rgba(7,11,23,.92);border-bottom:1px solid rgba(255,255,255,.04);">
     ${tabs.map(t=>`<button data-sub="${t.id}" class="btn" style="flex-shrink:0;padding:8px 12px;border-radius:10px;font-size:12px;white-space:nowrap;border:none;${S.sub===t.id?'background:linear-gradient(135deg,#00D4FF,#0099FF);color:#070B17;font-weight:700;':'background:rgba(255,255,255,.06);color:#E8EEFF;'}">${t.l}</button>`).join('')}
   </div>`;
 }
 
-/* ── ADD PRODUCT ── */
+/* ADD PRODUCT */
 function tAddProduct(){
   return`<div class="page" style="display:flex;flex-direction:column;gap:13px;">
     <div id="bucket-alert" style="display:none;background:rgba(255,184,0,.1);border:1px solid rgba(255,184,0,.3);border-radius:12px;padding:13px;font-size:12px;color:#FFB800;line-height:1.8;">
-      ⚠️ <strong>Bucket storage introuvable.</strong> Supabase → Storage → <strong>New bucket</strong> → Nom: digiform → ✅ Public
-      <button id="retry-bucket" class="btn" style="margin-top:8px;padding:7px 14px;border-radius:9px;background:rgba(255,184,0,.15);color:#FFB800;border:1px solid rgba(255,184,0,.3);font-size:12px;display:block;width:100%;">🔄 Réessayer</button>
+      Bucket storage introuvable. Supabase → Storage → New bucket → Nom: digiform → Public
+      <button id="retry-bucket" class="btn" style="margin-top:8px;padding:7px 14px;border-radius:9px;background:rgba(255,184,0,.15);color:#FFB800;border:1px solid rgba(255,184,0,.3);font-size:12px;display:block;width:100%;">Réessayer</button>
     </div>
     <div><label class="lbl">Titre *</label><input id="f-title" class="inp" placeholder="Ex: Python pour débutants"></div>
     <div><label class="lbl">Description</label><textarea id="f-desc" class="inp" placeholder="Description détaillée…"></textarea></div>
@@ -154,15 +154,15 @@ function tAddProduct(){
       <div><label class="lbl">Prix (FCFA) *</label><input id="f-price" class="inp" type="number" placeholder="5000"></div>
       <div><label class="lbl">Type *</label>
         <select id="f-type" class="inp">
-          <option value="livre">📚 Livre</option><option value="formation">🎬 Formation</option>
-          <option value="logiciel">💻 Logiciel</option><option value="audio">🎧 Audio</option>
+          <option value="livre">Livre</option><option value="formation">Formation</option>
+          <option value="logiciel">Logiciel</option><option value="audio">Audio</option>
         </select>
       </div>
     </div>
     <div>
       <label class="lbl">Image</label>
-      <div id="img-zone" style="width:100%;height:125px;border-radius:13px;border:2px dashed rgba(255,255,255,.13);background:#131C35;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative;transition:border-color .2s;">
-        ${S.imgPreview?`<img src="${esc(S.imgPreview)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"><div style="position:absolute;inset:0;background:rgba(7,11,23,.55);display:flex;align-items:center;justify-content:center;"><div style="font-size:13px;color:white;font-weight:600;background:rgba(0,0,0,.5);padding:6px 14px;border-radius:20px;">🔄 Changer</div></div>`:`<div style="font-size:30px;margin-bottom:7px;">📷</div><div style="font-size:13px;color:#5B6A90;font-weight:500;">Cliquez pour uploader</div><div style="font-size:11px;color:#3A4A6E;margin-top:3px;">JPG · PNG · WebP</div>`}
+      <div id="img-zone" style="width:100%;height:125px;border-radius:13px;border:2px dashed rgba(255,255,255,.13);background:#131C35;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative;">
+        ${S.imgPreview?`<img src="${esc(S.imgPreview)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"><div style="position:absolute;inset:0;background:rgba(7,11,23,.55);display:flex;align-items:center;justify-content:center;"><div style="font-size:13px;color:white;font-weight:600;background:rgba(0,0,0,.5);padding:6px 14px;border-radius:20px;">Changer</div></div>`:`<div style="font-size:30px;margin-bottom:7px;">📷</div><div style="font-size:13px;color:#5B6A90;">Cliquez pour uploader</div><div style="font-size:11px;color:#3A4A6E;margin-top:3px;">JPG · PNG · WebP</div>`}
       </div>
       <input type="file" id="img-file" accept="image/*" style="display:none;">
       <input id="f-imgurl" class="inp" style="margin-top:7px;" placeholder="Ou collez une URL d'image…" value="${esc(S.imgUrl.startsWith('http')?S.imgUrl:'')}">
@@ -173,35 +173,32 @@ function tAddProduct(){
       <div id="feat-tog" style="width:44px;height:24px;border-radius:12px;background:${S.featured?'linear-gradient(135deg,#00D4FF,#0099FF)':'#1E2D55'};position:relative;transition:background .22s;flex-shrink:0;">
         <div style="position:absolute;top:2px;left:${S.featured?22:2}px;width:20px;height:20px;border-radius:50%;background:white;transition:left .22s;box-shadow:0 2px 6px rgba(0,0,0,.35);"></div>
       </div>
-      <span style="font-size:13px;font-weight:500;color:#E8EEFF;">🔥 Mettre en vedette (bannière accueil)</span>
+      <span style="font-size:13px;font-weight:500;color:#E8EEFF;">Mettre en vedette (bannière accueil)</span>
     </div>
     <button id="f-save" class="btn cy" style="padding:15px;border-radius:13px;font-size:15px;margin-top:4px;" ${S.saving?'disabled':''}>
-      ${S.saving?`${spin()} Publication…`:'✅ Publier le produit'}
+      ${S.saving?`${spin()} Publication…`:'Publier le produit'}
     </button>
   </div>`;
 }
 
-/* ── PRODUCTS LIST ── */
+/* PRODUCTS LIST */
 function tProductsList(){
-  if(!S.products.length)return tEmpty('Aucun produit publié','Ajoutez des produits via ➕','📭');
+  if(!S.products.length)return tEmpty('Aucun produit publié','Ajoutez des produits via Ajouter','📭');
   return`<div class="page" style="display:flex;flex-direction:column;gap:9px;">
     <div style="font-size:12px;color:#5B6A90;margin-bottom:4px;">${S.products.length} produit(s)</div>
-    ${S.products.map(p=>{
-      const c=tc(p.type);
-      return`<div style="background:#0D1426;border-radius:13px;padding:12px;border:1px solid rgba(255,255,255,.06);display:flex;gap:11px;align-items:center;">
+    ${S.products.map(p=>{const c=tc(p.type);return`<div style="background:#0D1426;border-radius:13px;padding:12px;border:1px solid rgba(255,255,255,.06);display:flex;gap:11px;align-items:center;">
         <div style="width:52px;height:52px;border-radius:10px;flex-shrink:0;${p.image_url?`background:url(${esc(p.image_url)}) center/cover;`:`background:${c}18;`}display:flex;align-items:center;justify-content:center;font-size:22px;">${!p.image_url?te(p.type):''}</div>
         <div style="flex:1;min-width:0;">
           <div style="font-size:13px;font-weight:700;color:#E8EEFF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(p.title)}</div>
           <div style="font-size:12px;color:#FFB800;font-weight:600;margin-top:2px;">${tp(p.price)} FCFA</div>
-          <div style="font-size:10px;color:${c};margin-top:2px;">${te(p.type)} ${esc(p.type||'')}${p.featured?' · 🔥':''}</div>
+          <div style="font-size:10px;color:${c};margin-top:2px;">${te(p.type)} ${esc(p.type||'')}${p.featured?' · Vedette':''}</div>
         </div>
         <button data-del="${p.id}" class="btn rb" style="padding:8px 11px;border-radius:9px;font-size:14px;flex-shrink:0;" ${S.deleting===p.id?'disabled':''}>${S.deleting===p.id?spinW():'🗑️'}</button>
-      </div>`;
-    }).join('')}
+      </div>`;}).join('')}
   </div>`;
 }
 
-/* ── USERS ── */
+/* USERS */
 function tUsers(){
   const admins=S.allUsers.filter(u=>u.is_admin).length;
   const q=(document.getElementById('user-search-inp')?.value||'').toLowerCase();
@@ -211,40 +208,20 @@ function tUsers(){
     return mq&&mf;
   });
   return`<div class="page" style="display:flex;flex-direction:column;gap:11px;">
-    <!-- Stats -->
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;">
-      <div style="background:#0D1426;border-radius:12px;padding:12px 8px;border:1px solid rgba(255,255,255,.07);text-align:center;">
-        <div style="font-size:22px;font-weight:800;font-family:'Syne',sans-serif;">${S.allUsers.length}</div>
-        <div style="font-size:10px;color:#5B6A90;margin-top:2px;">Total</div>
-      </div>
-      <div style="background:#0D1426;border-radius:12px;padding:12px 8px;border:1px solid rgba(0,212,255,.2);text-align:center;">
-        <div style="font-size:22px;font-weight:800;font-family:'Syne',sans-serif;color:#00D4FF;">${admins}</div>
-        <div style="font-size:10px;color:#5B6A90;margin-top:2px;">Admins</div>
-      </div>
-      <div style="background:#0D1426;border-radius:12px;padding:12px 8px;border:1px solid rgba(0,229,160,.2);text-align:center;">
-        <div style="font-size:22px;font-weight:800;font-family:'Syne',sans-serif;color:#00E5A0;">${S.allUsers.length-admins}</div>
-        <div style="font-size:10px;color:#5B6A90;margin-top:2px;">Membres</div>
-      </div>
+      <div style="background:#0D1426;border-radius:12px;padding:12px 8px;border:1px solid rgba(255,255,255,.07);text-align:center;"><div style="font-size:22px;font-weight:800;font-family:'Syne',sans-serif;">${S.allUsers.length}</div><div style="font-size:10px;color:#5B6A90;margin-top:2px;">Total</div></div>
+      <div style="background:#0D1426;border-radius:12px;padding:12px 8px;border:1px solid rgba(0,212,255,.2);text-align:center;"><div style="font-size:22px;font-weight:800;font-family:'Syne',sans-serif;color:#00D4FF;">${admins}</div><div style="font-size:10px;color:#5B6A90;margin-top:2px;">Admins</div></div>
+      <div style="background:#0D1426;border-radius:12px;padding:12px 8px;border:1px solid rgba(0,229,160,.2);text-align:center;"><div style="font-size:22px;font-weight:800;font-family:'Syne',sans-serif;color:#00E5A0;">${S.allUsers.length-admins}</div><div style="font-size:10px;color:#5B6A90;margin-top:2px;">Membres</div></div>
     </div>
-    <!-- Recherche -->
-    <div style="position:relative;">
-      <span style="position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;">🔍</span>
-      <input id="user-search-inp" class="inp" style="padding-left:38px;" placeholder="Nom, email, téléphone…" oninput="filterAndRender()">
-    </div>
-    <!-- Filtres -->
+    <div style="position:relative;"><span style="position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;">🔍</span><input id="user-search-inp" class="inp" style="padding-left:38px;" placeholder="Nom, email, téléphone…" oninput="filterAndRender()"></div>
     <div style="display:flex;gap:7px;">
       ${[['all','Tous','#00D4FF','rgba(0,212,255,.15)','rgba(0,212,255,.3)'],['admin','Admins','#00E5A0','rgba(0,229,160,.15)','rgba(0,229,160,.3)'],['user','Membres','#FFB800','rgba(255,184,0,.15)','rgba(255,184,0,.3)']].map(([f,l,c,bg,bd])=>`
         <button onclick="setUF('${f}')" class="btn" style="flex:1;padding:8px 0;border-radius:10px;font-size:12px;border:none;${S.userFilter===f?`background:${bg};color:${c};border:1px solid ${bd}!important;font-weight:700;`:'background:rgba(255,255,255,.05);color:#5B6A90;'}">${l}</button>`).join('')}
     </div>
-    <!-- Promouvoir -->
     <div class="card" style="border:1px solid rgba(0,212,255,.15);">
-      <div style="font-size:12px;font-weight:700;color:#E8EEFF;margin-bottom:9px;">➕ Promouvoir un utilisateur admin</div>
-      <div style="display:flex;gap:8px;">
-        <input id="promote-inp" class="inp" type="email" placeholder="email@exemple.com" style="flex:1;padding:10px 13px;font-size:13px;">
-        <button id="promote-btn" class="btn cy" style="padding:10px 14px;border-radius:11px;font-size:13px;flex-shrink:0;">✅</button>
-      </div>
+      <div style="font-size:12px;font-weight:700;color:#E8EEFF;margin-bottom:9px;">Promouvoir un utilisateur admin</div>
+      <div style="display:flex;gap:8px;"><input id="promote-inp" class="inp" type="email" placeholder="email@exemple.com" style="flex:1;padding:10px 13px;font-size:13px;"><button id="promote-btn" class="btn cy" style="padding:10px 14px;border-radius:11px;font-size:13px;flex-shrink:0;">OK</button></div>
     </div>
-    <!-- Liste -->
     <div style="font-size:12px;color:#5B6A90;">${filtered.length} résultat(s)</div>
     ${filtered.length===0?tEmpty('Aucun résultat','','🔎'):filtered.map(u=>{
       const ini=(u.full_name||u.email||'?').charAt(0).toUpperCase();
@@ -252,53 +229,45 @@ function tUsers(){
       return`<div style="background:#0D1426;border-radius:14px;padding:12px;border:1px solid ${u.is_admin?'rgba(0,212,255,.2)':'rgba(255,255,255,.06)'};display:flex;gap:11px;align-items:center;">
         <div style="width:44px;height:44px;border-radius:50%;background:${u.is_admin?'linear-gradient(135deg,#00D4FF,#0099FF)':'linear-gradient(135deg,#1E2D55,#0D1A3A)'};border:2px solid ${u.is_admin?'rgba(0,212,255,.4)':'rgba(255,255,255,.08)'};display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:${u.is_admin?'#070B17':'#00D4FF'};font-family:'Syne',sans-serif;flex-shrink:0;">${ini}</div>
         <div style="flex:1;min-width:0;">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px;">
-            <span style="font-size:13px;font-weight:700;color:#E8EEFF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(u.full_name||'Sans nom')}</span>
-            ${u.is_admin?'<span style="font-size:9px;font-weight:800;color:#00D4FF;background:rgba(0,212,255,.12);padding:2px 6px;border-radius:5px;flex-shrink:0;">ADMIN</span>':''}
-          </div>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px;"><span style="font-size:13px;font-weight:700;color:#E8EEFF;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(u.full_name||'Sans nom')}</span>${u.is_admin?'<span style="font-size:9px;font-weight:800;color:#00D4FF;background:rgba(0,212,255,.12);padding:2px 6px;border-radius:5px;flex-shrink:0;">ADMIN</span>':''}</div>
           <div style="font-size:11px;color:#5B6A90;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(u.email||'')}</div>
-          <div style="font-size:10px;color:#3A4A6E;margin-top:2px;">${u.phone?'📱 '+esc(u.phone)+' · ':''}📅 ${since}</div>
+          <div style="font-size:10px;color:#3A4A6E;margin-top:2px;">${u.phone?'📱 '+esc(u.phone)+' · ':''}${u.profession?esc(u.profession)+' · ':''}📅 ${since}</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;">
           <button data-edit="${u.id}" class="btn" style="padding:6px 10px;border-radius:8px;font-size:12px;background:rgba(255,255,255,.07);color:#E8EEFF;border:1px solid rgba(255,255,255,.1);">✏️</button>
-          <button data-toggle="${u.id}" data-is="${u.is_admin?1:0}" class="btn" style="padding:6px 10px;border-radius:8px;font-size:11px;background:${u.is_admin?'rgba(255,80,80,.1)':'rgba(0,212,255,.1)'};color:${u.is_admin?'#FF5050':'#00D4FF'};border:1px solid ${u.is_admin?'rgba(255,80,80,.22)':'rgba(0,212,255,.22)'};">${u.is_admin?'−Adm':'+Adm'}</button>
+          <button data-toggle="${u.id}" data-is="${u.is_admin?1:0}" class="btn" style="padding:6px 10px;border-radius:8px;font-size:11px;background:${u.is_admin?'rgba(255,80,80,.1)':'rgba(0,212,255,.1)'};color:${u.is_admin?'#FF5050':'#00D4FF'};border:1px solid ${u.is_admin?'rgba(255,80,80,.22)':'rgba(0,212,255,.22)'};">${u.is_admin?'-Adm':'+Adm'}</button>
         </div>
-      </div>`;
-    }).join('')}
+      </div>`;}).join('')}
   </div>`;
 }
 
-/* ── NOTIFS ── */
+/* NOTIFS */
 function tNotifs(){
   return`<div class="page" style="display:flex;flex-direction:column;gap:14px;">
     <div class="card" style="border:1px solid rgba(0,212,255,.12);">
-      <div style="font-size:14px;font-weight:700;color:#E8EEFF;margin-bottom:13px;">📣 Envoyer à tous les utilisateurs</div>
+      <div style="font-size:14px;font-weight:700;color:#E8EEFF;margin-bottom:13px;">Envoyer à tous les membres</div>
       <div style="display:flex;flex-direction:column;gap:10px;">
         <div><label class="lbl">Titre *</label><input id="n-title" class="inp" placeholder="Ex: Nouvelle formation disponible !"></div>
         <div><label class="lbl">Message *</label><textarea id="n-body" class="inp" placeholder="Contenu de la notification…"></textarea></div>
-        <button id="n-send" class="btn cy" style="padding:13px;border-radius:11px;font-size:14px;">📣 Envoyer à tous</button>
+        <button id="n-send" class="btn cy" style="padding:13px;border-radius:11px;font-size:14px;">Envoyer à tous</button>
         <div id="n-status" style="display:none;font-size:12px;text-align:center;padding:9px;border-radius:10px;"></div>
       </div>
     </div>
     <div style="font-size:13px;font-weight:700;color:#5B6A90;" id="notif-hist-lbl">Historique (${S.notifs.length})</div>
-    ${S.notifs.length===0?tEmpty('Aucune notification envoyée','','🔕'):S.notifs.map(n=>`
-      <div class="card">
-        <div style="font-size:13px;font-weight:700;color:#E8EEFF;margin-bottom:4px;">${esc(n.title)}</div>
-        <div style="font-size:12px;color:#8899BB;line-height:1.65;margin-bottom:6px;">${esc(n.body)}</div>
-        <div style="font-size:10px;color:#3A4A6E;">${fmtDate(n.created_at)}</div>
-      </div>`).join('')}
+    ${S.notifs.length===0?tEmpty('Aucune notification envoyée','','🔕'):S.notifs.map(n=>`<div class="card"><div style="font-size:13px;font-weight:700;color:#E8EEFF;margin-bottom:4px;">${esc(n.title)}</div><div style="font-size:12px;color:#8899BB;line-height:1.65;margin-bottom:6px;">${esc(n.body)}</div><div style="font-size:10px;color:#3A4A6E;">${fmtDate(n.created_at)}</div></div>`).join('')}
   </div>`;
 }
 
-/* ── SQL ── */
-const SQL=`-- ================================================
---  DIGIFORM — SQL COMPLET + FIX
---  Supabase > SQL Editor > Exécuter
--- ================================================
+/* SQL */
+const SQL_SETUP=`-- DIGIFORM SQL SETUP
+-- Supabase > SQL Editor > Exécuter
+
 CREATE TABLE IF NOT EXISTS public.profiles (
   id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
   email TEXT DEFAULT '', full_name TEXT DEFAULT '',
-  phone TEXT DEFAULT '', is_admin BOOLEAN DEFAULT false,
+  phone TEXT DEFAULT '', profession TEXT DEFAULT '',
+  show_in_network BOOLEAN DEFAULT true,
+  is_admin BOOLEAN DEFAULT false,
   created_at TIMESTAMPTZ DEFAULT NOW(), updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 CREATE TABLE IF NOT EXISTS public.products (
@@ -321,31 +290,30 @@ CREATE TABLE IF NOT EXISTS public.notification_reads (
   read_at TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(user_id, notification_id)
 );
--- ✅ FIX "Erreur mise à jour" + notifications + gestion users
-ALTER TABLE public.profiles           DISABLE ROW LEVEL SECURITY;
-ALTER TABLE public.products           DISABLE ROW LEVEL SECURITY;
-ALTER TABLE public.notifications      DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.profiles DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.products DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.notifications DISABLE ROW LEVEL SECURITY;
 ALTER TABLE public.notification_reads DISABLE ROW LEVEL SECURITY;
-GRANT ALL ON public.profiles           TO anon, authenticated;
-GRANT ALL ON public.products           TO anon, authenticated;
-GRANT ALL ON public.notifications      TO anon, authenticated;
+GRANT ALL ON public.profiles TO anon, authenticated;
+GRANT ALL ON public.products TO anon, authenticated;
+GRANT ALL ON public.notifications TO anon, authenticated;
 GRANT ALL ON public.notification_reads TO anon, authenticated;
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER LANGUAGE plpgsql SECURITY DEFINER AS $$
 BEGIN
-  INSERT INTO public.profiles (id, email, full_name)
-  VALUES (NEW.id, NEW.email, COALESCE(NEW.raw_user_meta_data->>'full_name',''))
+  INSERT INTO public.profiles (id, email, full_name, phone, profession, show_in_network)
+  VALUES (NEW.id, NEW.email,
+    COALESCE(NEW.raw_user_meta_data->>'full_name',''),
+    COALESCE(NEW.raw_user_meta_data->>'phone',''),
+    COALESCE(NEW.raw_user_meta_data->>'profession',''),
+    COALESCE((NEW.raw_user_meta_data->>'show_in_network')::boolean, true))
   ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email;
   RETURN NEW;
-END;
-$$;
+END;$$;
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
-CREATE TRIGGER on_auth_user_created
-  AFTER INSERT ON auth.users FOR EACH ROW
-  EXECUTE PROCEDURE public.handle_new_user();
+CREATE TRIGGER on_auth_user_created AFTER INSERT ON auth.users FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
 INSERT INTO storage.buckets (id,name,public,file_size_limit,allowed_mime_types)
-VALUES ('digiform','digiform',true,5242880,
-  ARRAY['image/jpeg','image/png','image/webp','image/gif','image/svg+xml'])
+VALUES ('digiform','digiform',true,5242880,ARRAY['image/jpeg','image/png','image/webp','image/gif','image/svg+xml'])
 ON CONFLICT (id) DO UPDATE SET public=true;
 DROP POLICY IF EXISTS "storage_select" ON storage.objects;
 DROP POLICY IF EXISTS "storage_insert" ON storage.objects;
@@ -353,31 +321,30 @@ DROP POLICY IF EXISTS "storage_delete" ON storage.objects;
 CREATE POLICY "storage_select" ON storage.objects FOR SELECT USING (bucket_id='digiform');
 CREATE POLICY "storage_insert" ON storage.objects FOR INSERT WITH CHECK (bucket_id='digiform');
 CREATE POLICY "storage_delete" ON storage.objects FOR DELETE USING (bucket_id='digiform');
--- DEVENIR ADMIN :
--- UPDATE public.profiles SET is_admin=true WHERE email='votre@email.com';`;
+-- DEVENIR ADMIN : UPDATE public.profiles SET is_admin=true WHERE email='votre@email.com';`;
 
 function tSql(){
   return`<div class="page" style="display:flex;flex-direction:column;gap:14px;">
     <div class="card" style="border:1px solid rgba(0,212,255,.15);">
-      <div style="font-size:14px;font-weight:700;color:#E8EEFF;margin-bottom:12px;">🔧 Configuration</div>
+      <div style="font-size:14px;font-weight:700;color:#E8EEFF;margin-bottom:12px;">Configuration Supabase</div>
       <div style="font-size:13px;color:#8899BB;line-height:2.3;">
         <strong style="color:#00D4FF;">1.</strong> SQL Editor → Copier → Exécuter<br>
         <strong style="color:#FFB800;">2.</strong> S'inscrire sur l'app<br>
-        <strong style="color:#FFB800;">3.</strong> Exécuter UPDATE admin<br>
-        <strong style="color:#00E5A0;">4.</strong> Recharger → ✅
+        <strong style="color:#FFB800;">3.</strong> UPDATE admin (email)<br>
+        <strong style="color:#00E5A0;">4.</strong> Recharger → OK
       </div>
     </div>
     <div style="background:#0D1426;border-radius:14px;overflow:hidden;border:1px solid #1E2D55;">
       <div style="padding:10px 13px;background:#131C35;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.06);">
         <span style="font-size:11px;color:#5B6A90;font-family:monospace;">SQL Complet</span>
-        <button id="copy-sql" class="btn cy" style="padding:6px 13px;border-radius:8px;font-size:12px;">📋 Copier</button>
+        <button id="copy-sql" class="btn cy" style="padding:6px 13px;border-radius:8px;font-size:12px;">Copier</button>
       </div>
-      <pre style="padding:13px;font-size:10px;color:#8899BB;overflow:auto;line-height:1.9;font-family:monospace;margin:0;max-height:360px;white-space:pre-wrap;">${esc(SQL)}</pre>
+      <pre style="padding:13px;font-size:10px;color:#8899BB;overflow:auto;line-height:1.9;font-family:monospace;margin:0;max-height:360px;white-space:pre-wrap;">${esc(SQL_SETUP)}</pre>
     </div>
   </div>`;
 }
 
-/* ── RENDER ── */
+/* RENDER */
 function renderView(){
   const el=document.getElementById('view');if(!el)return;
   if(!S.session){el.innerHTML=tLogin();bindLogin();return;}
@@ -404,7 +371,7 @@ function renderContent(){
 }
 function filterAndRender(){renderContent();}
 
-/* ── BIND LOGIN ── */
+/* BIND LOGIN */
 function bindLogin(){
   const go=async()=>{
     const email=(document.getElementById('l-email')?.value||'').trim();
@@ -418,7 +385,7 @@ function bindLogin(){
       const{ok,data}=await db(`profiles?id=eq.${S.session.user.id}`);
       if(ok&&Array.isArray(data)&&data[0]){
         S.profile=data[0];
-        if(!S.profile.is_admin){S.session=null;localStorage.removeItem('dg_adm_sess');rerender('❌ Accès refusé — ce compte n\'est pas administrateur');return;}
+        if(!S.profile.is_admin){S.session=null;localStorage.removeItem('dg_adm_sess');rerender('Accès refusé — ce compte n\'est pas administrateur');return;}
       }
       await Promise.all([loadProducts(),loadUsers(),loadNotifs()]);
       renderView();
@@ -433,154 +400,107 @@ function bindLogin(){
   document.getElementById('l-pwd')?.addEventListener('keydown',e=>{if(e.key==='Enter')go();});
 }
 
-/* ── BIND PANEL ── */
+/* BIND PANEL */
 function bindPanel(){
   document.getElementById('hdr-logout')?.addEventListener('click',()=>{
     S.session=null;S.profile=null;S.activeBucket=null;localStorage.removeItem('dg_adm_sess');renderView();
   });
   document.querySelectorAll('[data-sub]').forEach(el=>el.addEventListener('click',async()=>{
     S.sub=el.dataset.sub;
-    if(S.sub==='users'){await loadUsers();}
-    if(S.sub==='notifs'){await loadNotifs();}
+    if(S.sub==='users')await loadUsers();
+    if(S.sub==='notifs')await loadNotifs();
     renderContent();
   }));
   bindContent();
 }
 
-/* ── BIND CONTENT ── */
+/* BIND CONTENT */
 function bindContent(){
-
   /* ADD */
   if(S.sub==='add'){
     document.getElementById('img-zone')?.addEventListener('click',()=>document.getElementById('img-file')?.click());
     document.getElementById('img-file')?.addEventListener('change',async e=>{
       const file=e.target.files?.[0];if(!file)return;
       const reader=new FileReader();
-      reader.onload=ev=>{
-        S.imgPreview=ev.target.result;
-        const iz=document.getElementById('img-zone');if(!iz)return;
-        iz.innerHTML=`<img src="${ev.target.result}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"><div style="position:absolute;inset:0;background:rgba(7,11,23,.55);display:flex;align-items:center;justify-content:center;"><div style="font-size:13px;color:white;font-weight:600;background:rgba(0,0,0,.5);padding:6px 14px;border-radius:20px;">⏳ Upload…</div></div>`;
-      };
+      reader.onload=ev=>{S.imgPreview=ev.target.result;const iz=document.getElementById('img-zone');if(!iz)return;iz.innerHTML=`<img src="${ev.target.result}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"><div style="position:absolute;inset:0;background:rgba(7,11,23,.55);display:flex;align-items:center;justify-content:center;"><div style="font-size:13px;color:white;font-weight:600;background:rgba(0,0,0,.5);padding:6px 14px;border-radius:20px;">Upload…</div></div>`;};
       reader.readAsDataURL(file);
       const url=await uploadImg(file);
       const iz=document.getElementById('img-zone');
-      if(url){
-        S.imgUrl=url;S.imgPreview=url;
-        const inp=document.getElementById('f-imgurl');if(inp)inp.value=url;
-        if(iz)iz.innerHTML=`<img src="${url}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"><div style="position:absolute;inset:0;background:rgba(7,11,23,.55);display:flex;align-items:center;justify-content:center;"><div style="font-size:13px;color:white;font-weight:600;background:rgba(0,0,0,.5);padding:6px 14px;border-radius:20px;">✅ Cliquer pour changer</div></div>`;
-        showToast('✅ Image uploadée !');
-        const al=document.getElementById('bucket-alert');if(al)al.style.display='none';
-      } else {
-        S.imgPreview='';S.imgUrl='';
-        if(iz)iz.innerHTML=`<div style="font-size:30px;margin-bottom:7px;">❌</div><div style="font-size:13px;color:#FF5050;font-weight:600;">Upload échoué</div><div style="font-size:11px;color:#3A4A6E;margin-top:3px;">Voir ⚙️ Setup</div>`;
-        showToast('❌ Upload échoué — voir ⚙️ Setup','error');
-        const al=document.getElementById('bucket-alert');if(al)al.style.display='block';
-      }
+      if(url){S.imgUrl=url;S.imgPreview=url;const inp=document.getElementById('f-imgurl');if(inp)inp.value=url;if(iz)iz.innerHTML=`<img src="${url}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"><div style="position:absolute;inset:0;background:rgba(7,11,23,.55);display:flex;align-items:center;justify-content:center;"><div style="font-size:13px;color:white;font-weight:600;background:rgba(0,0,0,.5);padding:6px 14px;border-radius:20px;">Changer</div></div>`;showToast('Image uploadée !');const al=document.getElementById('bucket-alert');if(al)al.style.display='none';}
+      else{S.imgPreview='';S.imgUrl='';if(iz)iz.innerHTML=`<div style="font-size:30px;margin-bottom:7px;">❌</div><div style="font-size:13px;color:#FF5050;font-weight:600;">Upload échoué</div>`;showToast('Upload échoué — voir Setup','error');const al=document.getElementById('bucket-alert');if(al)al.style.display='block';}
     });
     document.getElementById('retry-bucket')?.addEventListener('click',()=>{S.activeBucket=null;document.getElementById('img-file')?.click();});
     document.getElementById('f-imgurl')?.addEventListener('input',e=>{S.imgUrl=e.target.value;S.imgPreview=e.target.value;});
     document.getElementById('feat-row')?.addEventListener('click',()=>{
-      S.featured=!S.featured;
-      const tog=document.getElementById('feat-tog');if(!tog)return;
+      S.featured=!S.featured;const tog=document.getElementById('feat-tog');if(!tog)return;
       tog.style.background=S.featured?'linear-gradient(135deg,#00D4FF,#0099FF)':'#1E2D55';
       tog.firstElementChild.style.left=S.featured?'22px':'2px';
     });
     document.getElementById('f-save')?.addEventListener('click',async()=>{
-      const title=(document.getElementById('f-title')?.value||'').trim();
-      const price=document.getElementById('f-price')?.value||'';
-      if(!title||!price){showToast('⚠️ Titre et prix requis','error');return;}
-      const btn=document.getElementById('f-save');S.saving=true;
-      if(btn){btn.disabled=true;btn.innerHTML=`${spin()} Publication…`;}
+      const title=(document.getElementById('f-title')?.value||'').trim();const price=document.getElementById('f-price')?.value||'';
+      if(!title||!price){showToast('Titre et prix requis','error');return;}
+      const btn=document.getElementById('f-save');S.saving=true;if(btn){btn.disabled=true;btn.innerHTML=`${spin()} Publication…`;}
       const payload={title,description:(document.getElementById('f-desc')?.value||'').trim(),price:Number(price),type:document.getElementById('f-type')?.value||'livre',image_url:S.imgUrl||(document.getElementById('f-imgurl')?.value||'').trim(),whatsapp_number:(document.getElementById('f-wa')?.value||'').trim(),featured:S.featured};
       const{ok,status}=await db('products',{method:'POST',body:JSON.stringify(payload)});
       S.saving=false;
-      if(ok){S.imgUrl='';S.imgPreview='';S.featured=false;await loadProducts();showToast('✅ Produit publié !');renderContent();}
-      else{showToast(`❌ Erreur ${status} — voir ⚙️ Setup`,'error');if(btn){btn.disabled=false;btn.textContent='✅ Publier le produit';}}
+      if(ok){S.imgUrl='';S.imgPreview='';S.featured=false;await loadProducts();showToast('Produit publié !');renderContent();}
+      else{showToast(`Erreur ${status} — voir Setup`,'error');if(btn){btn.disabled=false;btn.textContent='Publier le produit';}}
     });
   }
-
   /* LIST */
   if(S.sub==='list'){
     document.querySelectorAll('[data-del]').forEach(el=>el.addEventListener('click',async()=>{
       const id=el.dataset.del;S.deleting=id;el.disabled=true;el.innerHTML=spinW();
-      const{ok}=await db(`products?id=eq.${id}`,{method:'DELETE'});
-      S.deleting=null;
-      if(ok){await loadProducts();showToast('🗑️ Produit supprimé');renderContent();}
-      else{showToast('❌ Erreur suppression','error');el.disabled=false;el.textContent='🗑️';}
+      const{ok}=await db(`products?id=eq.${id}`,{method:'DELETE'});S.deleting=null;
+      if(ok){await loadProducts();showToast('Produit supprimé');renderContent();}
+      else{showToast('Erreur suppression','error');el.disabled=false;el.textContent='🗑️';}
     }));
   }
-
   /* USERS */
   if(S.sub==='users'){
-    // Filtres
-    document.querySelectorAll('[onclick^="setUF"]').forEach(()=>{});
     window.setUF=f=>{S.userFilter=f;renderContent();};
-    // Promouvoir
     document.getElementById('promote-btn')?.addEventListener('click',async()=>{
-      const email=(document.getElementById('promote-inp')?.value||'').trim().toLowerCase();
-      if(!email){showToast('⚠️ Email requis','error');return;}
+      const email=(document.getElementById('promote-inp')?.value||'').trim().toLowerCase();if(!email){showToast('Email requis','error');return;}
       const btn=document.getElementById('promote-btn');btn.disabled=true;btn.innerHTML=spin();
       const{ok,data}=await db(`profiles?email=eq.${encodeURIComponent(email)}`);
       if(ok&&Array.isArray(data)&&data[0]){
-        if(data[0].is_admin){showToast('ℹ️ Déjà admin','warning');}
-        else{
-          const r=await db(`profiles?id=eq.${data[0].id}`,{method:'PATCH',body:JSON.stringify({is_admin:true})});
-          if(r.ok){const inp=document.getElementById('promote-inp');if(inp)inp.value='';await loadUsers();showToast(`✅ ${email} est maintenant admin !`);btn.disabled=false;btn.textContent='✅';renderContent();return;}
-          else showToast(`❌ Erreur ${r.status} — exécutez le SQL dans ⚙️ Setup`,'error');
-        }
-      }else showToast(`❌ Aucun compte pour ${email}`,'error');
-      btn.disabled=false;btn.textContent='✅';
+        if(data[0].is_admin){showToast('Déjà admin','warning');}
+        else{const r=await db(`profiles?id=eq.${data[0].id}`,{method:'PATCH',body:JSON.stringify({is_admin:true})});if(r.ok){const inp=document.getElementById('promote-inp');if(inp)inp.value='';await loadUsers();showToast(`${email} est maintenant admin !`);btn.disabled=false;btn.textContent='OK';renderContent();return;}else showToast(`Erreur ${r.status}`);}
+      }else showToast(`Aucun compte pour ${email}`,'error');
+      btn.disabled=false;btn.textContent='OK';
     });
-    // Toggle admin
     document.querySelectorAll('[data-toggle]').forEach(el=>el.addEventListener('click',async()=>{
-      const uid=el.dataset.toggle;const isAdmin=el.dataset.is==='1';
-      el.disabled=true;el.innerHTML=spinW();
+      const uid=el.dataset.toggle;const isAdmin=el.dataset.is==='1';el.disabled=true;el.innerHTML=spinW();
       const{ok,status}=await db(`profiles?id=eq.${uid}`,{method:'PATCH',body:JSON.stringify({is_admin:!isAdmin})});
-      if(ok){const u=S.allUsers.find(x=>x.id===uid);if(u)u.is_admin=!isAdmin;showToast('✅ Rôle mis à jour');renderContent();}
-      else{showToast(`❌ Erreur ${status} — SQL Fix dans ⚙️ Setup`,'error');el.disabled=false;el.textContent=isAdmin?'−Adm':'+Adm';}
+      if(ok){const u=S.allUsers.find(x=>x.id===uid);if(u)u.is_admin=!isAdmin;showToast('Rôle mis à jour');renderContent();}
+      else{showToast(`Erreur ${status}`,'error');el.disabled=false;el.textContent=isAdmin?'-Adm':'+Adm';}
     }));
-    // Éditer
-    document.querySelectorAll('[data-edit]').forEach(el=>el.addEventListener('click',()=>{openUserEdit(el.dataset.edit);}));
+    document.querySelectorAll('[data-edit]').forEach(el=>el.addEventListener('click',()=>openUserEdit(el.dataset.edit)));
   }
-
-  /* NOTIFS — fix boucle */
+  /* NOTIFS */
   if(S.sub==='notifs'){
-    const btn=document.getElementById('n-send');
-    const statusEl=document.getElementById('n-status');
-    const resetBtn=()=>{S.sendingNotif=false;if(btn){btn.disabled=false;btn.innerHTML='📣 Envoyer à tous';}};
+    const btn=document.getElementById('n-send');const statusEl=document.getElementById('n-status');
     const setStatus=(msg,color)=>{if(!statusEl)return;statusEl.style.display='block';statusEl.style.color=color;statusEl.style.background=color==='#00E5A0'?'rgba(0,229,160,.08)':'rgba(255,80,80,.08)';statusEl.style.border=`1px solid ${color}44`;statusEl.textContent=msg;};
     btn?.addEventListener('click',async()=>{
-      if(S.sendingNotif)return;
-      const title=(document.getElementById('n-title')?.value||'').trim();
-      const body=(document.getElementById('n-body')?.value||'').trim();
-      if(!title||!body){showToast('⚠️ Titre et message requis','error');return;}
-      S.sendingNotif=true;if(btn){btn.disabled=true;btn.innerHTML=`${spin()} Envoi en cours…`;}
-      if(statusEl)statusEl.style.display='none';
+      if(S.sendingNotif)return;const title=(document.getElementById('n-title')?.value||'').trim();const body=(document.getElementById('n-body')?.value||'').trim();
+      if(!title||!body){showToast('Titre et message requis','error');return;}
+      S.sendingNotif=true;if(btn){btn.disabled=true;btn.innerHTML=`${spin()} Envoi…`;}if(statusEl)statusEl.style.display='none';
       let ok=false,resStatus=0;
-      try{const res=await db('notifications',{method:'POST',body:JSON.stringify({title,body,created_by:S.session?.user?.id||null})});ok=res.ok;resStatus=res.status;}
-      catch(e){console.error(e);}
-      if(ok){
-        const t=document.getElementById('n-title');const b=document.getElementById('n-body');
-        if(t)t.value='';if(b)b.value='';
-        setStatus('✅ Notification envoyée à tous les utilisateurs !','#00E5A0');
-        showToast('✅ Notification envoyée !');
-        await loadNotifs();renderContent();
-      }else{
-        const msg=resStatus===403||resStatus===401?`Erreur ${resStatus} — exécutez le SQL dans ⚙️ Setup`:`Erreur ${resStatus}`;
-        setStatus(`❌ ${msg}`,'#FF5050');showToast(`❌ ${msg}`,'error');resetBtn();
-      }
+      try{const res=await db('notifications',{method:'POST',body:JSON.stringify({title,body,created_by:S.session?.user?.id||null})});ok=res.ok;resStatus=res.status;}catch(e){}
+      S.sendingNotif=false;btn.disabled=false;btn.textContent='Envoyer à tous';
+      if(ok){const t=document.getElementById('n-title');const b=document.getElementById('n-body');if(t)t.value='';if(b)b.value='';setStatus('Notification envoyée !','#00E5A0');showToast('Notification envoyée !');await loadNotifs();renderContent();}
+      else{const msg=resStatus===403||resStatus===401?`Erreur ${resStatus} — exécutez le SQL Setup`:`Erreur ${resStatus}`;setStatus(msg,'#FF5050');showToast(msg,'error');}
     });
   }
-
   /* SQL */
   if(S.sub==='sql'){
     document.getElementById('copy-sql')?.addEventListener('click',()=>{
-      navigator.clipboard?.writeText(SQL).then(()=>{const b=document.getElementById('copy-sql');if(b){b.textContent='✅ Copié !';setTimeout(()=>b.textContent='📋 Copier',2500);}});
+      navigator.clipboard?.writeText(SQL_SETUP).then(()=>{const b=document.getElementById('copy-sql');if(b){b.textContent='Copié !';setTimeout(()=>b.textContent='Copier',2500);}});
     });
   }
 }
 
-/* ── USER EDIT MODAL ── */
+/* USER EDIT MODAL */
 function openUserEdit(id){
   const u=S.allUsers.find(x=>x.id===id);if(!u)return;
   const ini=(u.full_name||u.email||'?').charAt(0).toUpperCase();
@@ -588,12 +508,13 @@ function openUserEdit(id){
   document.getElementById('user-edit-content').innerHTML=`
     <div style="width:38px;height:4px;border-radius:2px;background:rgba(255,255,255,.15);margin:0 auto 18px;"></div>
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
-      <div style="width:48px;height:48px;border-radius:50%;background:${u.is_admin?'linear-gradient(135deg,#00D4FF,#0099FF)':'linear-gradient(135deg,#1E2D55,#0D1A3A)'};display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:${u.is_admin?'#070B17':'#00D4FF'};font-family:'Syne',sans-serif;">${ini}</div>
+      <div style="width:48px;height:48px;border-radius:50%;background:${u.is_admin?'linear-gradient(135deg,#00D4FF,#0099FF)':'linear-gradient(135deg,#1E2D55,#0D1A3A)'};display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:${u.is_admin?'#070B17':'#00D4FF'};font-family:'Syne',sans-serif;flex-shrink:0;">${ini}</div>
       <div><div style="font-size:15px;font-weight:700;">${esc(u.full_name||'Sans nom')}</div><div style="font-size:11px;color:#5B6A90;">${esc(u.email||'')}</div></div>
     </div>
     <div style="display:flex;flex-direction:column;gap:11px;margin-bottom:15px;">
       <div><label class="lbl">Nom complet</label><input id="ue-name" class="inp" value="${esc(u.full_name||'')}" placeholder="Nom complet"></div>
       <div><label class="lbl">Téléphone</label><input id="ue-phone" class="inp" value="${esc(u.phone||'')}" placeholder="+225…"></div>
+      <div><label class="lbl">Profession</label><input id="ue-prof" class="inp" value="${esc(u.profession||'')}" placeholder="Ex: Marketing Digital"></div>
       <div onclick="toggleUE()" style="display:flex;align-items:center;gap:11px;background:#131C35;padding:12px 14px;border-radius:12px;cursor:pointer;border:1px solid rgba(255,255,255,.06);">
         <div id="ue-tog" style="width:40px;height:22px;border-radius:11px;background:${u.is_admin?'linear-gradient(135deg,#00D4FF,#0099FF)':'#1E2D55'};position:relative;transition:background .22s;flex-shrink:0;">
           <div id="ue-knob" style="position:absolute;top:2px;left:${u.is_admin?20:2}px;width:18px;height:18px;border-radius:50%;background:white;transition:left .22s;box-shadow:0 2px 5px rgba(0,0,0,.3);"></div>
@@ -602,7 +523,7 @@ function openUserEdit(id){
       </div>
     </div>
     <div style="display:flex;gap:9px;">
-      <button onclick="saveUE('${u.id}')" class="btn cy" style="flex:1;padding:13px;border-radius:12px;font-size:14px;" id="ue-save">✅ Sauvegarder</button>
+      <button onclick="saveUE('${u.id}')" class="btn cy" style="flex:1;padding:13px;border-radius:12px;font-size:14px;" id="ue-save">Sauvegarder</button>
       <button onclick="closeUserEdit()" class="btn" style="flex:1;padding:13px;border-radius:12px;font-size:14px;background:rgba(255,255,255,.06);color:#E8EEFF;border:1px solid rgba(255,255,255,.1);">Annuler</button>
     </div>`;
   document.getElementById('user-edit-overlay').classList.add('show');
@@ -617,10 +538,11 @@ function closeUserEdit(){document.getElementById('user-edit-overlay').classList.
 window.saveUE=async(id)=>{
   const name=(document.getElementById('ue-name')?.value||'').trim();
   const phone=(document.getElementById('ue-phone')?.value||'').trim();
-  const btn=document.getElementById('ue-save');btn.disabled=true;btn.textContent='⏳…';
-  const{ok,status}=await db(`profiles?id=eq.${id}`,{method:'PATCH',body:JSON.stringify({full_name:name,phone,is_admin:window._ueAdmin,updated_at:new Date().toISOString()})});
-  if(ok){const u=S.allUsers.find(x=>x.id===id);if(u){u.full_name=name;u.phone=phone;u.is_admin=window._ueAdmin;}closeUserEdit();showToast('✅ Utilisateur mis à jour !');renderContent();}
-  else{showToast(`❌ Erreur ${status} — SQL Fix dans ⚙️ Setup`,'error');btn.disabled=false;btn.textContent='✅ Sauvegarder';}
+  const prof=(document.getElementById('ue-prof')?.value||'').trim();
+  const btn=document.getElementById('ue-save');btn.disabled=true;btn.textContent='Sauvegarde…';
+  const{ok,status}=await db(`profiles?id=eq.${id}`,{method:'PATCH',body:JSON.stringify({full_name:name,phone,profession:prof,is_admin:window._ueAdmin,updated_at:new Date().toISOString()})});
+  if(ok){const u=S.allUsers.find(x=>x.id===id);if(u){u.full_name=name;u.phone=phone;u.profession=prof;u.is_admin=window._ueAdmin;}closeUserEdit();showToast('Utilisateur mis à jour !');renderContent();}
+  else{showToast(`Erreur ${status}`,'error');btn.disabled=false;btn.textContent='Sauvegarder';}
 };
 
 async function init(){
@@ -630,8 +552,7 @@ async function init(){
       S.session=s;
       const{ok,data}=await db(`profiles?id=eq.${s.user.id}`);
       if(ok&&Array.isArray(data)&&data[0]&&data[0].is_admin){
-        S.profile=data[0];
-        await Promise.all([loadProducts(),loadUsers(),loadNotifs()]);
+        S.profile=data[0];await Promise.all([loadProducts(),loadUsers(),loadNotifs()]);
       }else{S.session=null;localStorage.removeItem('dg_adm_sess');}
     }
   }catch{S.session=null;}
