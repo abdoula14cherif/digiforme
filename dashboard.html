@@ -332,7 +332,7 @@ pre.sql-code{padding:13px;font-size:10px;color:var(--text2);overflow:auto;line-h
     <div class="hdr-sub">Livres · Formations · Logiciels · Audio</div>
   </div>
   <div class="hdr-right">
-    <button class="hdr-btn hdr-bell" onclick="openNotifs()">🔔<div class="hdr-badge" id="notif-badge" style="display:none;"></div></button>
+    <button class="hdr-btn hdr-bell" onclick="window.location.href='notifications.html'">🔔<div class="hdr-badge" id="notif-badge" style="display:none;"></div></button>
     <button class="hdr-btn hdr-prof" id="hdr-prof-btn" onclick="onProfileClick()">🔐</button>
   </div>
 </header>
@@ -347,7 +347,7 @@ pre.sql-code{padding:13px;font-size:10px;color:var(--text2);overflow:auto;line-h
       <div class="hero-sub">Livres · Formations · Logiciels · Audio</div>
       <div class="hero-btns">
         <button class="btn btn-cy btn-r10" onclick="switchTab('catalogue')">🔍 Explorer</button>
-        <button class="btn btn-go btn-r10" onclick="switchTab('network')">🌐 Réseau</button>
+        <button class="btn btn-go btn-r10" onclick="window.location.href='network.html'">🌐 Réseau</button>
       </div>
     </div>
     <div id="home-banner-section">
@@ -421,9 +421,9 @@ pre.sql-code{padding:13px;font-size:10px;color:var(--text2);overflow:auto;line-h
 <nav id="nav">
   <button class="nb active" id="nb-home" onclick="switchTab('home')"><div class="nb-dot"></div><span class="nb-ico">🏠</span><span class="nb-lbl">Accueil</span></button>
   <button class="nb" id="nb-catalogue" onclick="switchTab('catalogue')"><div class="nb-dot"></div><span class="nb-ico">🗂️</span><span class="nb-lbl">Catalogue</span></button>
-  <button class="nb" id="nb-network" onclick="switchTab('network')"><div class="nb-dot"></div><span class="nb-ico">🌐</span><span class="nb-lbl">Réseau</span><div class="nb-badge" id="net-badge">0</div></button>
+  <button class="nb" id="nb-network" onclick="window.location.href='network.html'"><div class="nb-dot"></div><span class="nb-ico">🌐</span><span class="nb-lbl">Réseau</span><div class="nb-badge" id="net-badge">0</div></button>
   <button class="nb" id="nb-favs" onclick="switchTab('favs')"><div class="nb-dot"></div><span class="nb-ico">❤️</span><span class="nb-lbl">Favoris</span><div class="nb-badge" id="fav-badge">0</div></button>
-  <button class="nb" id="nb-profile" onclick="switchTab('profile')"><div class="nb-dot"></div><span class="nb-ico">👤</span><span class="nb-lbl">Profil</span></button>
+  <button class="nb" id="nb-profile" onclick="window.location.href='profile.html'"><div class="nb-dot"></div><span class="nb-ico">👤</span><span class="nb-lbl">Profil</span></button>
 </nav>
 
 <!-- PRODUCT MODAL -->
@@ -830,7 +830,7 @@ function renderNetList(){
     const initials=(m.full_name||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
     const color=avatarColor(i);
     const isNew=(new Date()-new Date(m.created_at))<7*24*3600*1000;
-    const phone=(m.phone||'').replace(/[^0-9+]/g,'');
+    const phone=(m.phone||'').replace(/[^0-9]/g,''); /* sans + pour wa.me */
     const waMsg=encodeURIComponent(`Bonjour ${m.full_name||''} 👋\nJ'ai trouvé votre contact sur DIGIFORM.\nJe souhaite vous contacter.`);
     return`<div class="ccard${isNew?' new-entry':''}" style="animation-delay:${i*.05}s;">
       <div class="ccard-top">
@@ -919,7 +919,7 @@ function renderProfileLoggedIn(){
     </div>
   </div>
   <button class="btn btn-ghost btn-r13" style="margin-bottom:11px;" onclick="document.getElementById('edit-box').classList.toggle('show')">✏️ Modifier le profil</button>
-  ${profile?.is_admin?`<button class="btn" style="width:100%;padding:13px;border-radius:13px;font-size:14px;background:linear-gradient(135deg,rgba(0,212,255,.12),rgba(0,153,255,.07));color:var(--cyan);border:1px solid rgba(0,212,255,.25);margin-bottom:11px;" onclick="openAdmin()">⚙️ Panneau Administrateur</button>`:''}
+  ${profile?.is_admin?`<button class="btn" style="width:100%;padding:13px;border-radius:13px;font-size:14px;background:linear-gradient(135deg,rgba(0,212,255,.12),rgba(0,153,255,.07));color:var(--cyan);border:1px solid rgba(0,212,255,.25);margin-bottom:11px;" onclick="window.location.href='admin.html'">⚙️ Panneau Administrateur</button>`:''}
   <div class="info-box">
     <div class="info-box-title">Informations du compte</div>
     <div class="info-row"><span class="info-lbl">📧 Email</span><span class="info-val">${session.user.email}</span></div>
@@ -927,6 +927,34 @@ function renderProfileLoggedIn(){
     <div class="info-row"><span class="info-lbl">💼 Profession</span><span class="info-val">${profile?.profession||'Non renseignée'}</span></div>
     <div class="info-row"><span class="info-lbl">👥 Visibilité</span><span class="info-val" style="color:${profile?.show_in_network!==false?'var(--green)':'var(--red)'}">${profile?.show_in_network!==false?'Visible':'Masqué'}</span></div>
     <div class="info-row"><span class="info-lbl">📅 Membre depuis</span><span class="info-val">${new Date(session.user.created_at||Date.now()).toLocaleDateString('fr-FR',{month:'long',year:'numeric'})}</span></div>
+  </div>
+  <div style="margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:7px;"><span style="width:3px;height:12px;border-radius:2px;background:linear-gradient(180deg,var(--cyan),var(--c2));display:inline-block;flex-shrink:0;"></span>Accès rapide</div>
+    <a href="network.html" style="display:flex;align-items:center;gap:10px;padding:12px;background:rgba(255,255,255,.04);border-radius:12px;border:1px solid rgba(255,255,255,.07);text-decoration:none;color:var(--text);margin-bottom:7px;">
+      <div style="width:34px;height:34px;border-radius:9px;background:rgba(0,212,255,.1);color:var(--cyan);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">🌐</div>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:700;">Réseau DIGIFORM</div><div style="font-size:11px;color:var(--text3);margin-top:1px;">Voir les membres et contacts</div></div>
+      <span style="color:var(--text3);">→</span>
+    </a>
+    <a href="contacts.html" style="display:flex;align-items:center;gap:10px;padding:12px;background:rgba(255,255,255,.04);border-radius:12px;border:1px solid rgba(255,255,255,.07);text-decoration:none;color:var(--text);margin-bottom:7px;">
+      <div style="width:34px;height:34px;border-radius:9px;background:rgba(0,229,160,.1);color:var(--green);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">📲</div>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:700;">Exporter les contacts</div><div style="font-size:11px;color:var(--text3);margin-top:1px;">CSV, VCF, WhatsApp</div></div>
+      <span style="color:var(--text3);">→</span>
+    </a>
+    <a href="notifications.html" style="display:flex;align-items:center;gap:10px;padding:12px;background:rgba(255,255,255,.04);border-radius:12px;border:1px solid rgba(255,255,255,.07);text-decoration:none;color:var(--text);margin-bottom:7px;">
+      <div style="width:34px;height:34px;border-radius:9px;background:rgba(255,184,0,.1);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">🔔</div>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:700;">Notifications</div><div style="font-size:11px;color:var(--text3);margin-top:1px;">Voir toutes les notifications</div></div>
+      <span style="color:var(--text3);">→</span>
+    </a>
+    <a href="blog.html" style="display:flex;align-items:center;gap:10px;padding:12px;background:rgba(255,255,255,.04);border-radius:12px;border:1px solid rgba(255,255,255,.07);text-decoration:none;color:var(--text);margin-bottom:7px;">
+      <div style="width:34px;height:34px;border-radius:9px;background:rgba(155,109,255,.1);color:#9B6DFF;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">📝</div>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:700;">Blog &amp; Ressources</div><div style="font-size:11px;color:var(--text3);margin-top:1px;">Articles et conseils</div></div>
+      <span style="color:var(--text3);">→</span>
+    </a>
+    <a href="shop.html" style="display:flex;align-items:center;gap:10px;padding:12px;background:rgba(255,255,255,.04);border-radius:12px;border:1px solid rgba(255,255,255,.07);text-decoration:none;color:var(--text);margin-bottom:0;">
+      <div style="width:34px;height:34px;border-radius:9px;background:rgba(255,107,53,.1);color:#FF6B35;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">🛒</div>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:700;">Ma Boutique</div><div style="font-size:11px;color:var(--text3);margin-top:1px;">Vendre mes produits digitaux</div></div>
+      <span style="color:var(--text3);">→</span>
+    </a>
   </div>
   <button class="btn btn-red btn-r13" onclick="logout()">🚪 Se déconnecter</button>`;
 }
@@ -993,7 +1021,7 @@ async function markRead(nid){
 }
 
 // ── AUTH ──
-function onProfileClick(){if(session)switchTab('profile');else openAuth();}
+function onProfileClick(){if(session)window.location.href='profile.html';else openAuth();}
 function openAuth(){document.getElementById('auth-overlay').classList.add('show');setAuthMode('login');}
 function closeAuth(){document.getElementById('auth-overlay').classList.remove('show');}
 function handleAuthOverlayClick(e){if(e.target===document.getElementById('auth-overlay'))closeAuth();}
