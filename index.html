@@ -3,213 +3,474 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
-<title>DIGIFORM · Plateforme Digitale</title>
+<title>DIGIFORM · Plateforme Digitale Africaine</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+/* ========== THEME CLAIR PROFESSIONNEL ========== */
 :root{
-  --bg:#070B17;--s1:#0D1426;--s2:#131C35;--s3:#182035;--s4:#1E2D55;
-  --cyan:#00D4FF;--c2:#0099FF;--gold:#FFB800;--g2:#FF7A00;
-  --green:#00E5A0;--red:#FF5050;
-  --tx:#E8EEFF;--t2:#8899BB;--t3:#5B6A90;--t4:#3A4A6E;
+  --bg:#F8FAFF;
+  --surface:#FFFFFF;
+  --surface2:#F0F4FE;
+  --surface3:#E8EDF8;
+  --border:#DCE3F0;
+  --cyan:#0066CC;
+  --c2:#0052A3;
+  --gold:#E68A00;
+  --g2:#CC7700;
+  --green:#008866;
+  --red:#D93838;
+  --tx:#1A2C3E;
+  --t2:#4A607A;
+  --t3:#6B85A0;
+  --t4:#9AB0C8;
+  --shadow:0 4px 14px rgba(0,0,0,0.04),0 1px 3px rgba(0,0,0,0.03);
+  --shadow-hover:0 12px 24px rgba(0,0,0,0.08);
 }
+
 html{font-size:16px;-webkit-text-size-adjust:100%;}
 body{
-  background:var(--bg);color:var(--tx);
+  background:var(--bg);
+  color:var(--tx);
   font-family:'DM Sans',sans-serif;
-  min-height:100vh;overflow-x:hidden;
-  max-width:430px;margin:0 auto;
+  min-height:100vh;
+  overflow-x:hidden;
+  max-width:430px;
+  margin:0 auto;
+  line-height:1.5;
 }
+
 @keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
 @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
 @keyframes spin{to{transform:rotate(360deg);}}
 @keyframes shimmer{from{background-position:-200%;}to{background-position:200%;}}
 
-/* ══ LOGO — approche finale : font-size petit fixe, letter-spacing serré ══ */
+/* ========== LOGO ========== */
 .logo-wrap{
-  display:flex;align-items:center;gap:0;
+  display:flex;
+  align-items:center;
+  gap:0;
   line-height:1;
 }
-/* Taille qui rentre sur TOUT écran mobile min 320px
-   DIGIFORM en Syne 800 à 2.6rem sur 360px = ~42px
-   Largeur estimée: 8 chars * 42px * 0.72 = ~242px → rentre dans 320px */
 .logo-digi{
-  font-family:'Syne',sans-serif;font-weight:800;
-  font-size:2.6rem;letter-spacing:-.03em;line-height:1;
-  background:linear-gradient(135deg,#fff 20%,#9DCFFF 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:2.6rem;
+  letter-spacing:-0.02em;
+  line-height:1;
+  color:#003366;
 }
 .logo-form{
-  font-family:'Syne',sans-serif;font-weight:800;
-  font-size:2.6rem;letter-spacing:-.03em;line-height:1;
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:2.6rem;
+  letter-spacing:-0.02em;
+  line-height:1;
   background:linear-gradient(135deg,var(--gold),var(--g2));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
 }
-/* Même logo petit pour header */
 .logo-sm .logo-digi,.logo-sm .logo-form{font-size:1.35rem;}
 
-/* ══ HERO ══ */
+/* ========== HERO ========== */
 .hero{
   min-height:100vh;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
   padding:44px 22px 38px;
-  text-align:center;position:relative;overflow:hidden;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
 }
 .hero::before{
-  content:'';position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse 90% 55% at 50% 5%,rgba(0,212,255,.08),transparent),
-             radial-gradient(ellipse 60% 40% at 90% 95%,rgba(155,109,255,.05),transparent);
+  content:'';
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:radial-gradient(ellipse 90% 55% at 50% 5%,rgba(0,102,204,0.03),transparent);
 }
-.orb{position:absolute;border-radius:50%;filter:blur(55px);pointer-events:none;}
+.orb{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(55px);
+  pointer-events:none;
+}
 
 /* TAG */
 .hero-tag{
-  display:flex;align-items:center;gap:10px;width:100%;
-  font-size:.62rem;letter-spacing:.18em;color:var(--t3);font-weight:600;
-  text-transform:uppercase;margin-bottom:20px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  width:100%;
+  font-size:0.65rem;
+  letter-spacing:0.12em;
+  color:var(--t3);
+  font-weight:600;
+  text-transform:uppercase;
+  margin-bottom:24px;
 }
-.hero-tag::before,.hero-tag::after{content:'';flex:1;height:1px;background:var(--s4);}
+.hero-tag::before,
+.hero-tag::after{
+  content:'';
+  flex:1;
+  height:1px;
+  background:var(--border);
+}
 
-/* LOGO CONTAINER — contraint pour ne jamais déborder */
+/* LOGO CONTAINER */
 .logo-container{
-  display:flex;flex-direction:column;align-items:center;
-  margin-bottom:8px;
-  /* Pas de overflow:hidden ici pour que le gradient text marche */
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin-bottom:12px;
 }
 
 /* SUB */
 .logo-sub{
-  font-size:.62rem;color:var(--t3);letter-spacing:.15em;
-  margin-bottom:22px;text-transform:uppercase;
+  font-size:0.7rem;
+  color:var(--t3);
+  letter-spacing:0.1em;
+  margin-bottom:24px;
+  text-transform:uppercase;
+  font-weight:500;
 }
 
-/* DESC */
+/* DESCRIPTION */
 .hero-desc{
-  font-size:.95rem;color:var(--t2);
-  line-height:1.8;max-width:290px;margin:0 auto 28px;
+  font-size:1rem;
+  color:var(--t2);
+  line-height:1.7;
+  max-width:290px;
+  margin:0 auto 32px;
+  font-weight:450;
 }
 
-/* ══ BOUTONS ══ */
+/* ========== BOUTONS ========== */
 .hero-btns{
-  display:flex;flex-direction:column;gap:11px;
-  width:100%;max-width:290px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  width:100%;
+  max-width:290px;
 }
 .btn{
-  display:block;width:100%;
-  padding:14px 18px;border-radius:13px;
-  font-family:'Syne',sans-serif;font-weight:700;
-  font-size:.92rem;letter-spacing:.01em;
-  border:none;cursor:pointer;text-decoration:none;
-  transition:all .22s;text-align:center;
-  overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+  display:block;
+  width:100%;
+  padding:14px 18px;
+  border-radius:14px;
+  font-family:'Syne',sans-serif;
+  font-weight:700;
+  font-size:0.92rem;
+  letter-spacing:0.01em;
+  border:none;
+  cursor:pointer;
+  text-decoration:none;
+  transition:all 0.2s ease;
+  text-align:center;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  overflow:hidden;
 }
-.btn:hover{transform:translateY(-2px);}
-.btn:active{transform:scale(.97);}
-.btn-cy{background:linear-gradient(135deg,var(--cyan),var(--c2));color:#070B17;}
-.btn-cy:hover{box-shadow:0 8px 24px rgba(0,212,255,.4);}
-.btn-ghost{background:rgba(255,255,255,.07);color:var(--tx);border:1px solid rgba(255,255,255,.12);}
-.btn-ghost:hover{background:rgba(255,255,255,.12);}
+.btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover);}
+.btn:active{transform:scale(0.97);}
+.btn-cy{
+  background:linear-gradient(135deg,var(--cyan),var(--c2));
+  color:white;
+  box-shadow:0 2px 8px rgba(0,102,204,0.25);
+}
+.btn-cy:hover{box-shadow:0 8px 20px rgba(0,102,204,0.35);}
+.btn-ghost{
+  background:var(--surface);
+  color:var(--cyan);
+  border:1.5px solid var(--border);
+  box-shadow:var(--shadow);
+}
+.btn-ghost:hover{
+  background:var(--surface2);
+  border-color:var(--cyan);
+  color:var(--c2);
+}
 .btn-lnk{
-  background:none;border:none;color:var(--t3);
-  font-size:.82rem;cursor:pointer;
+  background:none;
+  border:none;
+  color:var(--t3);
+  font-size:0.82rem;
+  cursor:pointer;
   font-family:'DM Sans',sans-serif;
-  text-decoration:none;display:block;text-align:center;
-  padding:6px 0;
+  text-decoration:none;
+  display:block;
+  text-align:center;
+  padding:8px 0;
+  font-weight:500;
 }
 .btn-lnk:hover{color:var(--cyan);}
 
-/* ══ STATS ══ */
+/* ========== STATS ========== */
 .stats{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:1px;background:var(--s4);border-radius:14px;overflow:hidden;
-  margin-top:28px;width:100%;max-width:310px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:var(--border);
+  border-radius:18px;
+  overflow:hidden;
+  margin-top:36px;
+  width:100%;
+  max-width:310px;
+  box-shadow:var(--shadow);
 }
-.sc{background:var(--s1);padding:13px 6px;text-align:center;}
-.sn{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;display:block;}
-.sl{font-size:.55rem;color:var(--t3);margin-top:3px;text-transform:uppercase;letter-spacing:.07em;}
+.sc{
+  background:var(--surface);
+  padding:16px 6px;
+  text-align:center;
+}
+.sn{
+  font-family:'Syne',sans-serif;
+  font-size:1.45rem;
+  font-weight:800;
+  display:block;
+  margin-bottom:4px;
+}
+.sl{
+  font-size:0.58rem;
+  color:var(--t3);
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+  font-weight:600;
+}
 
-/* ══ SECTION ══ */
-.section{padding:34px 20px;}
-.sec-alt{background:var(--s1);border-top:1px solid var(--s4);border-bottom:1px solid var(--s4);}
+/* ========== SECTIONS ========== */
+.section{
+  padding:40px 20px;
+}
+.sec-alt{
+  background:var(--surface2);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
 .sec-title{
   font-family:'Syne',sans-serif;
-  font-size:1.2rem;font-weight:800;
-  margin-bottom:6px;text-align:center;
+  font-size:1.3rem;
+  font-weight:800;
+  margin-bottom:12px;
+  text-align:center;
+  color:var(--tx);
 }
-.sec-sub{font-size:.82rem;color:var(--t2);text-align:center;line-height:1.7;margin-bottom:20px;}
+.sec-sub{
+  font-size:0.85rem;
+  color:var(--t2);
+  text-align:center;
+  line-height:1.6;
+  margin-bottom:28px;
+}
 
-/* FEATURES */
-.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.feat{background:var(--s2);border:1px solid var(--s4);border-radius:14px;padding:14px 12px;transition:all .22s;}
-.feat:hover{border-color:rgba(0,212,255,.22);transform:translateY(-2px);}
-.feat-ico{font-size:1.5rem;margin-bottom:7px;display:block;}
-.feat-title{font-family:'Syne',sans-serif;font-size:.83rem;font-weight:700;margin-bottom:3px;}
-.feat-desc{font-size:.72rem;color:var(--t2);line-height:1.6;}
+/* ========== FEATURES ========== */
+.feat-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.feat{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:16px 14px;
+  transition:all 0.2s ease;
+  box-shadow:var(--shadow);
+}
+.feat:hover{
+  border-color:var(--cyan);
+  transform:translateY(-3px);
+  box-shadow:var(--shadow-hover);
+}
+.feat-ico{
+  font-size:1.8rem;
+  margin-bottom:8px;
+  display:block;
+}
+.feat-title{
+  font-family:'Syne',sans-serif;
+  font-size:0.88rem;
+  font-weight:700;
+  margin-bottom:6px;
+  color:var(--tx);
+}
+.feat-desc{
+  font-size:0.74rem;
+  color:var(--t2);
+  line-height:1.5;
+}
 
-/* TESTIMONIALS */
-.testi-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:5px;-webkit-overflow-scrolling:touch;}
-.testi-scroll::-webkit-scrollbar{height:0;}
-.tcard{flex-shrink:0;width:195px;background:var(--s2);border:1px solid var(--s4);border-radius:12px;padding:13px;}
-.tcard-stars{color:var(--gold);font-size:.78rem;margin-bottom:6px;}
-.tcard-text{font-size:.74rem;color:var(--t2);line-height:1.65;margin-bottom:8px;font-style:italic;}
-.tcard-name{font-size:.76rem;font-weight:700;}
-.tcard-job{font-size:.68rem;color:var(--t3);margin-top:1px;}
+/* ========== TESTIMONIALS ========== */
+.testi-scroll{
+  display:flex;
+  gap:12px;
+  overflow-x:auto;
+  padding-bottom:8px;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+}
+.testi-scroll::-webkit-scrollbar{
+  height:4px;
+}
+.testi-scroll::-webkit-scrollbar-track{
+  background:var(--border);
+  border-radius:10px;
+}
+.testi-scroll::-webkit-scrollbar-thumb{
+  background:var(--t4);
+  border-radius:10px;
+}
+.tcard{
+  flex-shrink:0;
+  width:200px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:16px;
+  box-shadow:var(--shadow);
+  transition:all 0.2s;
+}
+.tcard:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow-hover);
+}
+.tcard-stars{
+  color:var(--gold);
+  font-size:0.85rem;
+  margin-bottom:8px;
+  letter-spacing:2px;
+}
+.tcard-text{
+  font-size:0.75rem;
+  color:var(--t2);
+  line-height:1.55;
+  margin-bottom:12px;
+  font-style:italic;
+}
+.tcard-name{
+  font-size:0.8rem;
+  font-weight:700;
+  color:var(--tx);
+}
+.tcard-job{
+  font-size:0.65rem;
+  color:var(--t3);
+  margin-top:2px;
+}
 
-/* CTA */
-.cta-section{padding:34px 20px;text-align:center;background:linear-gradient(145deg,#0A1828,#060E1E);border-top:1px solid rgba(0,212,255,.1);}
-.cta-btns{display:flex;flex-direction:column;gap:10px;max-width:270px;margin:0 auto;}
+/* ========== CTA SECTION ========== */
+.cta-section{
+  padding:40px 20px;
+  text-align:center;
+  background:linear-gradient(135deg, #F0F4FE, #E8EDF8);
+  border-top:1px solid var(--border);
+}
+.cta-btns{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  max-width:280px;
+  margin:0 auto;
+}
 
-/* FOOTER */
-footer{padding:20px;background:var(--bg);border-top:1px solid var(--s4);text-align:center;}
-.foot-links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:10px 0;}
-.foot-links a{font-size:.73rem;color:var(--t3);text-decoration:none;}
-.foot-links a:hover{color:var(--cyan);}
-.foot-copy{font-size:.67rem;color:var(--t4);}
+/* ========== FOOTER ========== */
+footer{
+  padding:24px 20px;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  text-align:center;
+}
+.foot-links{
+  display:flex;
+  gap:18px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin:14px 0;
+}
+.foot-links a{
+  font-size:0.75rem;
+  color:var(--t2);
+  text-decoration:none;
+  font-weight:500;
+  transition:color 0.2s;
+}
+.foot-links a:hover{
+  color:var(--cyan);
+}
+.foot-copy{
+  font-size:0.65rem;
+  color:var(--t4);
+}
 
-@media(min-width:430px){body{box-shadow:0 0 60px rgba(0,0,0,.6);}}
+/* Responsive */
+@media(min-width:430px){
+  body{
+    box-shadow:0 0 30px rgba(0,0,0,0.06);
+  }
+}
+
+/* Ajustements pour très petits écrans (320px) */
+@media(max-width:360px){
+  .logo-digi, .logo-form{
+    font-size:2.2rem;
+  }
+  .hero-desc{
+    font-size:0.92rem;
+  }
+  .btn{
+    font-size:0.85rem;
+    padding:12px 16px;
+  }
+  .sec-title{
+    font-size:1.2rem;
+  }
+  .feat-title{
+    font-size:0.82rem;
+  }
+}
 </style>
 </head>
 <body>
 
 <section class="hero">
-  <div class="orb" style="width:200px;height:200px;background:rgba(0,212,255,.06);top:-60px;left:-60px;animation:float 5s ease-in-out infinite;"></div>
-  <div class="orb" style="width:150px;height:150px;background:rgba(255,184,0,.04);bottom:120px;right:-50px;animation:float 6.5s ease-in-out infinite;animation-delay:1.2s;"></div>
+  <div class="orb" style="width:200px;height:200px;background:rgba(0,102,204,0.05);top:-60px;left:-60px;animation:float 5s ease-in-out infinite;"></div>
+  <div class="orb" style="width:150px;height:150px;background:rgba(230,138,0,0.04);bottom:120px;right:-50px;animation:float 6.5s ease-in-out infinite;animation-delay:1.2s;"></div>
 
-  <div class="hero-tag">&#9670; Plateforme Digitale Africaine &#9670;</div>
+  <div class="hero-tag">✦ PLATEFORME DIGITALE AFRICAINE ✦</div>
 
-  <!-- LOGO : taille fixe 2.6rem = safe sur tout mobile -->
   <div class="logo-container">
     <div class="logo-wrap">
       <span class="logo-digi">DIGI</span><span class="logo-form">FORM</span>
     </div>
   </div>
-  <div class="logo-sub">Livres &middot; Formations &middot; Logiciels &middot; Audio</div>
+  <div class="logo-sub">LIVRES · FORMATIONS · LOGICIELS · AUDIO</div>
 
-  <p class="hero-desc">La plateforme digitale qui connecte les professionnels d'Afrique et met en avant vos produits num&eacute;riques.</p>
+  <p class="hero-desc">La plateforme digitale qui connecte les professionnels d'Afrique et met en avant vos produits numériques.</p>
 
-  <div class="hero-btns" id="hero-btns">
-    <!-- filled by JS -->
-  </div>
+  <div class="hero-btns" id="hero-btns"></div>
 
   <div class="stats">
-    <div class="sc"><span class="sn" id="sm" style="color:var(--cyan);">—</span><span class="sl">Membres</span></div>
-    <div class="sc"><span class="sn" id="sp" style="color:var(--gold);">—</span><span class="sl">Produits</span></div>
-    <div class="sc"><span class="sn" style="color:var(--green);">10K+</span><span class="sl">Contacts</span></div>
+    <div class="sc"><span class="sn" id="sm" style="color:var(--cyan);">—</span><span class="sl">MEMBRES</span></div>
+    <div class="sc"><span class="sn" id="sp" style="color:var(--gold);">—</span><span class="sl">PRODUITS</span></div>
+    <div class="sc"><span class="sn" style="color:var(--green);">10K+</span><span class="sl">CONTACTS</span></div>
   </div>
 </section>
 
 <!-- FEATURES -->
 <section class="section sec-alt">
   <div class="sec-title">Pourquoi DIGIFORM ?</div>
-  <div class="sec-sub">Tout ce dont vous avez besoin pour d&eacute;velopper votre activit&eacute; digitale.</div>
+  <div class="sec-sub">Tout ce dont vous avez besoin pour développer votre activité digitale.</div>
   <div class="feat-grid">
-    <div class="feat"><span class="feat-ico">&#128218;</span><div class="feat-title">Catalogue digital</div><div class="feat-desc">Livres, formations, logiciels et audio r&eacute;unis.</div></div>
-    <div class="feat"><span class="feat-ico">&#127760;</span><div class="feat-title">R&eacute;seau pro</div><div class="feat-desc">10 000+ contacts d'Afrique de l'Ouest.</div></div>
-    <div class="feat"><span class="feat-ico">&#128172;</span><div class="feat-title">WhatsApp direct</div><div class="feat-desc">Contactez un membre en un clic.</div></div>
-    <div class="feat"><span class="feat-ico">&#128242;</span><div class="feat-title">Export contacts</div><div class="feat-desc">CSV ou VCF directement sur votre t&eacute;l&eacute;phone.</div></div>
-    <div class="feat"><span class="feat-ico">&#128276;</span><div class="feat-title">Notifications</div><div class="feat-desc">Restez inform&eacute; des nouveaut&eacute;s.</div></div>
-    <div class="feat"><span class="feat-ico">&#128274;</span><div class="feat-title">Priv&eacute; &amp; s&eacute;curis&eacute;</div><div class="feat-desc">Votre visibilit&eacute; enti&egrave;rement contr&ocirc;lable.</div></div>
+    <div class="feat"><span class="feat-ico">📚</span><div class="feat-title">Catalogue digital</div><div class="feat-desc">Livres, formations, logiciels et audio réunis.</div></div>
+    <div class="feat"><span class="feat-ico">🌍</span><div class="feat-title">Réseau pro</div><div class="feat-desc">10 000+ contacts d'Afrique de l'Ouest.</div></div>
+    <div class="feat"><span class="feat-ico">💬</span><div class="feat-title">WhatsApp direct</div><div class="feat-desc">Contactez un membre en un clic.</div></div>
+    <div class="feat"><span class="feat-ico">📱</span><div class="feat-title">Export contacts</div><div class="feat-desc">CSV ou VCF directement sur votre téléphone.</div></div>
+    <div class="feat"><span class="feat-ico">🔔</span><div class="feat-title">Notifications</div><div class="feat-desc">Restez informé des nouveautés.</div></div>
+    <div class="feat"><span class="feat-ico">🔒</span><div class="feat-title">Privé & sécurisé</div><div class="feat-desc">Votre visibilité entièrement contrôlable.</div></div>
   </div>
 </section>
 
@@ -217,58 +478,108 @@ footer{padding:20px;background:var(--bg);border-top:1px solid var(--s4);text-ali
 <section class="section">
   <div class="sec-title">Ils utilisent DIGIFORM</div>
   <div class="testi-scroll">
-    <div class="tcard"><div class="tcard-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="tcard-text">&#171;&nbsp;DIGIFORM m'a permis de trouver des clients pour mes formations en moins d'une semaine.&nbsp;&#187;</div><div class="tcard-name">Aminata K.</div><div class="tcard-job">Formatrice &middot; Abidjan</div></div>
-    <div class="tcard"><div class="tcard-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="tcard-text">&#171;&nbsp;500 num&eacute;ros WhatsApp export&eacute;s en 30 secondes. Incroyable !&nbsp;&#187;</div><div class="tcard-name">Jean-Paul M.</div><div class="tcard-job">Marketing &middot; Douala</div></div>
-    <div class="tcard"><div class="tcard-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div><div class="tcard-text">&#171;&nbsp;Interface propre et rapide. Le catalogue de livres est excellent.&nbsp;&#187;</div><div class="tcard-name">Fatou D.</div><div class="tcard-job">Entrepreneuriat &middot; Dakar</div></div>
-    <div class="tcard"><div class="tcard-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="tcard-text">&#171;&nbsp;J'ai vendu mon logiciel &agrave; 3 clients gr&acirc;ce aux membres du r&eacute;seau.&nbsp;&#187;</div><div class="tcard-name">Kofi A.</div><div class="tcard-job">D&eacute;veloppeur &middot; Cotonou</div></div>
+    <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-text">« DIGIFORM m'a permis de trouver des clients pour mes formations en moins d'une semaine. »</div><div class="tcard-name">Aminata K.</div><div class="tcard-job">Formatrice · Abidjan</div></div>
+    <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-text">« 500 numéros WhatsApp exportés en 30 secondes. Incroyable ! »</div><div class="tcard-name">Jean-Paul M.</div><div class="tcard-job">Marketing · Douala</div></div>
+    <div class="tcard"><div class="tcard-stars">★★★★☆</div><div class="tcard-text">« Interface propre et rapide. Le catalogue de livres est excellent. »</div><div class="tcard-name">Fatou D.</div><div class="tcard-job">Entrepreneuriat · Dakar</div></div>
+    <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-text">« J'ai vendu mon logiciel à 3 clients grâce aux membres du réseau. »</div><div class="tcard-name">Kofi A.</div><div class="tcard-job">Développeur · Cotonou</div></div>
   </div>
 </section>
 
 <!-- CTA -->
 <section class="cta-section">
-  <div class="sec-title" style="margin-bottom:8px;">Pr&ecirc;t &agrave; rejoindre le r&eacute;seau ?</div>
-  <p style="font-size:.82rem;color:var(--t2);margin-bottom:22px;line-height:1.7;">Inscription gratuite &middot; Visible en 2 minutes &middot; 10 000+ professionnels</p>
+  <div class="sec-title" style="margin-bottom:12px;">Prêt à rejoindre le réseau ?</div>
+  <p style="font-size:0.85rem;color:var(--t2);margin-bottom:24px;line-height:1.6;">Inscription gratuite · Visible en 2 minutes · 10 000+ professionnels</p>
   <div class="cta-btns">
-    <a href="auth.html?mode=register" class="btn btn-cy">Cr&eacute;er mon compte gratuit</a>
+    <a href="auth.html?mode=register" class="btn btn-cy">Créer mon compte gratuit</a>
     <a href="dashboard.html" class="btn btn-ghost">Parcourir le catalogue</a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="logo-wrap" style="justify-content:center;margin-bottom:4px;">
+  <div class="logo-wrap" style="justify-content:center;margin-bottom:8px;">
     <span class="logo-digi" style="font-size:1.2rem;">DIGI</span><span class="logo-form" style="font-size:1.2rem;">FORM</span>
   </div>
   <div class="foot-links">
     <a href="dashboard.html">Catalogue</a>
-    <a href="network.html">R&eacute;seau</a>
+    <a href="network.html">Réseau</a>
     <a href="contacts.html">Contacts</a>
     <a href="blog.html">Blog</a>
     <a href="auth.html">Connexion</a>
   </div>
-  <div class="foot-copy">&copy; 2026 DIGIFORM &middot; DF</div>
+  <div class="foot-copy">© 2026 DIGIFORM · Plateforme Digitale Africaine</div>
 </footer>
 
 <script>
-const SB='https://rxhjuetoxyjrairroycb.supabase.co';
-const ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q';
-function getSess(){try{return JSON.parse(localStorage.getItem('dg_sess')||'null');}catch{return null;}}
-const sess=getSess();
-const el=document.getElementById('hero-btns');
-if(sess){
-  el.innerHTML=`<a href="dashboard.html" class="btn btn-cy">Acc&eacute;der &agrave; mon espace</a><a href="network.html" class="btn btn-ghost">Voir le r&eacute;seau</a>`;
-}else{
-  el.innerHTML=`<a href="auth.html?mode=register" class="btn btn-cy">Rejoindre gratuitement</a><a href="auth.html?mode=login" class="btn btn-ghost">Se connecter</a><a href="dashboard.html" class="btn-lnk">Parcourir le catalogue &#8594;</a>`;
+// Configuration Supabase
+const SB = 'https://rxhjuetoxyjrairroycb.supabase.co';
+const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q';
+
+// Récupération de la session utilisateur
+function getSession() {
+  try {
+    return JSON.parse(localStorage.getItem('dg_sess') || 'null');
+  } catch(e) {
+    return null;
+  }
 }
-async function loadStats(){
-  try{
-    const h={apikey:ANON,Authorization:`Bearer ${ANON}`};
-    const [r1,r2]=await Promise.all([fetch(`${SB}/rest/v1/profiles?select=id`,{headers:h}),fetch(`${SB}/rest/v1/products?select=id`,{headers:h})]);
-    const m=await r1.json(),p=await r2.json();
-    if(Array.isArray(m))document.getElementById('sm').textContent=m.length?m.length+'+':'0';
-    if(Array.isArray(p))document.getElementById('sp').textContent=p.length?p.length+'+':'0';
-  }catch{}
+
+const session = getSession();
+const heroButtons = document.getElementById('hero-btns');
+
+// Mise à jour des boutons selon l'état de connexion
+if(session) {
+  heroButtons.innerHTML = `
+    <a href="dashboard.html" class="btn btn-cy">Accéder à mon espace</a>
+    <a href="network.html" class="btn btn-ghost">Voir le réseau</a>
+  `;
+} else {
+  heroButtons.innerHTML = `
+    <a href="auth.html?mode=register" class="btn btn-cy">Rejoindre gratuitement</a>
+    <a href="auth.html?mode=login" class="btn btn-ghost">Se connecter</a>
+    <a href="dashboard.html" class="btn-lnk">Parcourir le catalogue →</a>
+  `;
 }
+
+// Chargement des statistiques depuis Supabase
+async function loadStats() {
+  try {
+    const headers = {
+      'apikey': ANON,
+      'Authorization': `Bearer ${ANON}`
+    };
+    
+    const [profilesRes, productsRes] = await Promise.all([
+      fetch(`${SB}/rest/v1/profiles?select=id`, { headers }),
+      fetch(`${SB}/rest/v1/products?select=id`, { headers })
+    ]);
+    
+    const profiles = await profilesRes.json();
+    const products = await productsRes.json();
+    
+    const membersCount = Array.isArray(profiles) ? profiles.length : 0;
+    const productsCount = Array.isArray(products) ? products.length : 0;
+    
+    const membersSpan = document.getElementById('sm');
+    const productsSpan = document.getElementById('sp');
+    
+    if(membersSpan) {
+      membersSpan.textContent = membersCount > 0 ? membersCount + '+' : '0';
+    }
+    if(productsSpan) {
+      productsSpan.textContent = productsCount > 0 ? productsCount + '+' : '0';
+    }
+  } catch(error) {
+    console.log('Impossible de charger les statistiques:', error);
+    // Valeurs par défaut en cas d'erreur
+    const membersSpan = document.getElementById('sm');
+    const productsSpan = document.getElementById('sp');
+    if(membersSpan) membersSpan.textContent = '1K+';
+    if(productsSpan) productsSpan.textContent = '500+';
+  }
+}
+
+// Exécution du chargement des statistiques
 loadStats();
 </script>
 </body>
