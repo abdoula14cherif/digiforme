@@ -3,608 +3,583 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
-<title>DF · Réseau Contacts</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Epilogue:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<title>DIGIFORM · Exporter Contacts</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
   --bg:#04080F;--s1:#0A1020;--s2:#101828;--s3:#182035;--s4:#1E2D4A;
-  --cyan:#00D4FF;--c2:#0099FF;--gold:#FFB800;--g2:#FF7A00;
-  --green:#00E5A0;--red:#FF4F6A;--wa:#25D366;
+  --cyan:#00D4FF;--c2:#0099FF;--gold:#FFB800;--green:#00E5A0;--red:#FF4F6A;--wa:#25D366;
   --tx:#E8EEFF;--t2:#8899BB;--t3:#4B5E80;--t4:#2A3A58;
 }
-html,body{background:var(--bg);color:var(--tx);font-family:'Epilogue',sans-serif;min-height:100vh;overflow-x:hidden;max-width:430px;margin:0 auto;}
-*::-webkit-scrollbar{width:3px;height:3px;}
-*::-webkit-scrollbar-thumb{background:var(--s4);border-radius:3px;}
-@keyframes spin{to{transform:rotate(360deg);}}
-@keyframes rise{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
-@keyframes pop{from{opacity:0;transform:scale(.92);}to{opacity:1;transform:scale(1);}}
-@keyframes scan{0%{transform:translateY(-100%);}100%{transform:translateY(600%);}}
-@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+html,body{min-height:100vh;background:var(--bg);color:var(--tx);font-family:'Epilogue',sans-serif;overflow-x:hidden;max-width:430px;margin:0 auto;}
+*::-webkit-scrollbar{width:3px;}*::-webkit-scrollbar-thumb{background:var(--s4);border-radius:3px;}
+@keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+@keyframes pop{from{opacity:0;transform:scale(.94);}to{opacity:1;transform:none;}}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
 @keyframes shimmer{from{background-position:-200%;}to{background-position:200%;}}
-@keyframes slideUp{from{transform:translateY(100%);opacity:0;}to{transform:translateY(0);opacity:1;}}
+@keyframes slideUp{from{transform:translateY(100%);opacity:0;}to{transform:none;opacity:1;}}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.7);}}
+@keyframes spin{to{transform:rotate(360deg);}}
 
 .gc{background:linear-gradient(135deg,#fff 10%,#9DCFFF 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.gg{background:linear-gradient(135deg,var(--gold),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-
-.btn{border:none;cursor:pointer;font-family:'Epilogue',sans-serif;font-weight:700;transition:all .2s;display:inline-flex;align-items:center;justify-content:center;gap:7px;}
-.btn:hover:not(:disabled){transform:translateY(-2px);}
-.btn:active:not(:disabled){transform:scale(.95);}
-.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
-.btn-cy{background:linear-gradient(135deg,var(--cyan),var(--c2));color:#04080F;}
-.btn-cy:hover:not(:disabled){box-shadow:0 8px 28px rgba(0,212,255,.45);}
-.inp{background:var(--s2);border:1px solid var(--s4);border-radius:12px;color:var(--tx);font-family:'Epilogue',sans-serif;font-size:14px;padding:12px 15px;width:100%;outline:none;transition:border-color .2s,box-shadow .2s;}
-.inp:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,212,255,.1);}
-.inp::placeholder{color:var(--t3);}
+.gg{background:linear-gradient(135deg,var(--gold),#FF7A00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 
 /* HEADER */
-#hdr{position:sticky;top:0;z-index:200;background:rgba(4,8,15,.94);backdrop-filter:blur(22px);border-bottom:1px solid rgba(255,255,255,.06);padding:13px 15px;display:flex;align-items:center;gap:12px;}
-.hdr-back{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:var(--tx);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .2s;flex-shrink:0;}
-.hdr-back:hover{background:rgba(0,212,255,.15);border-color:rgba(0,212,255,.3);}
-.hdr-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;line-height:1;letter-spacing:-.02em;}
-.hdr-sub{font-size:10px;color:var(--t3);margin-top:2px;letter-spacing:.06em;}
-.hdr-bell{width:38px;height:38px;border-radius:50%;background:rgba(255,184,0,.08);border:1px solid rgba(255,184,0,.2);color:var(--gold);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;transition:all .2s;flex-shrink:0;}
-.hdr-bell:hover{background:rgba(255,184,0,.16);}
-.bell-dot{position:absolute;top:-2px;right:-2px;width:10px;height:10px;border-radius:50%;background:var(--red);border:2px solid var(--bg);animation:pulse 2s infinite;}
+#hdr{position:sticky;top:0;z-index:100;background:rgba(4,8,15,.96);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);padding:11px 15px;display:flex;align-items:center;gap:10px;}
+.hdr-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.25rem;line-height:1;letter-spacing:-.02em;white-space:nowrap;}
+.hdr-sub{font-size:.6rem;color:var(--t3);margin-top:2px;letter-spacing:.07em;text-transform:uppercase;}
+.hback{width:36px;height:36px;flex-shrink:0;border-radius:50%;background:var(--s2);border:1px solid var(--s4);color:var(--tx);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .2s;}
+.hback:hover{border-color:rgba(0,212,255,.3);color:var(--cyan);}
 
-/* LAYOUT */
-.pg{padding:16px 13px 120px;animation:rise .38s cubic-bezier(.22,1,.36,1) both;}
-
-/* AUTH GATE */
-#gate{display:flex;flex-direction:column;align-items:center;padding:70px 24px;gap:20px;text-align:center;}
-.gate-ico{font-size:72px;animation:float 4s ease-in-out infinite;}
-.gate-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;line-height:1.2;}
-.gate-sub{font-size:14px;color:var(--t2);line-height:1.75;max-width:280px;}
+/* PAGE */
+.pg{padding:14px 13px 100px;animation:rise .38s cubic-bezier(.22,1,.36,1) both;}
 
 /* HERO */
-.hero{background:linear-gradient(148deg,#0A1828 0%,#060E1E 100%);border-radius:22px;border:1px solid rgba(0,212,255,.1);padding:22px 18px 20px;margin-bottom:18px;position:relative;overflow:hidden;}
-.hero-scan{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,255,.5),transparent);animation:scan 4s ease-in-out infinite;pointer-events:none;}
-.hero-label{font-size:10px;letter-spacing:.18em;color:var(--t3);font-weight:600;margin-bottom:8px;text-transform:uppercase;}
-.hero-title{font-family:'Syne',sans-serif;font-size:25px;font-weight:800;line-height:1.15;letter-spacing:-.02em;margin-bottom:8px;}
-.hero-desc{font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:18px;}
+.hero{background:linear-gradient(148deg,#0A1828,#060E1E);border-radius:20px;border:1px solid rgba(0,212,255,.12);padding:18px 16px;margin-bottom:16px;}
+.hero-tag{font-size:.58rem;letter-spacing:.16em;color:var(--t3);font-weight:700;text-transform:uppercase;margin-bottom:8px;}
+.hero-title{font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:800;line-height:1.25;margin-bottom:6px;}
+.hero-sub{font-size:.82rem;color:var(--t2);line-height:1.65;}
 
-/* EXPORT CARDS */
-.exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
-.ec{border-radius:16px;padding:16px 14px;cursor:pointer;border:1px solid transparent;font-family:'Epilogue',sans-serif;display:flex;flex-direction:column;gap:6px;transition:all .25s;position:relative;overflow:hidden;text-align:left;background:transparent;}
-.ec:hover:not(:disabled){transform:translateY(-3px);}
-.ec:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
-.ec-csv{background:linear-gradient(145deg,#0A2818,#091A10);border-color:rgba(0,229,160,.22);}
-.ec-vcf{background:linear-gradient(145deg,#082238,#06182C);border-color:rgba(0,212,255,.22);}
-.ec-wa{grid-column:1/-1;background:linear-gradient(145deg,#0A1F14,#071510);border-color:rgba(37,211,102,.18);flex-direction:row;align-items:center;gap:12px;padding:14px 16px;}
-.ec-ico{font-size:26px;line-height:1;}
-.ec-lbl{font-size:14px;font-weight:800;font-family:'Syne',sans-serif;}
-.ec-sub{font-size:11px;opacity:.65;font-weight:400;}
-.ec-csv .ec-lbl{color:var(--green);}
-.ec-vcf .ec-lbl{color:var(--cyan);}
-.ec-wa .ec-lbl{color:var(--wa);}
-
-/* DOWNLOAD CONFIG */
-.dlc{background:var(--s1);border:1px solid var(--s4);border-radius:18px;padding:18px;margin-bottom:20px;}
-.dlc-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--tx);margin-bottom:5px;display:flex;align-items:center;gap:8px;}
-.dlc-title::before{content:'';width:4px;height:15px;border-radius:2px;background:linear-gradient(180deg,var(--cyan),var(--c2));flex-shrink:0;}
-.dlc-sub{font-size:12px;color:var(--t2);margin-bottom:13px;}
-.count-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-.count-box{flex:1;background:var(--s2);border:1px solid var(--s4);border-radius:12px;display:flex;align-items:center;overflow:hidden;transition:border-color .2s;}
-.count-box:focus-within{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,212,255,.1);}
-.cb-btn{width:44px;height:48px;border:none;background:none;color:var(--cyan);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .18s;flex-shrink:0;font-weight:700;}
-.cb-btn:hover{background:rgba(0,212,255,.08);}
-.cb-inp{flex:1;text-align:center;background:none;border:none;color:var(--tx);font-family:'Syne',sans-serif;font-size:20px;font-weight:800;outline:none;min-width:0;}
-.count-hint{font-size:11px;color:var(--t3);text-align:center;margin-bottom:13px;}
-.fmt-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
-.fmt{padding:11px;border-radius:12px;cursor:pointer;border:2px solid var(--s4);background:var(--s2);text-align:center;transition:all .2s;}
-.fmt.on{border-color:var(--cyan);background:rgba(0,212,255,.08);}
-.fmt-ico{font-size:22px;margin-bottom:4px;}
-.fmt-lbl{font-size:12px;font-weight:700;color:var(--t2);}
-.fmt.on .fmt-lbl{color:var(--cyan);}
-.launch{width:100%;padding:14px;border-radius:13px;font-size:15px;font-weight:800;font-family:'Syne',sans-serif;letter-spacing:.02em;background:linear-gradient(135deg,var(--cyan),var(--c2));color:#04080F;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .25s;}
-.launch:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,212,255,.45);}
-.launch:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
-.dl-bar{display:none;margin-top:12px;background:var(--s3);border-radius:8px;overflow:hidden;height:6px;}
-.dl-bar.show{display:block;}
-.dl-fill{height:100%;width:0%;border-radius:8px;background:linear-gradient(90deg,var(--cyan),var(--green));transition:width .35s ease;}
-.dl-txt{font-size:11px;color:var(--t2);text-align:center;margin-top:6px;display:none;}
-.dl-txt.show{display:block;}
-
-/* STATS */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--s4);border-radius:14px;overflow:hidden;margin-bottom:18px;}
+/* STATS RAPIDES */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--s4);border-radius:13px;overflow:hidden;margin-bottom:16px;}
 .sc{background:var(--s1);padding:12px 6px;text-align:center;}
-.sn{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;}
-.sl{font-size:9px;color:var(--t3);margin-top:2px;text-transform:uppercase;letter-spacing:.04em;}
+.sn{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;display:block;}
+.sl{font-size:.58rem;color:var(--t3);margin-top:2px;text-transform:uppercase;letter-spacing:.05em;}
 
-/* FILTERS */
-.fz{margin-bottom:13px;}
-.fz-lbl{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.1em;margin-bottom:8px;text-transform:uppercase;}
-.f-scroll{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;}
-.fchip{flex-shrink:0;padding:7px 14px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--s4);background:var(--s2);color:var(--t2);transition:all .2s;white-space:nowrap;font-family:'Epilogue',sans-serif;}
-.fchip.on{background:linear-gradient(135deg,var(--cyan),var(--c2));color:#04080F;border-color:transparent;}
+/* SECTION TITLE */
+.stitle{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:7px;}
+.stitle::before{content:'';width:3px;height:13px;border-radius:2px;background:linear-gradient(180deg,var(--cyan),var(--c2));flex-shrink:0;}
 
-/* SEARCH */
-.sw{position:relative;margin-bottom:14px;}
-.si{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;color:var(--t3);}
-.scl{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;background:var(--s4);border:none;color:var(--t2);font-size:13px;cursor:pointer;display:none;align-items:center;justify-content:center;}
-.scl.show{display:flex;}
-#srch{padding-left:42px;padding-right:38px;}
+/* BOUTONS EXPORT RAPIDE */
+.exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:9px;}
+.exp-btn{border-radius:13px;padding:13px 11px;border:1px solid transparent;font-family:'Epilogue',sans-serif;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .22s;background:transparent;text-align:left;width:100%;}
+.exp-btn:hover:not(:disabled){transform:translateY(-2px);}
+.exp-btn:disabled{opacity:.4;cursor:not-allowed;}
+.exp-csv{background:var(--s1);border-color:rgba(0,229,160,.2);}
+.exp-vcf{background:var(--s1);border-color:rgba(0,212,255,.2);}
+.exp-wa-full{width:100%;border-radius:13px;padding:13px 14px;background:var(--s1);border:1px solid rgba(37,211,102,.2);cursor:pointer;font-family:'Epilogue',sans-serif;display:flex;align-items:center;gap:10px;transition:all .22s;}
+.exp-wa-full:hover:not(:disabled){transform:translateY(-2px);}
+.exp-wa-full:disabled{opacity:.4;cursor:not-allowed;}
+.exp-badge{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.72rem;flex-shrink:0;}
+.eb-csv{background:rgba(0,229,160,.15);color:var(--green);}
+.eb-vcf{background:rgba(0,212,255,.15);color:var(--cyan);}
+.eb-wa{background:rgba(37,211,102,.15);color:var(--wa);}
+.exp-info{flex:1;min-width:0;}
+.exp-title{font-size:.82rem;font-weight:700;color:var(--tx);}
+.exp-sub{font-size:.68rem;color:var(--t3);margin-top:1px;}
 
-/* SECTION HDR */
-.shdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
-.stitle{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;}
-.scnt{font-size:12px;color:var(--t3);}
-.sort-btn{background:var(--s2);border:1px solid var(--s4);border-radius:10px;padding:7px 11px;font-size:12px;font-weight:600;color:var(--t2);cursor:pointer;font-family:'Epilogue',sans-serif;display:flex;align-items:center;gap:5px;transition:all .2s;}
-.sort-btn:hover{border-color:rgba(0,212,255,.3);color:var(--cyan);}
+/* CONFIG DOWNLOAD */
+.cfg{background:var(--s1);border:1px solid var(--s4);border-radius:16px;padding:16px;margin-bottom:16px;}
+.cfg-sub{font-size:.75rem;color:var(--t2);margin-bottom:12px;line-height:1.55;}
+.cnt-row{display:flex;align-items:center;background:var(--s2);border:1.5px solid var(--s4);border-radius:12px;overflow:hidden;margin-bottom:7px;}
+.cnt-row:focus-within{border-color:var(--cyan);}
+.cnt-btn{width:44px;height:46px;border:none;background:none;color:var(--cyan);font-size:1.3rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s;}
+.cnt-btn:hover{background:rgba(0,212,255,.08);}
+.cnt-inp{flex:1;text-align:center;background:none;border:none;color:var(--tx);font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;outline:none;min-width:0;}
+.cnt-hint{font-size:.7rem;color:var(--t3);text-align:center;margin-bottom:12px;}
+.fmt-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:13px;}
+.fmt{padding:10px;border-radius:11px;cursor:pointer;border:2px solid var(--s4);background:var(--s2);text-align:center;transition:all .2s;}
+.fmt.on{border-color:var(--cyan);background:rgba(0,212,255,.08);}
+.fmt-ico{width:30px;height:30px;border-radius:7px;margin:0 auto 5px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.72rem;}
+.fi-csv{background:rgba(0,229,160,.15);color:var(--green);}
+.fi-vcf{background:rgba(0,212,255,.15);color:var(--cyan);}
+.fmt-lbl{font-size:.72rem;font-weight:700;color:var(--t2);}
+.fmt.on .fmt-lbl{color:var(--cyan);}
+.launch-btn{width:100%;padding:13px;border-radius:12px;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:800;background:linear-gradient(135deg,var(--cyan),var(--c2));color:#04080F;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .25s;}
+.launch-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,212,255,.4);}
+.launch-btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
+.prog-bar{display:none;margin-top:10px;background:var(--s3);border-radius:7px;overflow:hidden;height:5px;}
+.prog-bar.show{display:block;}
+.prog-fill{height:100%;width:0%;border-radius:7px;background:linear-gradient(90deg,var(--cyan),var(--green));transition:width .35s;}
+.prog-msg{display:none;font-size:.72rem;color:var(--t2);text-align:center;margin-top:5px;}
+.prog-msg.show{display:block;}
 
-/* SELECT BAR */
-.selbar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--s2);border-radius:12px;border:1px solid var(--s4);margin-bottom:13px;}
-.sa{font-size:13px;color:var(--cyan);font-weight:600;background:none;border:none;cursor:pointer;font-family:'Epilogue',sans-serif;}
-.sc2{font-size:12px;color:var(--t3);}
-.sclear{font-size:12px;color:var(--red);font-weight:600;background:none;border:none;cursor:pointer;font-family:'Epilogue',sans-serif;}
-
-/* GRID */
-.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
-
-/* CARD */
-.ccard{background:var(--s1);border:1px solid var(--s4);border-radius:18px;padding:16px 12px 14px;display:flex;flex-direction:column;align-items:center;text-align:center;animation:pop .4s cubic-bezier(.22,1,.36,1) both;transition:all .22s;position:relative;overflow:hidden;}
-.ccard:hover{border-color:rgba(0,212,255,.22);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.5);}
-.ccard-top-line{position:absolute;top:0;left:0;right:0;height:3px;border-radius:18px 18px 0 0;}
-.ccard-sel{position:absolute;top:10px;left:10px;width:20px;height:20px;border-radius:6px;border:2px solid var(--s4);background:var(--s2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .18px;z-index:2;}
-.ccard-sel.on{background:linear-gradient(135deg,var(--cyan),var(--c2));border-color:transparent;color:#04080F;}
-.ccard-new{position:absolute;top:10px;right:10px;font-size:8px;font-weight:800;letter-spacing:.05em;background:rgba(0,229,160,.15);color:var(--green);border:1px solid rgba(0,229,160,.3);border-radius:6px;padding:2px 6px;font-family:'Syne',sans-serif;}
-.cav{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:20px;margin-bottom:10px;position:relative;flex-shrink:0;}
-.cav-online{position:absolute;bottom:2px;right:2px;width:12px;height:12px;border-radius:50%;background:var(--green);border:2.5px solid var(--s1);}
-.cname{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--tx);line-height:1.25;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;width:100%;}
-.cjob{font-size:10px;color:var(--t3);font-weight:500;margin-bottom:9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%;}
-.cdf{font-size:9px;font-weight:800;letter-spacing:.08em;color:var(--t4);background:var(--s3);border-radius:6px;padding:2px 7px;margin-bottom:10px;font-family:'Syne',sans-serif;}
-.cwa{width:100%;padding:9px 0;border-radius:10px;font-size:12px;font-weight:700;font-family:'Epilogue',sans-serif;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .22s;}
-.cwa:hover{box-shadow:0 6px 18px rgba(37,211,102,.4);transform:translateY(-1px);}
-.cwa:disabled{opacity:.3;cursor:not-allowed;transform:none!important;}
-.cnowa{width:100%;padding:9px 0;border-radius:10px;font-size:11px;color:var(--t4);background:var(--s3);border:1px solid var(--s4);cursor:default;font-family:'Epilogue',sans-serif;font-weight:500;}
+/* GRILLE CONTACTS */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.ccard{background:var(--s1);border:1px solid var(--s4);border-radius:16px;padding:14px 10px 12px;display:flex;flex-direction:column;align-items:center;text-align:center;animation:pop .3s cubic-bezier(.22,1,.36,1) both;position:relative;overflow:hidden;transition:border-color .2s,transform .2s;}
+.ccard:hover{border-color:rgba(0,212,255,.2);transform:translateY(-2px);}
+.cc-bar{position:absolute;top:0;left:0;right:0;height:3px;border-radius:16px 16px 0 0;}
+.cc-sel{position:absolute;top:9px;left:9px;width:19px;height:19px;border-radius:5px;border:1.5px solid var(--s4);background:var(--s2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.7rem;transition:all .15s;z-index:2;color:#04080F;font-weight:800;}
+.cc-sel.on{background:linear-gradient(135deg,var(--cyan),var(--c2));border-color:transparent;}
+.cc-av{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:1.05rem;margin-bottom:9px;flex-shrink:0;}
+.cc-name{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--tx);line-height:1.25;margin-bottom:3px;width:100%;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word;}
+.cc-job{font-size:.66rem;color:var(--t3);margin-bottom:7px;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.cc-df{font-size:.54rem;font-weight:800;color:var(--t4);background:var(--s3);border-radius:5px;padding:2px 6px;margin-bottom:8px;font-family:'Syne',sans-serif;}
+/* BOUTON WHATSAPP */
+.cc-wa{width:100%;padding:9px 6px;border-radius:9px;font-size:.73rem;font-weight:700;font-family:'Epilogue',sans-serif;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border:none;cursor:pointer;transition:all .2s;}
+.cc-wa:hover{box-shadow:0 4px 14px rgba(37,211,102,.4);transform:translateY(-1px);}
+.cc-nowa{width:100%;padding:9px 4px;border-radius:9px;font-size:.63rem;color:var(--t4);background:var(--s3);border:1px solid var(--s4);}
 
 /* SHIMMER */
-.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
-.shim{height:190px;border-radius:18px;background:linear-gradient(90deg,var(--s1) 25%,var(--s3) 50%,var(--s1) 75%);background-size:200%;animation:shimmer 1.4s infinite;}
+.shim-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.shim-card{height:175px;border-radius:16px;background:linear-gradient(90deg,var(--s1) 25%,var(--s3) 50%,var(--s1) 75%);background-size:200%;animation:shimmer 1.4s infinite;}
 
-/* EMPTY */
-.empty{display:flex;flex-direction:column;align-items:center;padding:56px 24px;gap:14px;text-align:center;}
-.emico{font-size:56px;animation:float 4s ease-in-out infinite;}
-.emtit{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;}
-.emsub{font-size:13px;color:var(--t2);line-height:1.7;max-width:240px;}
+/* SEARCH */
+.sw{position:relative;margin-bottom:12px;}
+.sw-ico{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:.88rem;pointer-events:none;color:var(--t3);}
+.sw-inp{background:var(--s2);border:1.5px solid var(--s4);border-radius:12px;color:var(--tx);font-family:'Epilogue',sans-serif;font-size:.88rem;padding:11px 36px 11px 40px;width:100%;outline:none;transition:border-color .2s;}
+.sw-inp:focus{border-color:var(--cyan);}
+.sw-inp::placeholder{color:var(--t3);}
+.sw-clr{position:absolute;right:11px;top:50%;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;background:var(--s4);border:none;color:var(--t2);font-size:.75rem;cursor:pointer;display:none;align-items:center;justify-content:center;}
+.sw-clr.show{display:flex;}
+
+/* CONTROLS */
+.ctrl{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;gap:7px;}
+.ctrl-sel{font-size:.78rem;color:var(--cyan);font-weight:600;background:none;border:none;cursor:pointer;font-family:'Epilogue',sans-serif;white-space:nowrap;padding:0;}
+.ctrl-cnt{font-size:.75rem;color:var(--t3);flex:1;text-align:center;}
 
 /* BOTTOM BAR */
-#bbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(4,8,15,.97);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.07);padding:12px 13px 28px;z-index:300;display:none;}
+#bbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(4,8,15,.97);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.07);padding:10px 13px 24px;z-index:400;display:none;}
 #bbar.show{display:block;animation:slideUp .3s cubic-bezier(.22,1,.36,1);}
-.bbi{display:flex;gap:9px;align-items:center;}
-.bbinfo{background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2);border-radius:10px;padding:10px 12px;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--cyan);white-space:nowrap;flex-shrink:0;}
-.bbbts{display:flex;gap:7px;flex:1;}
-.bbbt{flex:1;padding:11px 0;border-radius:11px;font-size:13px;font-weight:800;font-family:'Syne',sans-serif;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .22s;}
-.bbbt:hover:not(:disabled){transform:translateY(-2px);}
-.bbbt:disabled{opacity:.35;cursor:not-allowed;transform:none!important;}
-.bbcsv{background:linear-gradient(135deg,var(--green),#00A070);color:#04080F;}
-.bbcsv:hover:not(:disabled){box-shadow:0 8px 22px rgba(0,229,160,.4);}
-.bbvcf{background:linear-gradient(135deg,var(--cyan),var(--c2));color:#04080F;}
-.bbvcf:hover:not(:disabled){box-shadow:0 8px 22px rgba(0,212,255,.4);}
+.bb-row{display:flex;gap:8px;align-items:center;}
+.bb-info{background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2);border-radius:9px;padding:9px 11px;font-family:'Syne',sans-serif;font-size:.75rem;font-weight:700;color:var(--cyan);white-space:nowrap;flex-shrink:0;}
+.bb-btns{display:flex;gap:7px;flex:1;}
+.bb-btn{flex:1;padding:10px;border-radius:10px;font-size:.78rem;font-weight:800;font-family:'Syne',sans-serif;border:none;cursor:pointer;transition:all .2s;}
+.bb-csv{background:linear-gradient(135deg,var(--green),#00A070);color:#04080F;}
+.bb-vcf{background:linear-gradient(135deg,var(--cyan),var(--c2));color:#04080F;}
 
 /* VCF MODAL */
 #vov{position:fixed;inset:0;background:rgba(4,8,15,.92);backdrop-filter:blur(16px);z-index:1000;display:none;align-items:flex-end;justify-content:center;}
 #vov.show{display:flex;animation:fadeIn .25s;}
-#vbox{width:100%;max-width:430px;background:var(--s1);border-radius:26px 26px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:none;padding:22px 18px 46px;animation:slideUp .3s cubic-bezier(.22,1,.36,1);max-height:82vh;overflow-y:auto;}
-.vhandle{width:40px;height:4px;border-radius:2px;background:var(--s4);margin:0 auto 20px;}
-.vtitle{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:5px;}
-.vsub{font-size:13px;color:var(--t2);margin-bottom:18px;line-height:1.6;}
-.vprev{display:flex;flex-direction:column;gap:8px;max-height:260px;overflow-y:auto;margin-bottom:18px;}
-.vitem{display:flex;align-items:center;gap:11px;padding:10px 12px;background:var(--s2);border-radius:12px;border:1px solid var(--s4);}
-.vav{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;flex-shrink:0;}
-.vname{font-size:13px;font-weight:700;color:var(--tx);}
-.vph{font-size:11px;color:var(--t3);margin-top:1px;}
-.vmore{text-align:center;font-size:12px;color:var(--t3);padding:8px;font-style:italic;}
-.vdl{width:100%;padding:15px;border-radius:14px;font-size:15px;font-weight:800;font-family:'Syne',sans-serif;background:linear-gradient(135deg,var(--cyan),var(--c2));color:#04080F;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:all .25s;letter-spacing:.02em;}
-.vdl:hover{box-shadow:0 10px 30px rgba(0,212,255,.45);transform:translateY(-2px);}
-.vdl:disabled{opacity:.45;cursor:not-allowed;transform:none!important;}
-.vcancel{width:100%;padding:12px;margin-top:8px;background:none;border:none;color:var(--t3);font-size:13px;cursor:pointer;font-family:'Epilogue',sans-serif;}
+#vbox{width:100%;max-width:430px;background:var(--s1);border-radius:24px 24px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:none;padding:20px 16px 44px;animation:slideUp .3s cubic-bezier(.22,1,.36,1);max-height:78vh;overflow-y:auto;}
+.v-handle{width:36px;height:4px;border-radius:2px;background:var(--s4);margin:0 auto 18px;}
+.v-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:4px;}
+.v-sub{font-size:.82rem;color:var(--t2);margin-bottom:14px;}
+.v-item{display:flex;align-items:center;gap:10px;padding:9px 11px;background:var(--s2);border-radius:11px;border:1px solid var(--s4);margin-bottom:7px;}
+.v-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.82rem;flex-shrink:0;}
+.v-dl{width:100%;padding:13px;border-radius:12px;margin-top:4px;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:800;background:linear-gradient(135deg,var(--cyan),var(--c2));color:#04080F;border:none;cursor:pointer;transition:all .22s;}
+.v-dl:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,212,255,.4);}
+.v-dl:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
+.v-cancel{width:100%;padding:11px;margin-top:8px;background:none;border:none;color:var(--t3);font-size:.85rem;cursor:pointer;font-family:'Epilogue',sans-serif;}
 
-/* SCROLL TOP */
-#stbtn{position:fixed;bottom:92px;right:16px;width:42px;height:42px;border-radius:50%;background:rgba(0,212,255,.14);border:1px solid rgba(0,212,255,.3);color:var(--cyan);font-size:18px;cursor:pointer;display:none;align-items:center;justify-content:center;transition:all .2s;z-index:250;backdrop-filter:blur(10px);}
-#stbtn.show{display:flex;animation:pop .3s ease;}
-#stbtn:hover{background:rgba(0,212,255,.24);}
+/* EMPTY / GATE */
+.empty{display:flex;flex-direction:column;align-items:center;padding:50px 24px;gap:12px;text-align:center;}
+.empty-ico{font-size:3rem;animation:float 4s ease-in-out infinite;}
+.empty-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;}
+.empty-sub{font-size:.8rem;color:var(--t2);line-height:1.65;max-width:220px;}
+
+/* NAV */
+#nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(4,8,15,.97);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.06);padding:5px 6px 18px;display:flex;z-index:500;}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:7px 4px;background:none;border:none;color:var(--t3);font-family:'Epilogue',sans-serif;position:relative;transition:color .2s;text-decoration:none;}
+.nb.on{color:var(--cyan);}
+.nb-dot{position:absolute;top:0;left:50%;transform:translateX(-50%);width:18px;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--cyan),var(--c2));display:none;}
+.nb.on .nb-dot{display:block;}
+.nb-ico{font-size:1.2rem;}
+.nb-lbl{font-size:.58rem;font-weight:600;}
+.nb.on .nb-lbl{font-weight:700;}
 
 /* TOAST */
-#toast{position:fixed;top:72px;left:50%;transform:translateX(-50%);padding:11px 22px;border-radius:999px;z-index:9999;font-weight:700;font-size:13px;font-family:'Epilogue',sans-serif;box-shadow:0 12px 36px rgba(0,0,0,.6);white-space:nowrap;max-width:92vw;text-align:center;display:none;color:#fff;}
+#toast{position:fixed;top:72px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:999px;z-index:9999;font-weight:700;font-size:.82rem;box-shadow:0 12px 36px rgba(0,0,0,.6);white-space:nowrap;max-width:90vw;text-align:center;display:none;}
 #toast.show{display:block;animation:rise .3s ease;}
-#toast.ok{background:linear-gradient(135deg,var(--green),#00A070);}
-#toast.err{background:linear-gradient(135deg,var(--red),#C00);}
+#toast.ok{background:linear-gradient(135deg,var(--green),#00A070);color:#04080F;}
+#toast.err{background:linear-gradient(135deg,var(--red),#C00);color:#fff;}
 #toast.inf{background:linear-gradient(135deg,var(--cyan),var(--c2));color:#04080F;}
+
+@media(min-width:430px){body{box-shadow:0 0 60px rgba(0,0,0,.6);}#nav,#bbar,#hdr{max-width:430px;}}
 </style>
 </head>
 <body>
 
 <header id="hdr">
-  <a class="hdr-back" href="digiform.html">←</a>
-  <div style="flex:1;min-width:0;">
+  <a class="hback" href="network.html">&#8592;</a>
+  <div style="flex:1;min-width:0;padding-left:8px;">
     <div class="hdr-logo"><span class="gc">DIGI</span><span class="gg">FORM</span></div>
-    <div class="hdr-sub" id="hdr-sub">RÉSEAU · CONTACTS</div>
+    <div class="hdr-sub" id="hdr-sub">EXPORTER LES CONTACTS</div>
   </div>
-  <div class="hdr-bell" id="bell-btn">🔔<div class="bell-dot" id="bell-dot" style="display:none;"></div></div>
 </header>
 
-<div id="toast"></div>
-<div id="stbtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
-
-<!-- AUTH GATE -->
-<div id="gate" style="display:none;">
-  <div class="gate-ico">🔒</div>
-  <div class="gate-title">Réservé aux<br/>membres <span class="gc">DIGIFORM</span></div>
-  <div class="gate-sub">Connectez-vous pour accéder au réseau complet et exporter les contacts de la communauté.</div>
-  <a href="digiform.html" class="btn btn-cy" style="padding:14px 32px;border-radius:14px;font-size:15px;text-decoration:none;margin-top:8px;">🔑 Se connecter</a>
-</div>
-
-<!-- MAIN -->
-<div id="main" style="display:none;">
 <div class="pg">
 
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-scan"></div>
-    <div class="hero-label">◆ Plateforme DIGIFORM ◆</div>
-    <div class="hero-title">Votre réseau<br/><span class="gc">professionnel</span><br/><span class="gg">digital</span></div>
-    <div class="hero-desc">Connectez-vous avec les membres, exportez leurs contacts et développez votre réseau en quelques secondes.</div>
+  <!-- GATE -->
+  <div id="gate" style="display:none;">
+    <div class="empty">
+      <div class="empty-ico">&#128274;</div>
+      <div class="empty-title">Réservé aux membres</div>
+      <div class="empty-sub">Connectez-vous pour exporter les contacts du réseau.</div>
+      <a href="auth.html" style="display:inline-flex;align-items:center;justify-content:center;padding:11px 22px;border-radius:12px;background:linear-gradient(135deg,var(--cyan),var(--c2));color:#04080F;font-family:'Epilogue',sans-serif;font-weight:700;font-size:.88rem;border:none;cursor:pointer;text-decoration:none;margin-top:8px;">Se connecter</a>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div id="main" style="display:none;">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-tag">&#9670; DIGIFORM &middot; EXPORT &#9670;</div>
+      <div class="hero-title">Téléchargez vos<br/><span class="gc">contacts</span></div>
+      <div class="hero-sub">Maximum 100 contacts par téléchargement. Formats CSV, VCF et WhatsApp disponibles.</div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="sc"><span class="sn" id="st" style="color:var(--cyan);">—</span><span class="sl">Total</span></div>
+      <div class="sc"><span class="sn" id="sw" style="color:var(--wa);">—</span><span class="sl">WhatsApp</span></div>
+      <div class="sc"><span class="sn" id="sp" style="color:var(--gold);">—</span><span class="sl">Pays</span></div>
+    </div>
+
+    <!-- EXPORT RAPIDE -->
+    <div class="stitle">Export rapide</div>
     <div class="exp-grid">
-      <button class="ec ec-csv" id="qcsv" onclick="quickCSV()"><div class="ec-ico">📊</div><div class="ec-lbl">CSV</div><div class="ec-sub">Google Contacts · Excel</div></button>
-      <button class="ec ec-vcf" id="qvcf" onclick="openVCF('all')"><div class="ec-ico">📱</div><div class="ec-lbl">VCF</div><div class="ec-sub">Import téléphone direct</div></button>
-      <button class="ec ec-wa" id="qwa" onclick="exportWA()"><div class="ec-ico">💬</div><div><div class="ec-lbl">Numéros WhatsApp</div><div class="ec-sub">Exporter pour liste de diffusion</div></div></button>
+      <button class="exp-btn exp-csv" id="btn-csv" onclick="exportCSV()">
+        <div class="exp-badge eb-csv">CSV</div>
+        <div class="exp-info">
+          <div class="exp-title">Export CSV</div>
+          <div class="exp-sub">Google Contacts &middot; Excel</div>
+        </div>
+      </button>
+      <button class="exp-btn exp-vcf" id="btn-vcf" onclick="ouvrirVCF('all')">
+        <div class="exp-badge eb-vcf">VCF</div>
+        <div class="exp-info">
+          <div class="exp-title">Export VCF</div>
+          <div class="exp-sub">Import téléphone</div>
+        </div>
+      </button>
     </div>
-  </div>
-
-  <!-- DOWNLOAD CONFIG -->
-  <div class="dlc">
-    <div class="dlc-title">Téléchargement personnalisé</div>
-    <div class="dlc-sub">Choisissez le nombre de contacts à exporter puis lancez.</div>
-    <div class="count-row">
-      <div class="count-box">
-        <button class="cb-btn" onclick="adj(-10)">−</button>
-        <input class="cb-inp" type="number" id="cnt" value="10" min="1"/>
-        <button class="cb-btn" onclick="adj(10)">+</button>
+    <button class="exp-wa-full" id="btn-wa" onclick="exportWA()">
+      <div class="exp-badge eb-wa">WA</div>
+      <div class="exp-info">
+        <div class="exp-title">Numéros WhatsApp</div>
+        <div class="exp-sub">Exporter pour liste de diffusion</div>
       </div>
-    </div>
-    <div class="count-hint" id="cnt-hint">sur 0 contacts disponibles</div>
-    <div class="fmt-row">
-      <div class="fmt on" id="f-csv" onclick="setFmt('csv')"><div class="fmt-ico">📊</div><div class="fmt-lbl">CSV</div></div>
-      <div class="fmt" id="f-vcf" onclick="setFmt('vcf')"><div class="fmt-ico">📱</div><div class="fmt-lbl">VCF</div></div>
-    </div>
-    <button class="launch" id="launch-btn" onclick="doLaunch()">
-      <span>⬇️</span><span id="launch-lbl">Lancer le téléchargement</span>
     </button>
-    <div class="dl-bar" id="dlbar"><div class="dl-fill" id="dlfill"></div></div>
-    <div class="dl-txt" id="dltxt"></div>
-  </div>
 
-  <!-- STATS -->
-  <div class="stats">
-    <div class="sc"><div class="sn" id="st" style="color:var(--cyan);">—</div><div class="sl">Membres</div></div>
-    <div class="sc"><div class="sn" id="sw" style="color:var(--wa);">—</div><div class="sl">WhatsApp</div></div>
-    <div class="sc"><div class="sn" id="sn2" style="color:var(--green);">—</div><div class="sl">Nouveaux</div></div>
-    <div class="sc"><div class="sn" id="sj" style="color:var(--gold);">—</div><div class="sl">Métiers</div></div>
-  </div>
+    <!-- CONFIG DOWNLOAD -->
+    <div class="cfg" style="margin-top:16px;">
+      <div class="stitle">Téléchargement personnalisé</div>
+      <div class="cfg-sub">Choisissez le nombre de contacts et le format. Maximum 100 par téléchargement.</div>
 
-  <!-- FILTERS -->
-  <div class="fz">
-    <div class="fz-lbl">Filtrer par domaine</div>
-    <div class="f-scroll" id="jfil"></div>
-  </div>
+      <div class="cnt-row">
+        <button class="cnt-btn" onclick="adj(-10)">&#8722;</button>
+        <input class="cnt-inp" type="number" id="cnt" value="10" min="1" max="100"/>
+        <button class="cnt-btn" onclick="adj(+10)">&#43;</button>
+      </div>
+      <div class="cnt-hint" id="cnt-hint">sur 0 contacts disponibles</div>
 
-  <!-- SEARCH -->
-  <div class="sw">
-    <span class="si">🔍</span>
-    <input class="inp" id="srch" placeholder="Nom, téléphone, domaine…" oninput="onSrch(this.value)"/>
-    <button class="scl" id="scl" onclick="clrSrch()">✕</button>
-  </div>
+      <div class="fmt-row">
+        <div class="fmt on" id="fmt-csv" onclick="setFmt('csv')">
+          <div class="fmt-ico fi-csv">CSV</div>
+          <div class="fmt-lbl">CSV</div>
+        </div>
+        <div class="fmt" id="fmt-vcf" onclick="setFmt('vcf')">
+          <div class="fmt-ico fi-vcf">VCF</div>
+          <div class="fmt-lbl">VCF</div>
+        </div>
+      </div>
 
-  <!-- SECTION HDR -->
-  <div class="shdr">
-    <div class="stitle">👥 Membres du réseau</div>
-    <div style="display:flex;gap:8px;align-items:center;">
-      <div class="scnt" id="scnt">0</div>
-      <button class="sort-btn" onclick="cycleSort()"><span id="sort-ico">🕐</span><span id="sort-lbl">Récent</span></button>
+      <button class="launch-btn" id="launch" onclick="lancer()" disabled>
+        Lancer le téléchargement
+      </button>
+      <div class="prog-bar" id="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+      <div class="prog-msg" id="prog-msg"></div>
     </div>
+
+    <!-- RECHERCHE -->
+    <div class="stitle" style="margin-top:4px;">Parcourir les contacts</div>
+    <div class="sw">
+      <span class="sw-ico">&#128269;</span>
+      <input class="sw-inp" id="srch" placeholder="Nom, téléphone, domaine…" oninput="filtrer(this.value)"/>
+      <button class="sw-clr" id="scl" onclick="clrSrch()">&#10005;</button>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="ctrl">
+      <button class="ctrl-sel" onclick="toutSel()">Tout sélectionner</button>
+      <span class="ctrl-cnt" id="rcnt">0 résultat</span>
+    </div>
+
+    <!-- SHIMMER -->
+    <div class="shim-grid" id="shim">
+      <div class="shim-card"></div><div class="shim-card"></div>
+      <div class="shim-card"></div><div class="shim-card"></div>
+    </div>
+
+    <!-- GRILLE -->
+    <div class="grid" id="grid"></div>
+
+    <!-- EMPTY -->
+    <div class="empty" id="empt" style="display:none;">
+      <div class="empty-ico">&#128270;</div>
+      <div class="empty-title">Aucun résultat</div>
+      <div class="empty-sub">Modifiez votre recherche.</div>
+    </div>
+
   </div>
-
-  <!-- SELECT BAR -->
-  <div class="selbar">
-    <button class="sa" onclick="togSelAll()">☑ Tout sélectionner</button>
-    <span class="sc2" id="sel-lbl">0 sélectionné</span>
-    <button class="sclear" onclick="clrSel()">✕ Effacer</button>
-  </div>
-
-  <!-- SHIMMER -->
-  <div class="sgrid" id="shim">
-    <div class="shim"></div><div class="shim"></div>
-    <div class="shim"></div><div class="shim"></div>
-  </div>
-
-  <!-- GRID -->
-  <div class="cgrid" id="grid"></div>
-
-  <!-- EMPTY -->
-  <div class="empty" id="empt" style="display:none;">
-    <div class="emico">🔎</div>
-    <div class="emtit">Aucun résultat</div>
-    <div class="emsub">Essayez un autre filtre ou une autre recherche.</div>
-  </div>
-
 </div>
-</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nb" href="dashboard.html"><div class="nb-dot"></div><span class="nb-ico">&#127968;</span><span class="nb-lbl">Accueil</span></a>
+  <a class="nb" href="dashboard.html"><div class="nb-dot"></div><span class="nb-ico">&#128193;</span><span class="nb-lbl">Catalogue</span></a>
+  <a class="nb" href="network.html"><div class="nb-dot"></div><span class="nb-ico">&#127760;</span><span class="nb-lbl">Réseau</span></a>
+  <a class="nb" href="profile.html"><div class="nb-dot"></div><span class="nb-ico">&#128100;</span><span class="nb-lbl">Profil</span></a>
+</nav>
 
 <!-- BOTTOM BAR -->
 <div id="bbar">
-  <div class="bbi">
-    <div class="bbinfo" id="bbinfo">0</div>
-    <div class="bbbts">
-      <button class="bbbt bbcsv" id="bbcsv" onclick="selCSV()">📊 CSV</button>
-      <button class="bbbt bbvcf" id="bbvcf" onclick="openVCF('sel')">📱 VCF</button>
+  <div class="bb-row">
+    <div class="bb-info" id="bb-info">0 contact</div>
+    <div class="bb-btns">
+      <button class="bb-btn bb-csv" onclick="selCSV()">CSV</button>
+      <button class="bb-btn bb-vcf" onclick="ouvrirVCF('sel')">VCF</button>
     </div>
   </div>
 </div>
 
 <!-- VCF MODAL -->
-<div id="vov" onclick="if(event.target===this)closeVCF()">
+<div id="vov" onclick="if(event.target===this)fermerVCF()">
   <div id="vbox">
-    <div class="vhandle"></div>
-    <div class="vtitle">📱 Export VCF</div>
-    <div class="vsub" id="vsub">Aperçu des contacts à exporter</div>
-    <div class="vprev" id="vprev"></div>
-    <button class="vdl" id="vdl" onclick="doVCF()">⬇️ Télécharger le fichier .vcf</button>
-    <button class="vcancel" onclick="closeVCF()">Annuler</button>
+    <div class="v-handle"></div>
+    <div class="v-title">Export VCF</div>
+    <div class="v-sub" id="v-sub">Aperçu avant téléchargement</div>
+    <div id="v-prev"></div>
+    <button class="v-dl" id="v-dl" onclick="telechargerVCF()">Télécharger le fichier .vcf</button>
+    <button class="v-cancel" onclick="fermerVCF()">Annuler</button>
   </div>
 </div>
+
+<div id="toast"></div>
 
 <script>
 const SB   = 'https://rxhjuetoxyjrairroycb.supabase.co';
 const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q';
 const COLS = ['#00D4FF','#FFB800','#00E5A0','#9B6DFF','#FF6B35','#FF4F6A','#0099FF','#FF7A00','#25D366','#B04FFF'];
-const JE   = {marketing:'📣',seo:'🔍',design:'🎨',dev:'💻','e-commerce':'🛒',commercial:'💼',finance:'💰',formation:'🎓',coach:'🎯',consultant:'🧠',manager:'📊',communication:'📡',audio:'🎧',vidéo:'🎬'};
+const CN   = {CI:"Côte d'Ivoire",CM:'Cameroun',SN:'Sénégal',BJ:'Bénin',BF:'Burkina',ML:'Mali',GH:'Ghana',TG:'Togo',OTHER:'International'};
 
-let sess=null, all=[], filt=[], sel=new Set(), job='all', sort='recent', dlFmt='csv', vcfList=[], toTm;
+function getSess(){try{return JSON.parse(localStorage.getItem('dg_sess')||'null');}catch{return null;}}
+const sess = getSess();
 
-/* ──────── INIT ──────── */
+let all=[], filt=[], sel=new Set(), dlFmt='csv', vcfList=[], toTm;
+
+/* TOAST */
+function toast(msg,t='ok'){clearTimeout(toTm);const e=document.getElementById('toast');e.textContent=msg;e.className='show '+t;toTm=setTimeout(()=>e.classList.remove('show'),4000);}
+
+/* HELPERS */
+function ini(n){return(n||'?').split(' ').map(w=>w[0]).filter(Boolean).slice(0,2).join('').toUpperCase();}
+function clnPh(p){return(p||'').replace(/[^0-9+]/g,'');}
+function getPays(p){const ph=p||'';if(ph.startsWith('+225'))return'CI';if(ph.startsWith('+237'))return'CM';if(ph.startsWith('+221'))return'SN';if(ph.startsWith('+229'))return'BJ';if(ph.startsWith('+226'))return'BF';if(ph.startsWith('+223'))return'ML';if(ph.startsWith('+233'))return'GH';if(ph.startsWith('+228'))return'TG';return'OTHER';}
+function today(){return new Date().toISOString().slice(0,10);}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+
+/* PAGINATION SUPABASE */
+async function chargerTout(path){
+  const PAGE=1000; let res=[], off=0, done=false;
+  while(!done){
+    try{
+      const r=await fetch(`${SB}/rest/v1/${path}`,{
+        headers:{apikey:ANON,Authorization:`Bearer ${sess.access_token}`,'Range-Unit':'items','Range':`${off}-${off+PAGE-1}`,'Prefer':'count=none'}
+      });
+      const d=await r.json();
+      if(!Array.isArray(d)||d.length===0)done=true;
+      else{res=[...res,...d];if(d.length<PAGE)done=true;else off+=PAGE;}
+    }catch{done=true;}
+  }
+  return res;
+}
+
+/* INIT */
 async function init(){
-  try{ sess=JSON.parse(localStorage.getItem('dg_sess')||'null'); }catch{}
-  if(!sess){ show('gate'); return; }
-  show('main');
-  await load();
-  renderAll();
-  window.addEventListener('scroll',()=>{ document.getElementById('stbtn').classList.toggle('show',scrollY>400); });
-}
+  if(!sess){document.getElementById('gate').style.display='flex';return;}
+  document.getElementById('main').style.display='block';
 
-function show(id){
-  ['gate','main'].forEach(i=>document.getElementById(i).style.display='none');
-  document.getElementById(id).style.display='block';
-}
+  const [m,p]=await Promise.all([
+    chargerTout('profiles?order=created_at.desc&select=id,full_name,profession,phone,show_in_network,created_at'),
+    chargerTout('pre_contacts?order=full_name.asc&select=id,full_name,profession,phone,email,country_code,created_at')
+  ]);
+  const membres=m.filter(c=>c.show_in_network!==false&&(c.full_name||c.phone));
+  const mPh=new Set(membres.map(c=>clnPh(c.phone)).filter(Boolean));
+  const pre=p.filter(c=>!c.phone||!mPh.has(clnPh(c.phone)));
+  all=[...membres,...pre];
 
-/* ──────── DATA ──────── */
-async function load(){
-  const r=await fetch(`${SB}/rest/v1/profiles?order=created_at.asc&select=id,full_name,profession,phone,show_in_network,created_at`,
-    {headers:{apikey:ANON,Authorization:`Bearer ${sess.access_token}`}});
-  const d=await r.json();
-  if(Array.isArray(d)) all=d.filter(c=>c.show_in_network!==false&&(c.full_name||c.phone));
   document.getElementById('shim').style.display='none';
+  majStats();
+  majCfg();
+  filt=[...all];
+  document.getElementById('rcnt').textContent=`${all.length} contact${all.length>1?'s':''}`;
+  afficherGrille();
 }
 
-/* ──────── RENDER ALL ──────── */
-function renderAll(){
-  const tot=all.length, wa=all.filter(c=>c.phone).length;
-  const now=new Date(), nw=all.filter(c=>(now-new Date(c.created_at))<7*864e5).length;
-  const jbs=new Set(all.map(c=>c.profession).filter(Boolean)).size;
-  set('st',tot); set('sw',wa); set('sn2',nw); set('sj',jbs);
-  set('hdr-sub',`${tot} MEMBRE${tot>1?'S':''} · DF`);
-  if(nw>0) document.getElementById('bell-dot').style.display='block';
-
-  const cnt=document.getElementById('cnt');
-  if(parseInt(cnt.value)>tot) cnt.value=tot||1;
-  set('cnt-hint',`sur ${tot} contact${tot>1?'s':''} disponibles`);
-  document.getElementById('launch-btn').disabled=tot===0;
-  document.getElementById('qcsv').disabled=tot===0;
-  document.getElementById('qvcf').disabled=tot===0;
-  document.getElementById('qwa').disabled=wa===0;
-
-  renderJobs(); applyFil();
-}
-function set(id,v){ const e=document.getElementById(id); if(e) e.textContent=v; }
-
-/* ──────── JOB FILTERS ──────── */
-function renderJobs(){
-  const jobs=[...new Set(all.map(c=>c.profession).filter(Boolean))];
-  document.getElementById('jfil').innerHTML=
-    `<div class="fchip${job==='all'?' on':''}" onclick="setJob('all')">🌐 Tous</div>`+
-    jobs.map(j=>`<div class="fchip${job===j?' on':''}" onclick="setJob('${j.replace(/'/g,"\\'")}')"> ${je(j)} ${j}</div>`).join('');
-}
-function setJob(j){ job=j; renderJobs(); applyFil(); }
-function je(j){ if(!j)return'🌟'; const k=Object.keys(JE).find(k=>j.toLowerCase().includes(k)); return JE[k]||'🌟'; }
-
-/* ──────── SORT ──────── */
-const SORTS=['recent','alpha','wa'];
-const SLB={recent:'Récent',alpha:'A→Z',wa:'WhatsApp'};
-const SIC={recent:'🕐',alpha:'🔤',wa:'💬'};
-function cycleSort(){ sort=SORTS[(SORTS.indexOf(sort)+1)%3]; set('sort-ico',SIC[sort]); set('sort-lbl',SLB[sort]); applyFil(); }
-function sorted(a){ const x=[...a];
-  if(sort==='alpha') return x.sort((a,b)=>(a.full_name||'').localeCompare(b.full_name||''));
-  if(sort==='wa')    return x.sort((a,b)=>(b.phone?1:0)-(a.phone?1:0));
-  return x.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+/* STATS */
+function majStats(){
+  const n=all.length, wa=all.filter(c=>c.phone).length;
+  const pp=new Set(all.map(c=>c.country_code||getPays(c.phone||'')).filter(Boolean)).size;
+  document.getElementById('st').textContent=n;
+  document.getElementById('sw').textContent=wa;
+  document.getElementById('sp').textContent=pp;
+  document.getElementById('hdr-sub').textContent=`${n} CONTACT${n>1?'S':''} DISPONIBLES`;
+  ['btn-csv','btn-vcf'].forEach(id=>document.getElementById(id).disabled=n===0);
+  document.getElementById('btn-wa').disabled=wa===0;
 }
 
-/* ──────── SEARCH + FILTER ──────── */
-function onSrch(v){ document.getElementById('scl').classList.toggle('show',v.length>0); applyFil(); }
-function clrSrch(){ document.getElementById('srch').value=''; document.getElementById('scl').classList.remove('show'); applyFil(); }
-function applyFil(){
-  const q=(document.getElementById('srch')?.value||'').toLowerCase().trim();
-  filt=sorted(all.filter(c=>{
-    const mj=job==='all'||c.profession===job;
-    const mq=!q||(c.full_name||'').toLowerCase().includes(q)||(c.phone||'').toLowerCase().includes(q)||(c.profession||'').toLowerCase().includes(q);
-    return mj&&mq;
-  }));
-  set('scnt',`${filt.length} résultat${filt.length>1?'s':''}`);
-  renderGrid(); updSel();
+/* CONFIG */
+function majCfg(){
+  const n=all.length;
+  document.getElementById('cnt-hint').textContent=`max 100 par téléchargement (${n} disponibles)`;
+  document.getElementById('launch').disabled=n===0;
+}
+function adj(d){const i=document.getElementById('cnt');i.value=Math.max(1,Math.min(100,Math.min(all.length,(parseInt(i.value)||0)+d)));}
+function setFmt(f){dlFmt=f;['csv','vcf'].forEach(x=>document.getElementById('fmt-'+x).classList.toggle('on',f===x));}
+
+async function lancer(){
+  const raw=parseInt(document.getElementById('cnt').value)||0;
+  if(raw>100){toast('Maximum 100 contacts par téléchargement','err');document.getElementById('cnt').value=100;return;}
+  const n=Math.min(raw,100,all.length);
+  const contacts=all.slice(0,n);
+  if(!contacts.length){toast('Aucun contact disponible','err');return;}
+
+  const btn=document.getElementById('launch');
+  const bar=document.getElementById('prog-bar'), fill=document.getElementById('prog-fill'), msg=document.getElementById('prog-msg');
+  btn.disabled=true;btn.textContent='Préparation…';
+  bar.classList.add('show');fill.style.width='0%';
+  msg.classList.add('show');msg.textContent=`0 / ${contacts.length} contacts…`;
+  await sleep(150);fill.style.width='40%';msg.textContent='Traitement des données…';
+  await sleep(380);fill.style.width='85%';msg.textContent='Génération du fichier…';
+  await sleep(280);fill.style.width='100%';
+
+  if(dlFmt==='csv'){
+    dlFile(genCSV(contacts),`digiform_${n}contacts_${today()}.csv`,'text/csv;charset=utf-8;');
+    msg.textContent=`${contacts.length} contacts exportés en CSV`;
+  }else{
+    ouvrirVCF('custom',contacts);
+    msg.textContent=`${contacts.length} contacts prêts en VCF`;
+  }
+  await sleep(2000);
+  bar.classList.remove('show');msg.classList.remove('show');fill.style.width='0%';
+  btn.disabled=false;btn.textContent='Lancer le téléchargement';
+  if(dlFmt==='csv') toast(`${contacts.length} contacts exportés CSV · DF`,'ok');
 }
 
-/* ──────── GRID ──────── */
-function renderGrid(){
+/* SEARCH */
+function filtrer(v){
+  document.getElementById('scl').classList.toggle('show',v.length>0);
+  const q=v.toLowerCase().trim();
+  filt=all.filter(c=>!q||(c.full_name||'').toLowerCase().includes(q)||(c.phone||'').includes(q)||(c.profession||'').toLowerCase().includes(q));
+  document.getElementById('rcnt').textContent=`${filt.length} résultat${filt.length>1?'s':''}`;
+  afficherGrille();majSel();
+}
+function clrSrch(){document.getElementById('srch').value='';document.getElementById('scl').classList.remove('show');filtrer('');}
+
+/* GRILLE */
+function afficherGrille(){
   const g=document.getElementById('grid'), e=document.getElementById('empt');
-  if(!filt.length){ g.innerHTML=''; e.style.display='flex'; return; }
+  if(!filt.length){g.innerHTML='';e.style.display='flex';return;}
   e.style.display='none';
   g.innerHTML=filt.map((c,i)=>{
-    const idx=all.indexOf(c), col=COLS[idx%COLS.length];
-    const ini=inits(c.full_name), ph=clnPh(c.phone);
-    const isSel=sel.has(c.id), isNew=(new Date()-new Date(c.created_at))<7*864e5;
-    const wm=encodeURIComponent(`Bonjour ${c.full_name||''} 👋\nJ'ai trouvé votre contact sur le réseau DIGIFORM.\nJe souhaite vous contacter.`);
-    return`
-    <div class="ccard" id="cc-${c.id}" style="animation-delay:${i*.04}s;">
-      <div class="ccard-top-line" style="background:linear-gradient(90deg,${col},${col}66);"></div>
-      <div class="ccard-sel${isSel?' on':''}" id="cs-${c.id}" onclick="togSel('${c.id}')">${isSel?'✓':''}</div>
-      ${isNew?'<div class="ccard-new">NOUVEAU</div>':''}
-      <div class="cav" style="background:${col}20;color:${col};">
-        ${ini}
-        ${isNew?'<div class="cav-online"></div>':''}
-      </div>
-      <div class="cname">${c.full_name||'Membre'}</div>
-      <div class="cjob">${je(c.profession)} ${c.profession||'DIGIFORM'}</div>
-      <div class="cdf">DF · RÉSEAU</div>
+    const idx=all.indexOf(c), col=COLS[Math.abs(idx)%COLS.length];
+    const ph=clnPh(c.phone), isSel=sel.has(c.id);
+    const cc=c.country_code||getPays(c.phone||'');
+    return `
+    <div class="ccard" id="cc-${c.id}" style="animation-delay:${Math.min(i,15)*.04}s;${isSel?'border-color:rgba(0,212,255,.4);':''}">
+      <div class="cc-bar" style="background:linear-gradient(90deg,${col},${col}66);"></div>
+      <div class="cc-sel${isSel?' on':''}" id="cs-${c.id}" onclick="togSel('${c.id}')">${isSel?'&#10003;':''}</div>
+      <div class="cc-av" style="background:${col}20;color:${col};">${ini(c.full_name)}</div>
+      <div class="cc-name">${c.full_name||'Membre'}</div>
+      <div class="cc-job">${c.profession||'DIGIFORM'}</div>
+      <div class="cc-df">${cc} · DF</div>
       ${ph
-        ?`<button class="cwa" onclick="window.open('https://wa.me/${ph}?text=${wm}','_blank')">💬 WhatsApp</button>`
-        :`<div class="cnowa">📵 Non disponible</div>`
+        ? `<button class="cc-wa" onclick="ouvrirWA('${ph}','${(c.full_name||'').replace(/'/g,"\\'")}')">WhatsApp</button>`
+        : `<div class="cc-nowa">Non disponible</div>`
       }
     </div>`;
   }).join('');
 }
-function inits(n){ return(n||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
-function clnPh(p){ return(p||'').replace(/[^0-9+]/g,''); }
 
-/* ──────── SELECTION ──────── */
+/* WHATSAPP — redirige directement vers l'app */
+function ouvrirWA(phone, nom){
+  if(!phone){toast('Numéro non disponible','err');return;}
+  /* Enlever tous les caractères non numériques SAUF le + en début */
+  const ph=(phone||'').replace(/[^0-9]/g,'');
+  if(!ph){toast('Numéro invalide','err');return;}
+  const msg=encodeURIComponent('Bonjour '+(nom||'')+' ! J\'ai trouvé votre contact sur le réseau DIGIFORM.');
+  const url='https://wa.me/'+ph+'?text='+msg;
+  /* Ouvrir dans un nouvel onglet - redirige vers WhatsApp */
+  window.open(url,'_blank','noopener,noreferrer');
+}
+
+/* SÉLECTION */
 function togSel(id){
   sel.has(id)?sel.delete(id):sel.add(id);
   const on=sel.has(id);
-  document.getElementById('cc-'+id)?.classList.toggle('selected',on);
-  const cs=document.getElementById('cs-'+id);
-  if(cs){ cs.classList.toggle('on',on); cs.textContent=on?'✓':''; }
-  updSel();
+  const cs=document.getElementById('cs-'+id);if(cs){cs.classList.toggle('on',on);cs.innerHTML=on?'&#10003;':'';}
+  const cc=document.getElementById('cc-'+id);if(cc)cc.style.borderColor=on?'rgba(0,212,255,.4)':'';
+  majSel();
 }
-function togSelAll(){
-  const ids=filt.map(c=>c.id), allOn=ids.every(id=>sel.has(id));
-  if(allOn) ids.forEach(id=>sel.delete(id)); else ids.forEach(id=>sel.add(id));
-  renderGrid(); updSel();
+function toutSel(){
+  const ids=filt.map(c=>c.id), tousOn=ids.every(id=>sel.has(id));
+  if(tousOn)ids.forEach(id=>sel.delete(id));else ids.forEach(id=>sel.add(id));
+  afficherGrille();majSel();
 }
-function clrSel(){ sel.clear(); renderGrid(); updSel(); }
-function updSel(){
+function majSel(){
   const n=sel.size;
-  set('sel-lbl',`${n} sélectionné${n>1?'s':''}`);
-  const bar=document.getElementById('bbar'); bar.classList.toggle('show',n>0);
-  set('bbinfo',`${n} contact${n>1?'s':''}`);
-  document.getElementById('bbcsv').disabled=n===0;
-  document.getElementById('bbvcf').disabled=n===0;
+  document.getElementById('bbar').classList.toggle('show',n>0);
+  document.getElementById('bb-info').textContent=`${n} contact${n>1?'s':''}`;
 }
 
-/* ──────── DOWNLOAD CONFIG ──────── */
-function adj(d){ const i=document.getElementById('cnt'); i.value=Math.max(1,Math.min(all.length||1,(parseInt(i.value)||0)+d)); }
-function setFmt(f){ dlFmt=f; ['csv','vcf'].forEach(x=>document.getElementById('f-'+x).classList.toggle('on',f===x)); }
-
-async function doLaunch(){
-  const n=Math.min(parseInt(document.getElementById('cnt').value)||all.length, all.length);
-  const contacts=all.slice(0,n);
-  if(!contacts.length){ toast('Aucun contact disponible','err'); return; }
-  const btn=document.getElementById('launch-btn');
-  const bar=document.getElementById('dlbar'), fill=document.getElementById('dlfill'), txt=document.getElementById('dltxt');
-  btn.disabled=true; set('launch-lbl','⏳ Préparation…');
-  bar.classList.add('show'); fill.style.width='0%';
-  txt.classList.add('show'); txt.textContent=`0 / ${contacts.length} contacts…`;
-  await sl(150); fill.style.width='35%'; txt.textContent='Traitement des données…';
-  await sl(380); fill.style.width='72%'; txt.textContent='Génération du fichier…';
-  await sl(300); fill.style.width='100%';
-  if(dlFmt==='csv'){ dlFile(genCSV(contacts),`digiform_${n}contacts_${td()}.csv`,'text/csv;charset=utf-8;'); txt.textContent=`✅ ${contacts.length} contacts exportés en CSV · DF !`; }
-  else { openVCF('custom',contacts); txt.textContent=`✅ Aperçu prêt — ${contacts.length} contacts VCF · DF`; }
-  await sl(2000); bar.classList.remove('show'); txt.classList.remove('show'); fill.style.width='0%';
-  btn.disabled=false; set('launch-lbl','Lancer le téléchargement');
-  toast(`✅ ${contacts.length} contacts exportés (${dlFmt.toUpperCase()}) · DF`,'ok');
-}
-
-/* ──────── QUICK EXPORTS ──────── */
-async function quickCSV(){
-  if(!all.length){ toast('Aucun contact','err'); return; }
-  dlFile(genCSV(all),`digiform_contacts_${td()}.csv`,'text/csv;charset=utf-8;');
-  toast(`✅ ${all.length} contacts exportés en CSV · DF`,'ok');
-}
-function exportWA(){
-  const nums=all.filter(c=>c.phone).map(c=>`${c.full_name||'Membre'} — ${c.phone} (${c.profession||'DF'})`);
-  dlFile(`DIGIFORM · Réseau WhatsApp\nExporté le ${new Date().toLocaleDateString('fr-FR')}\n${'─'.repeat(38)}\n\n${nums.join('\n')}\n\n${'─'.repeat(38)}\nTotal : ${nums.length} contacts · DF`,`digiform_wa_${td()}.txt`,'text/plain;charset=utf-8;');
-  toast(`✅ ${nums.length} numéros WhatsApp exportés · DF`,'ok');
-}
-function selCSV(){
-  const c=all.filter(x=>sel.has(x.id)); if(!c.length) return;
-  dlFile(genCSV(c),`digiform_selection_${td()}.csv`,'text/csv;charset=utf-8;');
-  toast(`✅ ${c.length} contacts exportés · DF`,'ok');
-}
-
-/* ──────── CSV ──────── */
-function genCSV(contacts){
-  const H=['Nom','Prénom','Téléphone','Email','Profession','Réseau','Date'].map(f=>`"${f}"`).join(',');
-  const R=contacts.map(c=>{
-    const p=(c.full_name||'').split(' '); const prenom=p[0]||''; const nom=p.slice(1).join(' ')||'';
-    return[nom,prenom,c.phone||'',c.email||'',c.profession||'','DIGIFORM · DF',c.created_at?new Date(c.created_at).toLocaleDateString('fr-FR'):'']
+/* CSV */
+function genCSV(cs){
+  const H=['Nom','Prénom','Téléphone','Email','Profession','Pays'].map(f=>`"${f}"`).join(',');
+  const R=cs.map(c=>{
+    const p=(c.full_name||'').split(' ');
+    return[p.slice(1).join(' '),p[0]||'',c.phone||'',c.email||'',c.profession||'',CN[c.country_code||getPays(c.phone||'')]||'']
       .map(f=>`"${(f||'').replace(/"/g,'""')}"`)
       .join(',');
   });
   return'\uFEFF'+[H,...R].join('\r\n');
 }
+function dlFile(c,n,m){const b=new Blob([c],{type:m});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
+function exportCSV(){if(!all.length)return;dlFile(genCSV(all),`digiform_contacts_${today()}.csv`,'text/csv;charset=utf-8;');toast(`${all.length} contacts exportés CSV · DF`,'ok');}
+function selCSV(){const cs=all.filter(c=>sel.has(c.id));if(!cs.length)return;dlFile(genCSV(cs),`digiform_sel_${today()}.csv`,'text/csv;charset=utf-8;');toast(`${cs.length} contacts CSV · DF`,'ok');}
+function exportWA(){
+  const nums=all.filter(c=>c.phone).map(c=>`${c.full_name||'Membre'} — ${c.phone}`);
+  dlFile(`DIGIFORM · WhatsApp\n${new Date().toLocaleDateString('fr-FR')}\n\n${nums.join('\n')}\n\nTotal: ${nums.length}`,`digiform_wa_${today()}.txt`,'text/plain;charset=utf-8;');
+  toast(`${nums.length} numéros exportés · DF`,'ok');
+}
 
-/* ──────── VCF ──────── */
+/* VCF */
 function toVC(c){
-  const ph=clnPh(c.phone), p=(c.full_name||'').split(' ');
+  const ph=clnPh(c.phone), pt=(c.full_name||'').split(' ');
   return['BEGIN:VCARD','VERSION:3.0',
     `FN:${c.full_name||'Membre DIGIFORM'}`,
-    `N:${p.slice(1).join(' ')};${p[0]};;;`,
+    `N:${pt.slice(1).join(' ')};${pt[0]};;;`,
     ph?`TEL;TYPE=CELL:${ph}`:'',
     c.email?`EMAIL:${c.email}`:'',
     c.profession?`TITLE:${c.profession}`:'',
-    'ORG:DIGIFORM Network · DF',
-    `NOTE:Contact exporté depuis DIGIFORM · DF · ${new Date().toLocaleDateString('fr-FR')}`,
+    'ORG:DIGIFORM Network',
     'END:VCARD'].filter(Boolean).join('\r\n');
 }
-function genVCF(cs){ return cs.map(c=>toVC(c)).join('\r\n\r\n'); }
+function genVCF(cs){return cs.map(c=>toVC(c)).join('\r\n\r\n');}
 
-function openVCF(mode, custom){
+function ouvrirVCF(mode,custom){
   vcfList=mode==='all'?[...all]:mode==='sel'?all.filter(c=>sel.has(c.id)):custom||[];
-  if(!vcfList.length){ toast('Aucun contact à exporter','err'); return; }
-  const pn=6, prev=vcfList.slice(0,pn);
-  set('vsub',`${vcfList.length} contact${vcfList.length>1?'s':''} — 1 fichier .vcf · DF`);
-  document.getElementById('vprev').innerHTML=
-    prev.map(c=>{
-      const col=COLS[all.indexOf(c)%COLS.length];
-      return`<div class="vitem"><div class="vav" style="background:${col}22;color:${col};">${inits(c.full_name)}</div><div><div class="vname">${c.full_name||'Membre'}</div><div class="vph">${c.phone||'—'} · ${c.profession||'DF'}</div></div></div>`;
-    }).join('')+
-    (vcfList.length>pn?`<div class="vmore">+${vcfList.length-pn} autres contacts…</div>`:'');
-  const btn=document.getElementById('vdl');
-  btn.disabled=false; btn.textContent=`⬇️ Télécharger ${vcfList.length} contact${vcfList.length>1?'s':''} · DF (.vcf)`;
+  if(!vcfList.length){toast('Aucun contact à exporter','err');return;}
+  const prev=vcfList.slice(0,6);
+  document.getElementById('v-sub').textContent=`${vcfList.length} contact${vcfList.length>1?'s':''} · fichier .vcf`;
+  document.getElementById('v-prev').innerHTML=prev.map(c=>{
+    const col=COLS[all.indexOf(c)%COLS.length];
+    return`<div class="v-item">
+      <div class="v-av" style="background:${col}22;color:${col};">${ini(c.full_name)}</div>
+      <div>
+        <div style="font-size:.83rem;font-weight:700;font-family:'Syne',sans-serif;">${c.full_name||'Membre'}</div>
+        <div style="font-size:.72rem;color:var(--t3);">${c.phone||'—'}</div>
+      </div>
+    </div>`;
+  }).join('')+(vcfList.length>6?`<div style="text-align:center;font-size:.75rem;color:var(--t3);padding:7px;font-style:italic;">+${vcfList.length-6} autres…</div>`:'');
+  const btn=document.getElementById('v-dl');btn.disabled=false;
+  btn.textContent=`Télécharger ${vcfList.length} contact${vcfList.length>1?'s':''} (.vcf)`;
   document.getElementById('vov').classList.add('show');
 }
-function closeVCF(){ document.getElementById('vov').classList.remove('show'); }
-async function doVCF(){
-  const btn=document.getElementById('vdl'); btn.disabled=true; btn.textContent='⏳ Génération…';
-  await sl(300);
-  dlFile(genVCF(vcfList),`digiform_${vcfList.length}contacts_${td()}_DF.vcf`,'text/vcard');
-  btn.textContent=`✅ ${vcfList.length} contacts téléchargés · DF`;
-  await sl(1800); closeVCF();
-  toast(`✅ Fichier VCF téléchargé · DF`,'ok');
+function fermerVCF(){document.getElementById('vov').classList.remove('show');}
+async function telechargerVCF(){
+  const btn=document.getElementById('v-dl');btn.disabled=true;btn.textContent='Génération…';
+  await sleep(250);
+  dlFile(genVCF(vcfList),`digiform_${vcfList.length}contacts_${today()}.vcf`,'text/vcard');
+  btn.textContent=`${vcfList.length} contacts téléchargés`;
+  await sleep(1500);fermerVCF();toast('Fichier VCF téléchargé · DF','ok');
 }
 
-/* ──────── UTILS ──────── */
-function dlFile(c,n,m){ const b=new Blob([c],{type:m}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=n; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); }
-function td(){ return new Date().toISOString().slice(0,10); }
-function sl(ms){ return new Promise(r=>setTimeout(r,ms)); }
-function toast(msg,t='ok'){ clearTimeout(toTm); const e=document.getElementById('toast'); e.textContent=msg; e.className=''; e.classList.add('show',t); toTm=setTimeout(()=>e.classList.remove('show'),4000); }
+async function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 
-document.getElementById('bell-btn').addEventListener('click',()=>{
-  const nw=all.filter(c=>(new Date()-new Date(c.created_at))<7*864e5);
-  toast(nw.length>0?`🆕 ${nw.length} nouveau${nw.length>1?'x':''} membre${nw.length>1?'s':''} cette semaine · DF`:'Aucun nouveau membre cette semaine','inf');
-  document.getElementById('bell-dot').style.display='none';
-});
-
-window.addEventListener('DOMContentLoaded',init);
+init();
 </script>
 </body>
 </html>
