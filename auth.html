@@ -2,437 +2,246 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
 <title>DIGIFORM · Connexion</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
 <style>
-/* ══ RESET ══ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#04080F;--s1:#0A1020;--s2:#101828;--s3:#182035;--s4:#1E2D4A;
-  --cyan:#00D4FF;--c2:#0099FF;--gold:#FFB800;--g2:#FF7A00;
-  --green:#00E5A0;--red:#FF4F6A;
-  --tx:#E8EEFF;--t2:#8899BB;--t3:#4B5E80;--t4:#2A3A58;
+  --bg:#F8F9FC;--bg2:#FFFFFF;--bg3:#F1F3F8;--bg4:#E4E8F0;
+  --border:#D8DCE8;--text:#111827;--text2:#4B5563;--text3:#9CA3AF;
+  --blue:#2563EB;--blue2:#1D4ED8;--gold:#F59E0B;--green:#10B981;--red:#EF4444;
+  --sh:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --sh2:0 4px 16px rgba(0,0,0,.1);
 }
-html,body{min-height:100vh;background:var(--bg);color:var(--tx);font-family:'Epilogue',sans-serif;overflow-x:hidden;}
-body{max-width:430px;margin:0 auto;}
-
-/* ══ ANIMATIONS ══ */
-@keyframes rise{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
-@keyframes pop{from{opacity:0;transform:scale(.93);}to{opacity:1;transform:scale(1);}}
-@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;max-width:430px;margin:0 auto;overflow-x:hidden;}
+@keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
 @keyframes spin{to{transform:rotate(360deg);}}
 
-/* ══ GRADIENTS ══ */
-.gc{background:linear-gradient(135deg,#fff 10%,#9DCFFF 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.gg{background:linear-gradient(135deg,var(--gold),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+/* LOGO */
+.logo{font-family:'Syne',sans-serif;font-weight:800;line-height:1;white-space:nowrap;}
+.logo-d{color:#1E40AF;}.logo-f{color:var(--gold);}
 
-/* ══ PAGE WRAP ══ */
-.wrap{
-  min-height:100vh;
-  display:flex;flex-direction:column;align-items:center;
-  justify-content:flex-start;
-  padding:28px 18px 60px;
-  position:relative;overflow:hidden;
-}
+/* WRAP */
+.wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 18px 48px;}
+.back-link{align-self:flex-start;font-size:.82rem;color:var(--text3);text-decoration:none;margin-bottom:20px;display:flex;align-items:center;gap:5px;}
+.back-link:hover{color:var(--blue);}
+.logo-block{text-align:center;margin-bottom:22px;}
+.logo-block .logo{font-size:2rem;}
+.logo-sub{font-size:.62rem;color:var(--text3);letter-spacing:.14em;text-transform:uppercase;margin-top:5px;}
 
-/* Orbs BG */
-.wrap::before{
-  content:'';position:absolute;inset:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse 80% 50% at 50% 0%,rgba(0,212,255,.08),transparent),
-    radial-gradient(ellipse 60% 40% at 90% 100%,rgba(155,109,255,.06),transparent);
-}
+/* BOX */
+.box{width:100%;max-width:390px;background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:22px 18px 26px;box-shadow:var(--sh2);animation:rise .4s cubic-bezier(.22,1,.36,1);}
 
-/* ══ BACK LINK ══ */
-.back{
-  align-self:flex-start;display:inline-flex;align-items:center;gap:6px;
-  font-size:.82rem;color:var(--t3);text-decoration:none;
-  transition:color .2s;margin-bottom:22px;z-index:1;
-}
-.back:hover{color:var(--cyan);}
+/* TABS */
+.tabs{display:flex;background:var(--bg3);border-radius:10px;padding:3px;margin-bottom:20px;border:1px solid var(--border);gap:3px;}
+.tab{flex:1;padding:9px 0;border-radius:8px;font-size:.83rem;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;transition:all .2s;background:transparent;color:var(--text3);}
+.tab.on{background:var(--bg2);color:var(--blue);box-shadow:var(--sh);}
 
-/* ══ LOGO ══ */
-.logo-wrap{text-align:center;margin-bottom:26px;z-index:1;animation:rise .5s cubic-bezier(.22,1,.36,1);}
-.logo-mark{font-family:'Syne',sans-serif;font-weight:800;font-size:2.8rem;line-height:1;letter-spacing:-.02em;}
-.logo-sub{font-size:.62rem;color:var(--t3);letter-spacing:.2em;margin-top:5px;text-transform:uppercase;}
-
-/* ══ BOX ══ */
-.box{
-  width:100%;max-width:390px;
-  background:var(--s1);
-  border:1px solid var(--s4);
-  border-radius:22px;
-  padding:22px 18px 26px;
-  z-index:1;
-  animation:pop .4s cubic-bezier(.22,1,.36,1);
-}
-
-/* ══ TOGGLE TABS ══ */
-.tabs{
-  display:flex;background:var(--s2);
-  border-radius:12px;padding:4px;
-  margin-bottom:22px;border:1px solid var(--s4);gap:4px;
-}
-.tab{
-  flex:1;padding:10px 0;border-radius:9px;
-  font-size:.85rem;border:none;cursor:pointer;
-  font-family:'Epilogue',sans-serif;font-weight:700;
-  transition:all .2s;background:transparent;color:var(--t3);
-}
-.tab.on{background:linear-gradient(135deg,var(--cyan),var(--c2));color:#04080F;}
-
-/* ══ SECTION LABEL ══ */
-.slbl{
-  font-size:.62rem;font-weight:700;color:var(--t3);
-  letter-spacing:.14em;text-transform:uppercase;
-  margin:14px 0 10px;padding-bottom:5px;
-  border-bottom:1px solid var(--s4);
-}
-
-/* ══ INPUTS ══ */
-.ig{margin-bottom:12px;}
-.il{font-size:.7rem;font-weight:700;color:var(--t3);display:block;margin-bottom:5px;letter-spacing:.06em;text-transform:uppercase;}
-.iw{position:relative;}
-.iw .ico{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:.9rem;pointer-events:none;color:var(--t3);}
-.inp{
-  background:var(--s2);border:1.5px solid var(--s4);
-  border-radius:12px;color:var(--tx);
-  font-family:'Epilogue',sans-serif;font-size:.9rem;
-  padding:12px 15px;width:100%;outline:none;
-  transition:border-color .2s,box-shadow .2s;display:block;
-}
-.inp:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,212,255,.1);}
-.inp::placeholder{color:var(--t3);}
-.inp.has-ico{padding-left:40px;}
+/* FORM */
+.section-lbl{font-size:.6rem;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin:12px 0 9px;padding-bottom:5px;border-bottom:1px solid var(--border);}
+.fg{margin-bottom:11px;}
+.lbl{font-size:.72rem;font-weight:600;color:var(--text2);display:block;margin-bottom:4px;}
+.inp{background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;padding:11px 14px;width:100%;outline:none;transition:all .2s;display:block;}
+.inp:focus{border-color:var(--blue);background:#EFF6FF;box-shadow:0 0 0 3px rgba(37,99,235,.1);}
+.inp::placeholder{color:var(--text3);}
 select.inp{cursor:pointer;-webkit-appearance:none;}
 .inp-2col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-
-/* ══ PASSWORD EYE ══ */
 .pw-wrap{position:relative;}
-.pw-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;color:var(--t3);padding:4px;line-height:1;}
+.pw-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:.9rem;color:var(--text3);padding:4px;}
 
-/* ══ CHECKBOX VISIBLE ══ */
-.vis-row{
-  display:flex;align-items:flex-start;gap:10px;
-  background:rgba(0,212,255,.06);padding:12px;
-  border-radius:11px;border:1px solid rgba(0,212,255,.14);
-  margin-top:4px;cursor:pointer;
-}
-.vis-row input[type=checkbox]{width:18px;height:18px;margin-top:1px;accent-color:var(--cyan);flex-shrink:0;cursor:pointer;}
-.vis-row label{font-size:.78rem;color:var(--t2);cursor:pointer;line-height:1.6;}
+/* TOGGLE VISIBLE */
+.vis-row{display:flex;align-items:flex-start;gap:10px;background:var(--bg3);padding:11px 12px;border-radius:10px;border:1px solid var(--border);cursor:pointer;margin-top:4px;}
+.vis-row input[type=checkbox]{width:17px;height:17px;margin-top:1px;accent-color:var(--blue);flex-shrink:0;cursor:pointer;}
+.vis-row label{font-size:.77rem;color:var(--text2);cursor:pointer;line-height:1.6;}
 
-/* ══ MESSAGES ══ */
-.msg{
-  margin-top:12px;font-size:.8rem;text-align:center;
-  padding:11px 14px;border-radius:10px;line-height:1.6;
-  display:none;
-}
-.msg.show{display:block;animation:rise .3s ease;}
-.msg-err{color:#FF9090;background:rgba(255,79,106,.08);border:1px solid rgba(255,79,106,.2);}
-.msg-ok{color:var(--green);background:rgba(0,229,160,.08);border:1px solid rgba(0,229,160,.2);}
+/* MESSAGES */
+.msg{margin-top:10px;font-size:.79rem;text-align:center;padding:10px 13px;border-radius:9px;line-height:1.55;display:none;}
+.msg.show{display:block;}
+.msg-err{color:#B91C1C;background:#FEF2F2;border:1px solid #FECACA;}
+.msg-ok{color:#065F46;background:#ECFDF5;border:1px solid #A7F3D0;}
 
-/* ══ BUTTON ══ */
-.cta{
-  width:100%;padding:14px;margin-top:16px;
-  background:linear-gradient(135deg,var(--cyan),var(--c2));
-  color:#04080F;border:none;border-radius:13px;
-  font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;
-  cursor:pointer;transition:all .22s;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  letter-spacing:.01em;
-}
-.cta:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,212,255,.4);}
-.cta:active:not(:disabled){transform:scale(.97);}
-.cta:disabled{opacity:.45;cursor:not-allowed;transform:none!important;}
-
-/* ══ FOOTER TEXT ══ */
-.foot{text-align:center;margin-top:16px;font-size:.8rem;color:var(--t3);}
-.foot a{color:var(--cyan);font-weight:600;text-decoration:none;cursor:pointer;}
-.foot a:hover{text-decoration:underline;}
-
-/* ══ FORGOT LINK ══ */
+/* CTA */
+.cta{width:100%;padding:13px;margin-top:14px;background:var(--blue);color:#fff;border:none;border-radius:11px;font-family:'Syne',sans-serif;font-weight:700;font-size:.92rem;cursor:pointer;transition:all .22s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.cta:hover:not(:disabled){background:var(--blue2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(37,99,235,.3);}
+.cta:disabled{opacity:.45;cursor:not-allowed;}
+.foot{text-align:center;margin-top:14px;font-size:.8rem;color:var(--text3);}
+.foot a{color:var(--blue);font-weight:600;text-decoration:none;cursor:pointer;}
 .forgot{text-align:right;margin-top:-4px;margin-bottom:6px;}
-.forgot a{font-size:.75rem;color:var(--t3);text-decoration:none;}
-.forgot a:hover{color:var(--cyan);}
+.forgot a{font-size:.74rem;color:var(--text3);text-decoration:none;}
+.forgot a:hover{color:var(--blue);}
 
-/* ══ TOAST ══ */
-#toast{
-  position:fixed;top:16px;left:50%;transform:translateX(-50%);
-  padding:11px 22px;border-radius:999px;z-index:9999;
-  font-weight:700;font-size:.82rem;
-  box-shadow:0 12px 36px rgba(0,0,0,.7);white-space:nowrap;
-  max-width:90vw;text-align:center;display:none;
-}
+/* SPINNER */
+.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;}
+
+/* TOAST */
+#toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:999px;z-index:9999;font-weight:700;font-size:.82rem;box-shadow:0 12px 36px rgba(0,0,0,.15);white-space:nowrap;max-width:90vw;text-align:center;display:none;}
 #toast.show{display:block;animation:rise .3s ease;}
-#toast.ok{background:linear-gradient(135deg,var(--green),#00A070);color:#04080F;}
-#toast.err{background:linear-gradient(135deg,var(--red),#C00);color:#fff;}
+#toast.ok{background:#10B981;color:#fff;}
+#toast.err{background:#EF4444;color:#fff;}
+#toast.inf{background:var(--blue);color:#fff;}
 
-/* ══ SPINNER ══ */
-.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(0,0,0,.25);border-top-color:#04080F;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;}
-
-/* ══ RESPONSIVE ══ */
-@media(min-width:430px){body{box-shadow:0 0 60px rgba(0,0,0,.6);}}
+@media(min-width:430px){body{box-shadow:0 0 40px rgba(0,0,0,.08);}}
 </style>
 </head>
 <body>
-
 <div class="wrap">
+  <a class="back-link" href="index.html">← Accueil</a>
 
-  <a class="back" href="index.html">← Accueil</a>
-
-  <!-- LOGO -->
-  <div class="logo-wrap">
-    <div class="logo-mark"><span class="gc">DIGI</span><span class="gg">FORM</span></div>
+  <div class="logo-block">
+    <div class="logo"><span class="logo-d">DIGI</span><span class="logo-f">FORM</span></div>
     <div class="logo-sub">Plateforme Digitale Africaine</div>
   </div>
 
-  <!-- BOX -->
   <div class="box">
-
-    <!-- TABS -->
     <div class="tabs">
-      <button class="tab on" id="tab-login"    onclick="setMode('login')">🔑 Connexion</button>
-      <button class="tab"    id="tab-register" onclick="setMode('register')">✨ Inscription</button>
+      <button class="tab on" id="tab-login" onclick="setMode('login')">Connexion</button>
+      <button class="tab" id="tab-register" onclick="setMode('register')">Inscription</button>
     </div>
 
-    <!-- FIELDS (rendered by JS) -->
     <div id="fields"></div>
 
-    <!-- MESSAGES -->
     <div class="msg msg-err" id="msg-err"></div>
-    <div class="msg msg-ok"  id="msg-ok"></div>
+    <div class="msg msg-ok" id="msg-ok"></div>
 
-    <!-- SUBMIT -->
-    <button class="cta" id="cta" onclick="doSubmit()">🔓 Se connecter</button>
+    <button class="cta" id="cta" onclick="doSubmit()">Se connecter</button>
 
-    <!-- FOOTER SWITCH -->
     <div class="foot">
       <span id="sw-txt">Pas encore membre ?</span>
       <a onclick="switchMode()"><span id="sw-lnk">S'inscrire gratuitement</span></a>
     </div>
-
   </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-/* ══ CONFIG ══ */
-const SB   = 'https://rxhjuetoxyjrairroycb.supabase.co';
-const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q';
+const SB='https://rxhjuetoxyjrairroycb.supabase.co';
+const ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q';
 
-/* ══ STATE ══ */
-let mode = new URLSearchParams(location.search).get('mode') === 'register' ? 'register' : 'login';
+function getSess(){try{return JSON.parse(localStorage.getItem('dg_sess')||'null');}catch{return null;}}
+function setSess(s){try{localStorage.setItem('dg_sess',JSON.stringify(s));}catch{}}
+if(getSess())window.location.replace('dashboard.html');
 
-/* ══ SESSION ══ */
-function getSess(){ try{ return JSON.parse(localStorage.getItem('dg_sess')||'null'); }catch{ return null; } }
-function setSess(s){ try{ localStorage.setItem('dg_sess', JSON.stringify(s)); }catch{} }
-if (getSess()) { window.location.replace('dashboard.html'); }
-
-/* ══ API ══ */
-async function authReq(ep, body){
-  try{
-    const r = await fetch(`${SB}/auth/v1/${ep}`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json', apikey: ANON},
-      body: JSON.stringify(body)
-    });
-    return { ok: r.ok, data: await r.json() };
-  } catch { return { ok:false, data:{error:'network'} }; }
-}
-
-/* ══ TOAST ══ */
+let mode=new URLSearchParams(location.search).get('mode')==='register'?'register':'login';
 let toTm;
-function toast(msg, type='ok'){
-  clearTimeout(toTm);
-  const el = document.getElementById('toast');
-  el.textContent = msg; el.className = 'show ' + type;
-  toTm = setTimeout(() => el.classList.remove('show'), 3500);
-}
 
-/* ══ MODE ══ */
+function toast(msg,t='ok'){clearTimeout(toTm);const e=document.getElementById('toast');e.textContent=msg;e.className='show '+t;toTm=setTimeout(()=>e.classList.remove('show'),3500);}
+
 function setMode(m){
-  mode = m;
-  document.getElementById('tab-login').classList.toggle('on', m==='login');
-  document.getElementById('tab-register').classList.toggle('on', m==='register');
-  document.getElementById('cta').textContent = m==='login' ? '🔓 Se connecter' : '✅ Créer mon compte';
-  document.getElementById('sw-txt').textContent = m==='login' ? 'Pas encore membre ?' : 'Déjà inscrit ?';
-  document.getElementById('sw-lnk').textContent = m==='login' ? "S'inscrire gratuitement" : 'Se connecter';
-  hideMsg(); renderFields();
+  mode=m;
+  document.getElementById('tab-login').classList.toggle('on',m==='login');
+  document.getElementById('tab-register').classList.toggle('on',m==='register');
+  document.getElementById('cta').textContent=m==='login'?'Se connecter':'Créer mon compte';
+  document.getElementById('sw-txt').textContent=m==='login'?'Pas encore membre ?':'Déjà inscrit ?';
+  document.getElementById('sw-lnk').textContent=m==='login'?'S\'inscrire gratuitement':'Se connecter';
+  hideMsg();renderFields();
 }
-function switchMode(){ setMode(mode==='login'?'register':'login'); }
+function switchMode(){setMode(mode==='login'?'register':'login');}
 
-/* ══ FIELDS ══ */
 function renderFields(){
-  const el = document.getElementById('fields');
-  if(mode === 'login'){
-    el.innerHTML = `
-      <div class="ig">
-        <label class="il">Email</label>
-        <div class="iw"><span class="ico">📧</span>
-          <input class="inp has-ico" type="email" id="f-email" placeholder="vous@email.com" autocomplete="email"/>
-        </div>
+  const el=document.getElementById('fields');
+  if(mode==='login'){
+    el.innerHTML=`
+      <div class="fg"><label class="lbl">Email</label><input class="inp" type="email" id="f-email" placeholder="vous@email.com" autocomplete="email"/></div>
+      <div class="fg">
+        <label class="lbl">Mot de passe</label>
+        <div class="pw-wrap"><input class="inp" type="password" id="f-pwd" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doSubmit()"/><button class="pw-eye" onclick="togglePw('f-pwd',this)" type="button">👁</button></div>
       </div>
-      <div class="ig">
-        <label class="il">Mot de passe</label>
-        <div class="pw-wrap">
-          <input class="inp" type="password" id="f-pwd" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doSubmit()"/>
-          <button class="pw-eye" onclick="togglePw('f-pwd',this)" type="button">👁️</button>
-        </div>
+      <div class="forgot"><a href="#">Mot de passe oublié ?</a></div>`;
+  }else{
+    el.innerHTML=`
+      <div class="section-lbl">Identité</div>
+      <div class="inp-2col fg">
+        <div><label class="lbl">Prénom *</label><input class="inp" id="f-prenom" placeholder="Prénom"/></div>
+        <div><label class="lbl">Nom *</label><input class="inp" id="f-nom" placeholder="Nom"/></div>
       </div>
-      <div class="forgot"><a href="forgot.html">Mot de passe oublié ?</a></div>`;
-  } else {
-    el.innerHTML = `
-      <div class="slbl">IDENTITÉ</div>
-      <div class="inp-2col ig">
-        <div>
-          <label class="il">Prénom *</label>
-          <input class="inp" id="f-prenom" placeholder="Prénom"/>
-        </div>
-        <div>
-          <label class="il">Nom *</label>
-          <input class="inp" id="f-nom" placeholder="Nom"/>
-        </div>
+      <div class="section-lbl">Contact</div>
+      <div class="fg"><label class="lbl">WhatsApp *</label><input class="inp" type="tel" id="f-phone" placeholder="+225 07 00 00 00 00"/></div>
+      <div class="fg"><label class="lbl">Email *</label><input class="inp" type="email" id="f-email" placeholder="vous@email.com" autocomplete="email"/></div>
+      <div class="section-lbl">Profession</div>
+      <div class="fg"><label class="lbl">Domaine d'activité *</label>
+        <select class="inp" id="f-job">
+          <option value="">— Choisir —</option>
+          <option>Marketing Digital</option><option>SEO / SEA</option><option>Réseaux Sociaux</option>
+          <option>Design / Branding</option><option>Développement Web</option><option>E-commerce</option>
+          <option>Content Marketing</option><option>Email Marketing</option><option>Analytics / Data</option>
+          <option>Consultant Digital</option><option>Formation / Coach</option><option>Vidéo / Photo</option>
+          <option>Audio / Podcast</option><option>Autre</option>
+        </select>
       </div>
-      <div class="slbl">CONTACT</div>
-      <div class="ig">
-        <label class="il">WhatsApp *</label>
-        <div class="iw"><span class="ico">📱</span>
-          <input class="inp has-ico" type="tel" id="f-phone" placeholder="+225 07 00 00 00 00"/>
-        </div>
-      </div>
-      <div class="ig">
-        <label class="il">Email professionnel *</label>
-        <div class="iw"><span class="ico">📧</span>
-          <input class="inp has-ico" type="email" id="f-email" placeholder="vous@email.com" autocomplete="email"/>
-        </div>
-      </div>
-      <div class="slbl">PROFESSION</div>
-      <div class="ig">
-        <label class="il">Domaine d'activité *</label>
-        <div class="iw"><span class="ico">💼</span>
-          <select class="inp has-ico" id="f-job">
-            <option value="">— Choisir —</option>
-            <option>Marketing Digital</option>
-            <option>SEO / SEA</option>
-            <option>Réseaux Sociaux</option>
-            <option>Design / Branding</option>
-            <option>Développement Web</option>
-            <option>E-commerce</option>
-            <option>Content Marketing</option>
-            <option>Email Marketing</option>
-            <option>Analytics / Data</option>
-            <option>Consultant Digital</option>
-            <option>Formation / Coach</option>
-            <option>Vidéo / Photo</option>
-            <option>Audio / Podcast</option>
-            <option>Autre</option>
-          </select>
-        </div>
-      </div>
-      <div class="slbl">SÉCURITÉ</div>
-      <div class="ig">
-        <label class="il">Mot de passe (6 car. min) *</label>
-        <div class="pw-wrap">
-          <input class="inp" type="password" id="f-pwd" placeholder="••••••••" autocomplete="new-password"/>
-          <button class="pw-eye" onclick="togglePw('f-pwd',this)" type="button">👁️</button>
-        </div>
+      <div class="section-lbl">Sécurité</div>
+      <div class="fg">
+        <label class="lbl">Mot de passe (6 min) *</label>
+        <div class="pw-wrap"><input class="inp" type="password" id="f-pwd" placeholder="••••••••" autocomplete="new-password"/><button class="pw-eye" onclick="togglePw('f-pwd',this)" type="button">👁</button></div>
       </div>
       <div class="vis-row" onclick="toggleVis()">
         <input type="checkbox" id="f-visible" checked onclick="event.stopPropagation()"/>
-        <label for="f-visible" onclick="event.stopPropagation()">
-          Être visible dans le réseau DIGIFORM et apparaître dans la liste de contacts des membres
-        </label>
+        <label for="f-visible" onclick="event.stopPropagation()">Être visible dans le réseau DIGIFORM et apparaître dans les contacts des membres</label>
       </div>`;
   }
-  setTimeout(() => document.getElementById('f-email')?.focus(), 80);
+  setTimeout(()=>document.getElementById('f-email')?.focus(),80);
 }
 
-function togglePw(id, btn){
-  const inp = document.getElementById(id);
-  const hide = inp.type === 'password';
-  inp.type = hide ? 'text' : 'password';
-  btn.textContent = hide ? '🔒' : '👁️';
+function togglePw(id,btn){const i=document.getElementById(id);const h=i.type==='password';i.type=h?'text':'password';btn.textContent=h?'🔒':'👁';}
+function toggleVis(){const cb=document.getElementById('f-visible');if(cb)cb.checked=!cb.checked;}
+
+function showErr(msg){const e=document.getElementById('msg-err');e.textContent=msg;e.classList.add('show');}
+function showOk(msg){const e=document.getElementById('msg-ok');e.textContent=msg;e.classList.add('show');}
+function hideMsg(){document.getElementById('msg-err').classList.remove('show');document.getElementById('msg-ok').classList.remove('show');}
+
+function setBusy(busy,lbl=''){
+  const btn=document.getElementById('cta');btn.disabled=busy;
+  btn.innerHTML=busy?`<span class="spin"></span> ${lbl}`:(mode==='login'?'Se connecter':'Créer mon compte');
 }
 
-function toggleVis(){
-  const cb = document.getElementById('f-visible');
-  if(cb) cb.checked = !cb.checked;
-}
-
-/* ══ MESSAGES ══ */
-function showErr(msg){ const e=document.getElementById('msg-err'); e.textContent=msg; e.classList.add('show'); }
-function showOk(msg) { const e=document.getElementById('msg-ok');  e.textContent=msg; e.classList.add('show'); }
-function hideMsg()   { document.getElementById('msg-err').classList.remove('show'); document.getElementById('msg-ok').classList.remove('show'); }
-
-function setBusy(busy, label=''){
-  const btn = document.getElementById('cta');
-  btn.disabled = busy;
-  btn.innerHTML = busy
-    ? `<span class="spin"></span> ${label}`
-    : (mode==='login' ? '🔓 Se connecter' : '✅ Créer mon compte');
-}
-
-/* ══ SUBMIT ══ */
 async function doSubmit(){
   hideMsg();
-  const email = (document.getElementById('f-email')?.value||'').trim();
-  const pwd   = document.getElementById('f-pwd')?.value || '';
+  const email=(document.getElementById('f-email')?.value||'').trim();
+  const pwd=document.getElementById('f-pwd')?.value||'';
+  if(!email){showErr('Email requis');return;}
+  if(!pwd){showErr('Mot de passe requis');return;}
 
-  if(!email){ showErr('Email requis'); return; }
-  if(!pwd)  { showErr('Mot de passe requis'); return; }
-
-  if(mode === 'login'){
-    setBusy(true, 'Connexion…');
-    const { ok, data } = await authReq('token?grant_type=password', { email, password: pwd });
-    setBusy(false);
-    if(!ok || data?.error){
-      showErr(data?.error_description || data?.message || 'Email ou mot de passe incorrect');
-      return;
-    }
-    setSess({ access_token: data.access_token, refresh_token: data.refresh_token, user: data.user });
-    toast('✅ Connecté ! Redirection…', 'ok');
-    setTimeout(() => window.location.replace('dashboard.html'), 900);
-
-  } else {
-    const prenom = (document.getElementById('f-prenom')?.value||'').trim();
-    const nom    = (document.getElementById('f-nom')?.value||'').trim();
-    const phone  = (document.getElementById('f-phone')?.value||'').trim();
-    const job    = document.getElementById('f-job')?.value || '';
-    const vis    = document.getElementById('f-visible')?.checked !== false;
-
-    if(!prenom || !nom){ showErr('Prénom et nom requis'); return; }
-    if(!phone)          { showErr('Numéro WhatsApp requis'); return; }
-    if(!job)            { showErr('Choisissez votre domaine d\'activité'); return; }
-    if(pwd.length < 6)  { showErr('Mot de passe : 6 caractères minimum'); return; }
-
-    setBusy(true, 'Création du compte…');
-    const fullName = `${prenom} ${nom}`.trim();
-    const { ok, data } = await authReq('signup', {
-      email, password: pwd,
-      data: { full_name: fullName, phone, profession: job, show_in_network: vis }
-    });
-    setBusy(false);
-
-    if(!ok || data?.error){
-      showErr(data?.error_description || data?.message || 'Erreur lors de l\'inscription');
-      return;
-    }
-    if(data.access_token){
-      setSess({ access_token: data.access_token, refresh_token: data.refresh_token, user: data.user });
-      toast('🎉 Bienvenue dans DIGIFORM !', 'ok');
-      setTimeout(() => window.location.replace('dashboard.html'), 900);
-    } else {
-      showOk('✅ Compte créé ! Vérifiez votre email pour confirmer, puis connectez-vous.');
-      setMode('login');
-    }
+  if(mode==='login'){
+    setBusy(true,'Connexion…');
+    try{
+      const r=await fetch(`${SB}/auth/v1/token?grant_type=password`,{method:'POST',headers:{'Content-Type':'application/json',apikey:ANON},body:JSON.stringify({email,password:pwd})});
+      const d=await r.json();setBusy(false);
+      if(!r.ok||d?.error){showErr(d?.error_description||d?.message||'Email ou mot de passe incorrect');return;}
+      setSess({access_token:d.access_token,refresh_token:d.refresh_token,user:d.user});
+      toast('Connecté ! Redirection…','ok');
+      setTimeout(()=>window.location.replace('dashboard.html'),900);
+    }catch{setBusy(false);showErr('Erreur réseau');}
+  }else{
+    const prenom=(document.getElementById('f-prenom')?.value||'').trim();
+    const nom=(document.getElementById('f-nom')?.value||'').trim();
+    const phone=(document.getElementById('f-phone')?.value||'').trim();
+    const job=document.getElementById('f-job')?.value||'';
+    const vis=document.getElementById('f-visible')?.checked!==false;
+    if(!prenom||!nom){showErr('Prénom et nom requis');return;}
+    if(!phone){showErr('Numéro WhatsApp requis');return;}
+    if(!job){showErr('Choisissez votre domaine d\'activité');return;}
+    if(pwd.length<6){showErr('Mot de passe : 6 caractères minimum');return;}
+    setBusy(true,'Création du compte…');
+    try{
+      const r=await fetch(`${SB}/auth/v1/signup`,{method:'POST',headers:{'Content-Type':'application/json',apikey:ANON},body:JSON.stringify({email,password:pwd,data:{full_name:`${prenom} ${nom}`.trim(),phone,profession:job,show_in_network:vis}})});
+      const d=await r.json();setBusy(false);
+      if(!r.ok||d?.error){showErr(d?.error_description||d?.message||'Erreur inscription');return;}
+      if(d.access_token){
+        setSess({access_token:d.access_token,refresh_token:d.refresh_token,user:d.user});
+        toast('Bienvenue dans DIGIFORM !','ok');
+        setTimeout(()=>window.location.replace('dashboard.html'),900);
+      }else{
+        showOk('Compte créé ! Vérifiez votre email pour confirmer, puis connectez-vous.');
+        setMode('login');
+      }
+    }catch{setBusy(false);showErr('Erreur réseau');}
   }
 }
 
-/* ══ INIT ══ */
-renderFields();
-setMode(mode);
+renderFields();setMode(mode);
 </script>
 </body>
 </html>
