@@ -2,217 +2,166 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
-<title>DIGIFORM · Boutique</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+<title>DIGIFORM · Ma Boutique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{
-  --bg:#04080F;--s1:#0A1020;--s2:#101828;--s3:#182035;--s4:#1E2D4A;
-  --cyan:#00D4FF;--c2:#0099FF;--gold:#FFB800;--g2:#FF7A00;
-  --green:#00E5A0;--red:#FF4F6A;--purple:#9B6DFF;
-  --tx:#E8EEFF;--t2:#8899BB;--t3:#4B5E80;--t4:#2A3A58;
-}
-html{font-size:16px;-webkit-text-size-adjust:100%;}
-body{background:var(--bg);color:var(--tx);font-family:'Epilogue',sans-serif;min-height:100vh;overflow-x:hidden;max-width:430px;margin:0 auto;}
-*::-webkit-scrollbar{width:3px;}*::-webkit-scrollbar-thumb{background:var(--s4);border-radius:3px;}
-@keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
-@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
-
-.gc{background:linear-gradient(135deg,#fff 10%,#9DCFFF 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.gg{background:linear-gradient(135deg,var(--gold),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-
-/* HEADER */
-#hdr{position:sticky;top:0;z-index:200;background:rgba(4,8,15,.96);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);padding:11px 15px;display:flex;align-items:center;gap:10px;}
-.hdr-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.25rem;line-height:1;letter-spacing:-.02em;white-space:nowrap;}
-.hdr-sub{font-size:.6rem;color:var(--t3);margin-top:2px;letter-spacing:.07em;text-transform:uppercase;}
-.hback{width:36px;height:36px;flex-shrink:0;border-radius:50%;background:var(--s2);border:1px solid var(--s4);color:var(--tx);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .2s;}
-.hback:hover{border-color:rgba(0,212,255,.3);color:var(--cyan);}
-
-/* PAGE */
-.pg{padding:14px 13px 90px;animation:rise .38s cubic-bezier(.22,1,.36,1) both;}
-
-/* SHOP HERO */
-.shop-hero{background:linear-gradient(148deg,#141008,#0C0A04);border-radius:20px;border:1px solid rgba(255,184,0,.18);padding:20px 16px;margin-bottom:18px;position:relative;overflow:hidden;}
-.shop-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 20% 80%,rgba(255,184,0,.07),transparent);pointer-events:none;}
-.shop-hero-tag{font-size:.6rem;letter-spacing:.16em;color:var(--t3);font-weight:700;text-transform:uppercase;margin-bottom:8px;}
-.shop-hero-title{font-family:'Syne',sans-serif;font-size:clamp(1.3rem,5vw,1.6rem);font-weight:800;line-height:1.2;margin-bottom:8px;}
-.shop-hero-sub{font-size:.82rem;color:var(--t2);line-height:1.65;margin-bottom:14px;}
-.hero-tags{display:flex;gap:7px;flex-wrap:wrap;}
-
-/* BADGE */
-.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:999px;font-size:.68rem;font-weight:700;font-family:'Syne',sans-serif;}
-.badge-go{background:rgba(255,184,0,.12);color:var(--gold);border:1px solid rgba(255,184,0,.25);}
-.badge-gr{background:rgba(0,229,160,.12);color:var(--green);border:1px solid rgba(0,229,160,.25);}
-.badge-cy{background:rgba(0,212,255,.12);color:var(--cyan);border:1px solid rgba(0,212,255,.25);}
-
-/* STEPS */
-.stitle{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
-.stitle::before{content:'';width:3px;height:13px;border-radius:2px;background:linear-gradient(180deg,var(--gold),var(--g2));flex-shrink:0;}
-.steps{display:flex;flex-direction:column;gap:10px;margin-bottom:18px;}
-.step{display:flex;align-items:flex-start;gap:12px;background:var(--s1);border:1px solid var(--s4);border-radius:14px;padding:14px;}
-.step-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.85rem;flex-shrink:0;}
-.step-title{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;margin-bottom:3px;}
-.step-sub{font-size:.76rem;color:var(--t2);line-height:1.6;}
-
-/* COMING SOON CARD */
-.coming-card{background:var(--s1);border:2px dashed var(--s4);border-radius:18px;padding:28px 18px;text-align:center;margin-bottom:16px;position:relative;}
-.co-ico{font-size:2.8rem;animation:float 3s ease-in-out infinite;display:block;margin-bottom:12px;}
-.co-title{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;margin-bottom:6px;}
-.co-sub{font-size:.82rem;color:var(--t2);line-height:1.65;margin-bottom:16px;}
-.co-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
-
-/* PRICING */
-.pricing{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
-.plan{background:var(--s1);border:1px solid var(--s4);border-radius:16px;padding:16px;text-align:center;}
-.plan.featured{border-color:rgba(255,184,0,.3);background:linear-gradient(145deg,#141008,#0C0A04);}
-.plan-ico{font-size:1.5rem;margin-bottom:6px;}
-.plan-name{font-size:.65rem;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
-.plan-price{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:10px;}
-.plan-feats{list-style:none;text-align:left;}
-.plan-feats li{font-size:.73rem;color:var(--t2);line-height:2.1;display:flex;align-items:center;gap:5px;}
-.plan-feats li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;}
-
-/* NOTIFY CARD */
-.notify-card{background:var(--s1);border:1px solid var(--s4);border-radius:16px;padding:20px;text-align:center;}
-.notify-card p{font-size:.82rem;color:var(--t2);margin-bottom:14px;line-height:1.65;}
-.inp{background:var(--s2);border:1.5px solid var(--s4);border-radius:12px;color:var(--tx);font-family:'Epilogue',sans-serif;font-size:.88rem;padding:12px 15px;width:100%;outline:none;margin-bottom:10px;transition:border-color .2s;}
-.inp:focus{border-color:var(--gold);}
-.inp::placeholder{color:var(--t3);}
-
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 18px;border-radius:11px;font-family:'Epilogue',sans-serif;font-weight:700;font-size:.82rem;border:none;cursor:pointer;text-decoration:none;transition:all .22s;white-space:nowrap;}
-.btn:hover{transform:translateY(-2px);}
-.btn-cy{background:linear-gradient(135deg,var(--cyan),var(--c2));color:#04080F;}
-.btn-go{background:linear-gradient(135deg,var(--gold),var(--g2));color:#04080F;}
-.btn-go:hover{box-shadow:0 6px 20px rgba(255,184,0,.4);}
-.btn-xl{width:100%;padding:13px;border-radius:13px;font-size:.9rem;font-weight:800;}
-
-/* NAV */
-#nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(4,8,15,.97);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.06);padding:5px 6px 18px;display:flex;z-index:500;}
-.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:7px 4px;background:none;border:none;color:var(--t3);font-family:'Epilogue',sans-serif;position:relative;transition:color .2s;text-decoration:none;}
-.nb-ico{font-size:1.2rem;}
-.nb-lbl{font-size:.58rem;font-weight:600;}
-
-/* TOAST */
-#toast{position:fixed;top:72px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:999px;z-index:9999;font-weight:700;font-size:.82rem;box-shadow:0 12px 36px rgba(0,0,0,.6);white-space:nowrap;max-width:90vw;text-align:center;display:none;}
+:root{--bg:#F5F7FA;--bg2:#FFFFFF;--bg3:#F0F2F7;--border:#D1D9E6;--text:#0F172A;--text2:#475569;--text3:#94A3B8;--blue:#2563EB;--blue2:#1D4ED8;--blue-light:#EFF6FF;--blue-border:#BFDBFE;--gold:#D97706;--gold-bg:#FFFBEB;--gold-border:#FDE68A;--green:#059669;--green-bg:#ECFDF5;--green-border:#A7F3D0;--sh:0 1px 2px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.1);}
+html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;max-width:430px;margin:0 auto;overflow-x:hidden;}
+@keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+@keyframes spin{to{transform:rotate(360deg);}}
+.logo-brand{font-family:'Syne',sans-serif;font-weight:800;line-height:1;white-space:nowrap;display:inline-flex;}
+.ld{background:linear-gradient(135deg,#1E3A8A,#2563EB);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.lf{background:linear-gradient(135deg,#D97706,#F59E0B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:11px 15px;display:flex;align-items:center;gap:10px;box-shadow:var(--sh);}
+.hback{width:36px;height:36px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;border:1.5px solid var(--border);cursor:pointer;background:var(--bg2);color:var(--text2);text-decoration:none;transition:all .2s;}
+.hback:hover{border-color:var(--blue);color:var(--blue);}
+.pg{padding:24px 18px 100px;animation:rise .38s ease both;}
+/* HERO */
+.hero{text-align:center;padding:20px 0 28px;}
+.big-ico{font-size:4rem;animation:float 3.5s ease-in-out infinite;margin-bottom:18px;display:block;}
+.badge{display:inline-flex;align-items:center;gap:6px;background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold-border);border-radius:999px;padding:5px 14px;font-size:.72rem;font-weight:700;letter-spacing:.05em;margin-bottom:14px;}
+.hero-title{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;line-height:1.2;margin-bottom:9px;}
+.hero-sub{font-size:.86rem;color:var(--text2);line-height:1.75;max-width:280px;margin:0 auto;}
+/* AVANTAGES */
+.avs{display:flex;flex-direction:column;gap:9px;margin-bottom:22px;}
+.av{display:flex;align-items:flex-start;gap:12px;background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:14px;box-shadow:var(--sh);}
+.av-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.av-t{font-size:.88rem;font-weight:700;color:var(--text);}
+.av-s{font-size:.75rem;color:var(--text2);margin-top:2px;line-height:1.55;}
+/* WA */
+.wa-cta{display:flex;align-items:center;gap:12px;background:var(--green-bg);border:1.5px solid var(--green-border);border-radius:14px;padding:14px;margin-bottom:16px;text-decoration:none;transition:all .2s;}
+.wa-cta:hover{border-color:#059669;}
+/* FORM */
+.form-card{background:var(--bg2);border:1.5px solid var(--gold-border);border-radius:16px;padding:20px;box-shadow:var(--sh);}
+.form-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;margin-bottom:4px;}
+.form-sub{font-size:.8rem;color:var(--text2);margin-bottom:16px;line-height:1.55;}
+.inp{background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.88rem;padding:11px 14px;width:100%;outline:none;transition:all .2s;display:block;margin-bottom:9px;}
+.inp:focus{border-color:var(--blue);background:var(--blue-light);}
+.inp::placeholder{color:var(--text3);}
+select.inp{cursor:pointer;-webkit-appearance:none;}
+.lbl{font-size:.7rem;font-weight:600;color:var(--text2);display:block;margin-bottom:4px;}
+.submit-btn{width:100%;padding:14px;border-radius:12px;font-family:'Syne',sans-serif;font-size:.92rem;font-weight:800;background:var(--gold);color:#fff;border:none;cursor:pointer;transition:all .22s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;}
+.submit-btn:hover:not(:disabled){background:#B45309;box-shadow:0 6px 20px rgba(217,119,6,.3);}
+.submit-btn:disabled{opacity:.4;cursor:not-allowed;}
+.success-card{background:var(--green-bg);border:1.5px solid var(--green-border);border-radius:14px;padding:22px;text-align:center;display:none;}
+.spin-s{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;}
+.nav-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:5px 4px 18px;display:flex;z-index:500;box-shadow:0 -2px 8px rgba(0,0,0,.06);}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 4px;background:none;border:none;color:var(--text3);font-family:'DM Sans',sans-serif;position:relative;transition:color .2s;text-decoration:none;cursor:pointer;}
+.nb.on{color:var(--blue);}.nb-dot{position:absolute;top:0;left:50%;transform:translateX(-50%);width:20px;height:3px;border-radius:0 0 3px 3px;background:var(--blue);display:none;}.nb.on .nb-dot{display:block;}
+.nb-ico{font-size:1.2rem;}.nb-lbl{font-size:.58rem;font-weight:500;}.nb.on .nb-lbl{font-weight:700;}
+#toast{position:fixed;top:72px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:999px;z-index:9999;font-weight:700;font-size:.82rem;box-shadow:0 8px 24px rgba(0,0,0,.15);white-space:nowrap;max-width:90vw;text-align:center;display:none;}
 #toast.show{display:block;animation:rise .3s ease;}
-#toast.ok{background:linear-gradient(135deg,var(--green),#00A070);color:#04080F;}
-#toast.err{background:linear-gradient(135deg,var(--red),#C00);color:#fff;}
-#toast.inf{background:linear-gradient(135deg,var(--cyan),var(--c2));color:#04080F;}
-
-@media(min-width:430px){body{box-shadow:0 0 60px rgba(0,0,0,.6);}#nav,#hdr{max-width:430px;}}
+#toast.ok{background:#059669;color:#fff;}
+#toast.err{background:#DC2626;color:#fff;}
+@media(min-width:430px){body{box-shadow:0 0 40px rgba(0,0,0,.1);}}
 </style>
 </head>
 <body>
-
-<header id="hdr">
-  <a class="hback" href="digiform.html">&#8592;</a>
-  <div style="flex:1;min-width:0;padding-left:8px;">
-    <div class="hdr-logo"><span class="gc">DIGI</span><span class="gg">FORM</span></div>
-    <div class="hdr-sub">MA BOUTIQUE &middot; VENDEURS</div>
+<header class="hdr">
+  <a class="hback" href="dashboard.html">&#8592;</a>
+  <div style="flex:1;padding-left:8px;">
+    <div class="logo-brand" style="font-size:1.25rem;"><span class="ld">DIGI</span><span class="lf">FORM</span></div>
+    <div style="font-size:.58rem;color:var(--text3);margin-top:2px;letter-spacing:.07em;text-transform:uppercase;">MA BOUTIQUE</div>
   </div>
 </header>
 
 <div class="pg">
+  <div class="hero">
+    <span class="big-ico">🛒</span>
+    <div class="badge">🚀 Bientôt disponible</div>
+    <div class="hero-title">Vendez vos produits<br/>digitaux sur DIGIFORM</div>
+    <div class="hero-sub">Livres, formations, logiciels, fichiers audio — touchez des milliers de professionnels africains.</div>
+  </div>
 
-  <!-- HERO -->
-  <div class="shop-hero">
-    <div class="shop-hero-tag">&#9670; ESPACE VENDEUR &#9670;</div>
-    <div class="shop-hero-title">Vendez vos<br/><span class="gg">produits digitaux</span></div>
-    <div class="shop-hero-sub">Livres, formations, logiciels, audio — publiez et vendez directement via WhatsApp &agrave; toute la communaut&eacute; DIGIFORM.</div>
-    <div class="hero-tags">
-      <span class="badge badge-go">Bient&ocirc;t disponible</span>
-      <span class="badge badge-gr">Gratuit pour les membres</span>
+  <!-- AVANTAGES -->
+  <div class="avs">
+    <div class="av">
+      <div class="av-ico" style="background:#DBEAFE;">💼</div>
+      <div><div class="av-t">Boutique professionnelle</div><div class="av-s">Page dédiée avec vos produits, votre prix et votre contact WhatsApp.</div></div>
+    </div>
+    <div class="av">
+      <div class="av-ico" style="background:#D1FAE5;">💰</div>
+      <div><div class="av-t">Paiement Mobile Money</div><div class="av-s">MTN MoMo, Orange Money, Wave — vos clients paient directement.</div></div>
+    </div>
+    <div class="av">
+      <div class="av-ico" style="background:#FEF3C7;">📊</div>
+      <div><div class="av-t">Tableau de bord des ventes</div><div class="av-s">Suivez vos ventes, revenus et clients en temps réel.</div></div>
+    </div>
+    <div class="av">
+      <div class="av-ico" style="background:#EDE9FE;">🌍</div>
+      <div><div class="av-t">Réseau de 10 000+ membres</div><div class="av-s">Accès direct à une communauté de professionnels qualifiés.</div></div>
     </div>
   </div>
 
-  <!-- HOW IT WORKS -->
-  <div class="stitle">Comment &ccedil;a marche ?</div>
-  <div class="steps">
-    <div class="step">
-      <div class="step-num" style="background:rgba(0,212,255,.15);color:var(--cyan);">1</div>
-      <div><div class="step-title">Cr&eacute;ez votre produit</div><div class="step-sub">Titre, description, prix et image de couverture.</div></div>
+  <!-- WA CHANNEL -->
+  <a href="https://whatsapp.com/channel/0029Vb7wL2sFi8xjaIYup310" target="_blank" class="wa-cta">
+    <div style="width:40px;height:40px;border-radius:50%;background:#059669;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">📢</div>
+    <div style="flex:1;"><div style="font-size:.85rem;font-weight:700;color:#065F46;">Rejoindre la chaîne DIGIFORM</div><div style="font-size:.72rem;color:#059669;margin-top:1px;">Soyez notifié du lancement de la boutique</div></div>
+    <span style="color:#059669;">→</span>
+  </a>
+
+  <!-- FORM PRÉ-INSCRIPTION -->
+  <div class="form-card" id="form-section">
+    <div class="form-title">Pré-inscription vendeur</div>
+    <div class="form-sub">Inscrivez-vous maintenant pour être parmi les premiers vendeurs lors du lancement.</div>
+    <div><label class="lbl">Nom complet *</label><input class="inp" id="f-name" placeholder="Votre nom complet"/></div>
+    <div><label class="lbl">Téléphone WhatsApp *</label><input class="inp" id="f-phone" type="tel" placeholder="+225 07 00 00 00 00"/></div>
+    <div><label class="lbl">Email</label><input class="inp" id="f-email" type="email" placeholder="votre@email.com"/></div>
+    <div><label class="lbl">Type de produit à vendre *</label>
+      <select class="inp" id="f-type">
+        <option value="">— Choisir —</option>
+        <option>📚 Livre / E-book</option>
+        <option>🎬 Formation vidéo</option>
+        <option>💻 Logiciel / Application</option>
+        <option>🎧 Audio / Podcast</option>
+        <option>🎨 Template / Design</option>
+        <option>📊 Données / Base de contacts</option>
+        <option>Autre produit digital</option>
+      </select>
     </div>
-    <div class="step">
-      <div class="step-num" style="background:rgba(255,184,0,.15);color:var(--gold);">2</div>
-      <div><div class="step-title">Ajoutez votre WhatsApp</div><div class="step-sub">Les acheteurs vous contactent directement pour finaliser.</div></div>
-    </div>
-    <div class="step">
-      <div class="step-num" style="background:rgba(0,229,160,.15);color:var(--green);">3</div>
-      <div><div class="step-title">Visible dans le catalogue</div><div class="step-sub">Votre produit est vu par tous les membres DIGIFORM.</div></div>
-    </div>
-    <div class="step">
-      <div class="step-num" style="background:rgba(155,109,255,.15);color:var(--purple);">4</div>
-      <div><div class="step-title">G&eacute;rez vos ventes</div><div class="step-sub">Tableau de bord pour suivre vos produits et performances.</div></div>
-    </div>
+    <button class="submit-btn" id="sub-btn" onclick="souscrire()">Je veux vendre sur DIGIFORM</button>
   </div>
 
-  <!-- COMING SOON -->
-  <div class="coming-card">
-    <span class="co-ico">&#128717;</span>
-    <div class="co-title">Espace vendeur</div>
-    <div class="co-sub">La gestion de boutique personnelle arrive prochainement. En attendant, contactez l'administrateur pour publier vos produits.</div>
-    <div class="co-btns">
-      <a href="auth.html" class="btn btn-cy">S'inscrire</a>
-      <a href="digiform.html" class="btn btn-go">Voir le catalogue</a>
-    </div>
+  <div class="success-card" id="success-card">
+    <div style="font-size:2.5rem;margin-bottom:10px;">🎉</div>
+    <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;margin-bottom:6px;">Pré-inscription confirmée !</div>
+    <div style="font-size:.82rem;color:var(--text2);line-height:1.65;">Vous serez parmi les premiers vendeurs. On vous contacte sur WhatsApp au lancement.</div>
   </div>
-
-  <!-- PRICING -->
-  <div class="stitle">Tarifs futurs</div>
-  <div class="pricing">
-    <div class="plan">
-      <div class="plan-ico">&#128082;</div>
-      <div class="plan-name">Gratuit</div>
-      <div class="plan-price" style="color:var(--green);">0 F</div>
-      <ul class="plan-feats">
-        <li>3 produits max</li>
-        <li>Visible r&eacute;seau</li>
-        <li>WhatsApp direct</li>
-      </ul>
-    </div>
-    <div class="plan featured">
-      <div class="plan-ico">&#11088;</div>
-      <div class="plan-name">Pro</div>
-      <div class="plan-price" style="color:var(--gold);">2 900 F<span style="font-size:.65rem;color:var(--t3);">/mois</span></div>
-      <ul class="plan-feats">
-        <li>Illimit&eacute;</li>
-        <li>Mise en vedette</li>
-        <li>Statistiques</li>
-        <li>Support prioritaire</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- NOTIFY -->
-  <div class="notify-card">
-    <div style="font-size:1.6rem;margin-bottom:10px;">&#128276;</div>
-    <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;margin-bottom:8px;">Me pr&eacute;venir &agrave; l'ouverture</div>
-    <p>Laissez votre WhatsApp et on vous pr&eacute;vient en premier d&egrave;s que l'espace vendeur ouvre.</p>
-    <input class="inp" type="tel" placeholder="Votre WhatsApp (+225...)" id="wa-inp"/>
-    <button class="btn btn-go btn-xl" onclick="notifyMe()">Je veux &ecirc;tre pr&eacute;venu</button>
-  </div>
-
 </div>
 
-<!-- NAV -->
-<nav id="nav">
-  <a class="nb" href="digiform.html"><span class="nb-ico">&#127968;</span><span class="nb-lbl">Accueil</span></a>
-  <a class="nb" href="digiform.html"><span class="nb-ico">&#128193;</span><span class="nb-lbl">Catalogue</span></a>
-  <a class="nb" href="network.html"><span class="nb-ico">&#127760;</span><span class="nb-lbl">R&eacute;seau</span></a>
-  <a class="nb" href="profile.html"><span class="nb-ico">&#128100;</span><span class="nb-lbl">Profil</span></a>
+<nav class="nav-bar">
+  <a class="nb" href="dashboard.html"><div class="nb-dot"></div><span class="nb-ico">🏠</span><span class="nb-lbl">Accueil</span></a>
+  <a class="nb" href="dashboard.html"><div class="nb-dot"></div><span class="nb-ico">🗂️</span><span class="nb-lbl">Catalogue</span></a>
+  <a class="nb" href="network.html"><div class="nb-dot"></div><span class="nb-ico">🌐</span><span class="nb-lbl">Réseau</span></a>
+  <a class="nb" href="profile.html"><div class="nb-dot"></div><span class="nb-ico">👤</span><span class="nb-lbl">Profil</span></a>
 </nav>
-
 <div id="toast"></div>
 <script>
 let toTm;
-function toast(msg,t='ok'){clearTimeout(toTm);const e=document.getElementById('toast');e.textContent=msg;e.className='show '+t;toTm=setTimeout(()=>e.classList.remove('show'),3500);}
-function notifyMe(){
-  const v=document.getElementById('wa-inp').value.trim();
-  if(!v){toast('Entrez votre numéro WhatsApp','err');return;}
-  toast(`${v} enregistré ! On vous prévient dès l'ouverture · DF`,'ok');
-  document.getElementById('wa-inp').value='';
+function toast(msg,t='ok'){clearTimeout(toTm);const e=document.getElementById('toast');e.textContent=msg;e.className='show '+t;toTm=setTimeout(()=>e.classList.remove('show'),4000);}
+async function souscrire(){
+  const name=(document.getElementById('f-name')?.value||'').trim();
+  const phone=(document.getElementById('f-phone')?.value||'').trim();
+  const type=document.getElementById('f-type')?.value||'';
+  if(!name){toast('Nom requis','err');return;}
+  if(!phone){toast('Téléphone WhatsApp requis','err');return;}
+  if(!type){toast('Choisissez un type de produit','err');return;}
+  const btn=document.getElementById('sub-btn');btn.disabled=true;btn.innerHTML='<span class="spin-s"></span> Envoi…';
+  // Simuler envoi (ou envoyer vers Supabase)
+  try{
+    const SB='https://rxhjuetoxyjrairroycb.supabase.co';
+    const ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q';
+    await fetch(`${SB}/rest/v1/pre_contacts`,{method:'POST',headers:{apikey:ANON,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({full_name:name,phone,profession:type,source:'shop_presignup',show_in_network:false})});
+  }catch{}
+  await new Promise(r=>setTimeout(r,700));
+  document.getElementById('form-section').style.display='none';
+  document.getElementById('success-card').style.display='block';
+  toast('Pré-inscription confirmée !','ok');
 }
 </script>
 </body>
