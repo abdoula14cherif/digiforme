@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
-<script src="https://cdn.cinetpay.com/seamless/main.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
@@ -21,7 +20,6 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'P
 *::-webkit-scrollbar{width:3px;}*::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
 @keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
 @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
-@keyframes spin{to{transform:rotate(360deg);}}
 @keyframes slideUp{from{transform:translateY(100%);opacity:0;}to{transform:none;opacity:1;}}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 @keyframes shimmer{from{background-position:-200%;}to{background-position:200%;}}
@@ -447,7 +445,7 @@ select.inp{cursor:pointer;-webkit-appearance:none;}
     </button>
     <div style="font-size:.7rem;color:var(--text3);text-align:center;margin-top:8px;line-height:1.6;">Vous serez redirigé vers la page de paiement sécurisée.<br/>Revenez ici après confirmation pour activer votre accès.</div>
     <button class="pay-cancel" onclick="fermerPaiement()">Annuler</button>
-    <button id="pay-check-btn" onclick="window._manualPayActivate()" style="display:none;width:100%;margin-top:8px;padding:11px;border-radius:11px;background:var(--green-bg,#ECFDF5);color:var(--green,#059669);border:1.5px solid var(--green-b,#A7F3D0);font-weight:700;font-size:.85rem;cursor:pointer;font-family:'DM Sans',sans-serif;">✅ J'ai déjà payé — Activer mon accès</button>
+    <button id="pay-check-btn" onclick="window._manualPayActivate()" style="display:none;width:100%;margin-top:8px;padding:11px;border-radius:11px;background:#ECFDF5;color:#059669;border:1.5px solid #A7F3D0;font-weight:700;font-size:.85rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">✅ J'ai déjà payé — Activer mon accès</button>
   </div>
 </div>
 
@@ -456,19 +454,19 @@ select.inp{cursor:pointer;-webkit-appearance:none;}
 <script>
 const SB   = 'https://rxhjuetoxyjrairroycb.supabase.co';
 const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q';
-const LEEKPAY_PK = 'pk_live_h0RQu365IhnhdXkW2YeWZiDmKQGo7Pn1'; // LeekPay/Notchpay Public Key
-
-
+const LEEKPAY_PK = 'pk_live_h0RQu365IhnhdXkW2YeWZiDmKQGo7Pn1';
 const FREE_LIMIT = 100;
 const COLS = ['#2563EB','#7C3AED','#059669','#D97706','#DC2626','#0891B2','#C026D3','#0D9488'];
 const CN = {CI:"Côte d'Ivoire",CM:'Cameroun',SN:'Sénégal',BJ:'Bénin',BF:'Burkina',ML:'Mali',GH:'Ghana',TG:'Togo',OTHER:'International'};
 
+/* ── SESSION (let pour pouvoir rafraîchir) ── */
 function getSess(){try{return JSON.parse(localStorage.getItem('dg_sess')||'null');}catch{return null;}}
+let sess = getSess();
+
 function getCredits(){try{return JSON.parse(localStorage.getItem('dg_credits')||'{"used":0,"unlimited":false}')}catch{return{used:0,unlimited:false};}}
 function saveCredits(c){try{localStorage.setItem('dg_credits',JSON.stringify(c));}catch{}}
 function isPremium(){return getCredits().unlimited;}
 
-const sess = getSess();
 let all=[], filt=[], sel=new Set(), dlFmt='csv', vcfList=[], toTm;
 
 function toast(msg,t='ok'){clearTimeout(toTm);const e=document.getElementById('toast');e.textContent=msg;e.className='show '+t;toTm=setTimeout(()=>e.classList.remove('show'),4000);}
@@ -478,16 +476,46 @@ function getPays(p){const ph=p||'';if(ph.startsWith('+225'))return'CI';if(ph.sta
 function today(){return new Date().toISOString().slice(0,10);}
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 
-/* ── PAGINATION SUPABASE ── */
+/* ── REFRESH TOKEN SI EXPIRÉ ── */
+async function refreshSess(){
+  if(!sess?.refresh_token)return;
+  const exp=sess?.expires_at||sess?.user?.exp;
+  if(exp && Date.now()/1000 < exp - 60)return; // encore valide
+  try{
+    const r=await fetch(`${SB}/auth/v1/token?grant_type=refresh_token`,{
+      method:'POST',
+      headers:{apikey:ANON,'Content-Type':'application/json'},
+      body:JSON.stringify({refresh_token:sess.refresh_token})
+    });
+    const d=await r.json();
+    if(d.access_token){
+      sess={...sess,...d};
+      localStorage.setItem('dg_sess',JSON.stringify(sess));
+    }
+  }catch(e){console.warn('refresh échoué',e);}
+}
+
+/* ── CHARGEMENT PAGINÉ (CORRIGÉ) ── */
 async function chargerTout(path){
-  const PAGE=1000;let res=[],off=0,done=false;
+  await refreshSess();
+  const token = sess?.access_token || ANON;
+  const PAGE=1000; let res=[], off=0, done=false;
   while(!done){
     try{
-      const r=await fetch(`${SB}/rest/v1/${path}`,{headers:{apikey:ANON,Authorization:`Bearer ${sess.access_token}`,'Range-Unit':'items','Range':`${off}-${off+PAGE-1}`,'Prefer':'count=none'}});
+      const r=await fetch(`${SB}/rest/v1/${path}`,{
+        headers:{
+          apikey:ANON,
+          Authorization:`Bearer ${token}`,
+          'Range-Unit':'items',
+          'Range':`${off}-${off+PAGE-1}`,
+          'Prefer':'count=none'
+        }
+      });
+      if(!r.ok){console.error('Supabase error',r.status,await r.text());done=true;break;}
       const d=await r.json();
       if(!Array.isArray(d)||d.length===0)done=true;
       else{res=[...res,...d];if(d.length<PAGE)done=true;else off+=PAGE;}
-    }catch{done=true;}
+    }catch(e){console.error('fetch error',e);done=true;}
   }
   return res;
 }
@@ -498,14 +526,20 @@ async function init(){
   document.getElementById('main-block').style.display='block';
   majCredits();
 
-  const [m,p]=await Promise.all([
-    chargerTout('profiles?order=created_at.desc&select=id,full_name,profession,phone,show_in_network,created_at'),
-    chargerTout('pre_contacts?order=full_name.asc&select=id,full_name,profession,phone,email,country_code,created_at')
-  ]);
-  const membres=m.filter(c=>c.show_in_network!==false&&(c.full_name||c.phone));
-  const mPh=new Set(membres.map(c=>clnPh(c.phone)).filter(Boolean));
-  const pre=p.filter(c=>!c.phone||!mPh.has(clnPh(c.phone)));
-  all=[...membres,...pre];
+  try{
+    const [m,p]=await Promise.all([
+      chargerTout('profiles?order=created_at.desc&select=id,full_name,profession,phone,show_in_network,created_at'),
+      chargerTout('pre_contacts?order=full_name.asc&select=id,full_name,profession,phone,email,country_code,created_at')
+    ]);
+    const membres=(m||[]).filter(c=>c.show_in_network!==false&&(c.full_name||c.phone));
+    const mPh=new Set(membres.map(c=>clnPh(c.phone)).filter(Boolean));
+    const pre=(p||[]).filter(c=>!c.phone||!mPh.has(clnPh(c.phone)));
+    all=[...membres,...pre];
+  }catch(e){
+    console.error('Erreur chargement',e);
+    toast('Erreur de chargement des contacts','err');
+  }
+
   document.getElementById('shim').style.display='none';
   majStats();majCfg();filt=[...all];
   document.getElementById('rcnt').textContent=`${all.length} contact${all.length>1?'s':''}`;
@@ -700,9 +734,8 @@ async function telechargerVCF(){
   await sleep(1500);fermerVCF();toast('Fichier VCF téléchargé','ok');
 }
 
-/* ── PAIEMENT CINETPAY ── */
+/* ── PAIEMENT NOTCHPAY ── */
 function ouvrirPaiement(){
-  // Préremplir depuis session
   const p=sess?.user;
   if(p){document.getElementById('pay-email').value=p.email||'';}
   document.getElementById('pay-ov').classList.add('show');
@@ -720,26 +753,19 @@ function lancerPaiement(){
   const btn=document.getElementById('pay-btn');
   btn.disabled=true;btn.innerHTML='⏳ Ouverture du guichet…';
 
-  // Construire le lien de paiement Notchpay (sans fetch = pas de CORS)
   const ref='DIGIFORM-'+Date.now()+'-'+(sess?.user?.id||'guest').slice(0,8);
   const returnUrl=encodeURIComponent(window.location.origin+window.location.pathname+'?payment=success&ref='+ref);
-  
-  // URL de paiement Notchpay - checkout web direct (aucun appel API nécessaire)
   const payUrl=`https://web.notchpay.co/pay?public_key=${LEEKPAY_PK}&amount=2000&currency=XAF&reference=${ref}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone.replace(/[^0-9+]/g,''))}&name=${encodeURIComponent(name)}&description=${encodeURIComponent('DIGIFORM - Accès contacts illimité')}&callback=${returnUrl}`;
-  
-  // Sauvegarder la référence pour vérification au retour
+
   try{localStorage.setItem('dg_pay_ref',JSON.stringify({ref,ts:Date.now(),email}));}catch{}
-  
+
   fermerPaiement();
   btn.disabled=false;
   btn.textContent='Payer 2 000 FCFA via Mobile Money';
-  
-  // Redirection directe (pas de popup bloqué)
   window.location.href=payUrl;
 }
 
 function verifierPaiement(ref,attempts=0){
-  // Après retour de paiement: essayer de vérifier via l'API
   if(attempts>12)return;
   setTimeout(async()=>{
     try{
@@ -753,7 +779,6 @@ function verifierPaiement(ref,attempts=0){
       else if(status==='failed'||status==='cancelled'){toast('Paiement échoué ou annulé','err');}
       else{verifierPaiement(ref,attempts+1);}
     }catch{
-      // Si CORS bloque la vérification, activer manuellement via bouton
       if(attempts===3){
         const c=document.getElementById('pay-check-btn');
         if(c)c.style.display='block';
@@ -767,7 +792,6 @@ function activerIllimite(){
   const c=getCredits();c.unlimited=true;saveCredits(c);
   majCredits();majCfg();
   toast('🎉 Accès illimité activé ! Vous pouvez maintenant télécharger tous les contacts.','ok');
-  // Mettre à jour profil dans Supabase si connecté
   if(sess?.user?.id){
     fetch(`${SB}/rest/v1/profiles?id=eq.${sess.user.id}`,{
       method:'PATCH',
@@ -777,20 +801,14 @@ function activerIllimite(){
   }
 }
 
-// Vérifier si retour de paiement Notchpay
+// Vérifier si retour de paiement
 const urlParams=new URLSearchParams(location.search);
 if(urlParams.get('payment')==='success'){
   const ref=urlParams.get('ref');
-  // Essayer de vérifier via API
-  if(ref){
-    verifierPaiement(ref,0);
-    toast('Vérification du paiement en cours…','inf');
-  }
-  // Nettoyer l'URL
+  if(ref){verifierPaiement(ref,0);toast('Vérification du paiement en cours…','inf');}
   window.history.replaceState({},'',window.location.pathname);
 }
 
-// Si l'utilisateur revient et clique "J'ai payé"
 window._manualPayActivate = function(){
   const saved = localStorage.getItem('dg_pay_ref');
   if(saved){
@@ -798,7 +816,6 @@ window._manualPayActivate = function(){
     toast('Vérification…','inf');
     verifierPaiement(ref,0);
   }else{
-    // Activer directement (confiance utilisateur - paiement déjà fait)
     activerIllimite();
   }
 };
