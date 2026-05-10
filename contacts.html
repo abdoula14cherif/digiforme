@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<script src="https://leekpay.fr/js/leekpay.js" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
@@ -407,7 +408,7 @@ select.inp{cursor:pointer;-webkit-appearance:none;}
   </div>
 </div>
 
-<!-- PAYMENT MODAL -->
+<!-- PAYMENT MODAL (LeekPay — même logique que profile.html) -->
 <div id="pay-ov" onclick="if(event.target===this)fermerPaiement()">
   <div id="pay-box">
     <div class="pay-handle"></div>
@@ -421,31 +422,15 @@ select.inp{cursor:pointer;-webkit-appearance:none;}
         <div class="pay-feat">Téléchargements illimités à vie</div>
         <div class="pay-feat">Accès à 10 000+ contacts</div>
         <div class="pay-feat">CSV + VCF + WhatsApp</div>
-        <div class="pay-feat">Paiement Mobile Money sécurisé</div>
-      </div>
-    </div>
-
-    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px;">
-      <div>
-        <label class="lbl">Votre nom *</label>
-        <input class="inp" id="pay-name" placeholder="Prénom Nom" type="text"/>
-      </div>
-      <div>
-        <label class="lbl">Email *</label>
-        <input class="inp" id="pay-email" placeholder="vous@email.com" type="email"/>
-      </div>
-      <div>
-        <label class="lbl">Téléphone Mobile Money *</label>
-        <input class="inp" id="pay-phone" placeholder="+225 07 00 00 00 00" type="tel"/>
+        <div class="pay-feat">Paiement Mobile Money sécurisé via LeekPay</div>
       </div>
     </div>
 
     <button class="pay-btn" id="pay-btn" onclick="lancerPaiement()">
-      Payer 2 000 FCFA via Mobile Money
+      🔓 Payer 2 000 FCFA via Mobile Money
     </button>
-    <div style="font-size:.7rem;color:var(--text3);text-align:center;margin-top:8px;line-height:1.6;">Vous serez redirigé vers la page de paiement sécurisée.<br/>Revenez ici après confirmation pour activer votre accès.</div>
+    <div style="font-size:.7rem;color:var(--text3);text-align:center;margin-top:8px;line-height:1.6;">Paiement sécurisé · Accès immédiat après confirmation · LeekPay</div>
     <button class="pay-cancel" onclick="fermerPaiement()">Annuler</button>
-    <button id="pay-check-btn" onclick="window._manualPayActivate()" style="display:none;width:100%;margin-top:8px;padding:11px;border-radius:11px;background:#ECFDF5;color:#059669;border:1.5px solid #A7F3D0;font-weight:700;font-size:.85rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">✅ J'ai déjà payé — Activer mon accès</button>
   </div>
 </div>
 
@@ -454,7 +439,7 @@ select.inp{cursor:pointer;-webkit-appearance:none;}
 <script>
 const SB   = 'https://rxhjuetoxyjrairroycb.supabase.co';
 const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q';
-const LEEKPAY_PK = 'pk_live_h0RQu365IhnhdXkW2YeWZiDmKQGo7Pn1';
+const LEEKPAY_PK = 'pk_live_h0RQu365IhnhdXkW2YeWZiDmKQGo7Pn1'; // LeekPay Public Key
 const FREE_LIMIT = 100;
 const COLS = ['#2563EB','#7C3AED','#059669','#D97706','#DC2626','#0891B2','#C026D3','#0D9488'];
 const CN = {CI:"Côte d'Ivoire",CM:'Cameroun',SN:'Sénégal',BJ:'Bénin',BF:'Burkina',ML:'Mali',GH:'Ghana',TG:'Togo',OTHER:'International'};
