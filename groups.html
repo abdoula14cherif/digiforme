@@ -7,121 +7,123 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<script src="https://leekpay.fr/js/leekpay.js" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
   --bg:#F8F9FC;--bg2:#FFF;--bg3:#F1F3F8;--bg4:#E4E8F0;
   --border:#D8DCE8;--text:#111827;--text2:#4B5563;--text3:#9CA3AF;
-  --blue:#2563EB;--gold:#F59E0B;--green:#10B981;--red:#EF4444;
+  --blue:#2563EB;--gold:#F59E0B;--gl:#FFFBEB;--gb:#FDE68A;
+  --green:#10B981;--red:#EF4444;
   --wa:#25D366;--wa2:#128C7E;--grl:#F0FDF4;--grb:#BBF7D0;
   --sh:0 1px 3px rgba(0,0,0,.08);--sh2:0 4px 16px rgba(0,0,0,.1);
 }
 html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;max-width:430px;margin:0 auto;overflow-x:hidden;}
 *::-webkit-scrollbar{width:3px;}*::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
-
-@keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
-@keyframes pop{from{opacity:0;transform:scale(.94);}to{opacity:1;transform:none;}}
-@keyframes shimmer{from{background-position:-200%;}to{background-position:200%;}}
+@keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+@keyframes pop{from{opacity:0;transform:scale(.95);}to{opacity:1;transform:none;}}
 @keyframes spin{to{transform:rotate(360deg);}}
-@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes slideUp{from{transform:translateY(100%);opacity:0;}to{transform:none;opacity:1;}}
 
-.logo{font-family:'Syne',sans-serif;font-weight:800;line-height:1;white-space:nowrap;}
+.logo{font-family:'Syne',sans-serif;font-weight:800;line-height:1;}
 .ld{color:#1E40AF;}.lf{color:var(--gold);}
 
-/* ── HEADER ── */
+/* HEADER */
 #hdr{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;gap:9px;box-shadow:var(--sh);}
 .hback{width:34px;height:34px;flex-shrink:0;border-radius:50%;background:var(--bg3);border:1px solid var(--border);color:var(--text2);font-size:.9rem;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .2s;}
 .hback:hover{border-color:var(--wa2);color:var(--wa2);}
-.h-badge{background:var(--grl);border:1px solid var(--grb);border-radius:999px;padding:3px 10px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:800;color:var(--wa2);white-space:nowrap;}
+.h-cnt{background:var(--grl);border:1px solid var(--grb);border-radius:999px;padding:3px 10px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:800;color:var(--wa2);white-space:nowrap;}
 
-/* ── SEARCH ── */
+/* SEARCH */
 #sbar{position:sticky;top:57px;z-index:150;background:rgba(248,249,252,.97);backdrop-filter:blur(12px);padding:8px 14px;border-bottom:1px solid var(--border);}
 .sw{position:relative;}
-.sw-ico{position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--text3);}
-.sw-inp{width:100%;background:var(--bg2);border:1.5px solid var(--border);border-radius:11px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;padding:10px 36px 10px 40px;outline:none;transition:all .2s;box-shadow:var(--sh);}
+.sw-ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--text3);}
+.sw-inp{width:100%;background:var(--bg2);border:1.5px solid var(--border);border-radius:11px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;padding:10px 36px 10px 38px;outline:none;transition:all .2s;box-shadow:var(--sh);}
 .sw-inp:focus{border-color:var(--wa2);}
 .sw-inp::placeholder{color:var(--text3);}
-.sw-clr{position:absolute;right:11px;top:50%;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;background:var(--bg4);border:none;color:var(--text3);font-size:.75rem;cursor:pointer;display:none;align-items:center;justify-content:center;}
+.sw-clr{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;background:var(--bg4);border:none;color:var(--text3);font-size:.75rem;cursor:pointer;display:none;align-items:center;justify-content:center;}
 .sw-clr.show{display:flex;}
 
-/* ── FILTRES ── */
+/* FILTRES */
 #fbar{position:sticky;top:112px;z-index:140;background:rgba(248,249,252,.97);backdrop-filter:blur(12px);padding:0 14px 8px;border-bottom:1px solid var(--border);}
-.fscroll{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.fscroll{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px;scrollbar-width:none;}
 .fscroll::-webkit-scrollbar{display:none;}
-.chip{flex-shrink:0;padding:6px 13px;border-radius:999px;font-size:.74rem;font-weight:500;cursor:pointer;border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);transition:all .2s;white-space:nowrap;font-family:'Plus Jakarta Sans',sans-serif;}
+.chip{flex-shrink:0;padding:6px 12px;border-radius:999px;font-size:.73rem;font-weight:500;cursor:pointer;border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);transition:all .2s;white-space:nowrap;}
 .chip.on{background:var(--wa2);color:#fff;border-color:var(--wa2);font-weight:700;}
-.chip:hover:not(.on){border-color:var(--wa2);color:var(--wa2);}
 
-/* ── STATS ── */
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:0;}
-.sc{background:var(--bg2);padding:10px 6px;text-align:center;}
-.sn{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;display:block;}
-.sl{font-size:.56rem;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-top:1px;}
+/* BANNER PREMIUM */
+#premium-banner{background:linear-gradient(135deg,#FFF7ED,#FFEDD5);border:1.5px solid var(--gb);border-radius:13px;padding:14px;margin:12px 14px;display:none;}
+.pb-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;color:#92400E;margin-bottom:4px;}
+.pb-sub{font-size:.8rem;color:#78350F;margin-bottom:11px;line-height:1.55;}
+.pb-btn{width:100%;padding:12px;border-radius:10px;font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;background:#B45309;color:#fff;border:none;cursor:pointer;transition:all .22s;}
+.pb-btn:hover{background:#92400E;}
 
-/* ── WA CHANNEL ── */
-.wa-ch{display:flex;align-items:center;gap:11px;background:var(--grl);border:1.5px solid var(--grb);border-radius:12px;padding:12px 14px;text-decoration:none;transition:all .2s;margin:12px 14px 4px;}
+/* BADGE CREDITS GROUPES */
+#grp-credits{display:flex;align-items:center;justify-content:space-between;background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:10px 14px;margin:10px 14px 0;box-shadow:var(--sh);}
+.gc-left{font-size:.78rem;color:var(--text2);}
+.gc-left b{color:var(--text);font-weight:700;}
+.gc-unlim{font-size:.78rem;font-weight:700;color:var(--green);background:var(--grl);border:1px solid var(--grb);border-radius:999px;padding:3px 10px;}
+
+/* WA CHANNEL */
+.wa-ch{display:flex;align-items:center;gap:11px;background:var(--grl);border:1.5px solid var(--grb);border-radius:12px;padding:12px 14px;text-decoration:none;transition:all .2s;margin:10px 14px 4px;}
 .wa-ch:hover{background:#DCFCE7;border-color:var(--wa);}
 .wa-ico{width:38px;height:38px;border-radius:50%;background:var(--wa);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
 
-/* ── FEATURED ── */
-.feat-wrap{padding:12px 14px 4px;}
-.stitle{font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
-.stitle::before{content:'';width:3px;height:12px;border-radius:2px;background:var(--wa2);flex-shrink:0;}
-.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
-.fcard{background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:13px 10px;display:flex;flex-direction:column;align-items:center;text-align:center;box-shadow:var(--sh);transition:all .2s;position:relative;overflow:hidden;animation:pop .3s both;}
-.fcard:hover{box-shadow:var(--sh2);border-color:var(--wa2);}
-.fcard-top{position:absolute;top:0;left:0;right:0;height:3px;border-radius:13px 13px 0 0;}
-.fcard-ico{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:7px;}
-.fcard-name{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;line-height:1.25;margin-bottom:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;width:100%;}
-.fcard-meta{font-size:.63rem;color:var(--text3);margin-bottom:8px;}
+/* LISTE */
+.list-w{padding:0 14px;}
+.sect-sep{font-family:'Syne',sans-serif;font-size:.75rem;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;padding:12px 0 7px;display:flex;align-items:center;gap:6px;}
+.sect-sep::before{content:'';width:3px;height:10px;border-radius:2px;background:var(--wa2);flex-shrink:0;}
 
-/* ── LISTE ── */
-.list-wrap{padding:0 14px;}
-.sect-lbl{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;padding:12px 0 7px;display:flex;align-items:center;gap:6px;}
-.sect-lbl::before{content:'';width:3px;height:11px;border-radius:2px;background:var(--wa2);flex-shrink:0;}
-
-/* ── CARTE GROUPE ── */
+/* CARTE GROUPE */
 .gcard{display:flex;align-items:center;gap:11px;background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:12px 11px;margin-bottom:8px;box-shadow:var(--sh);transition:all .2s;position:relative;overflow:hidden;animation:pop .28s both;}
-.gcard:hover{box-shadow:var(--sh2);border-color:var(--wa2);}
-.gcard-stripe{position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:13px 0 0 13px;}
-.gcard-ico{width:46px;height:46px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;position:relative;}
-.gcard-dot{position:absolute;bottom:-3px;right:-3px;width:16px;height:16px;border-radius:50%;border:2px solid var(--bg2);background:var(--wa);display:flex;align-items:center;justify-content:center;font-size:.6rem;}
-.gcard-info{flex:1;min-width:0;}
-.gcard-name{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;line-height:1.25;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.gcard-desc{font-size:.71rem;color:var(--text3);margin-bottom:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.gcard-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
-.gcard-count{font-size:.67rem;color:var(--text2);font-weight:500;}
-.gcard-cat{font-size:.62rem;font-weight:600;padding:2px 7px;border-radius:999px;}
-.g-join{flex-shrink:0;padding:9px 13px;border-radius:9px;font-size:.75rem;font-weight:700;font-family:'Syne',sans-serif;background:var(--wa);color:#fff;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;transition:all .2s;}
+.gcard:hover{box-shadow:var(--sh2);}
+.gc-stripe{position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:13px 0 0 13px;}
+.gc-ico{width:46px;height:46px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
+.gc-info{flex:1;min-width:0;}
+.gc-name{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;line-height:1.25;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.gc-cat{font-size:.65rem;color:var(--text3);margin-bottom:5px;}
+.gc-meta{display:flex;align-items:center;gap:7px;}
+.gc-n{font-size:.67rem;color:var(--text2);font-weight:500;}
+/* BOUTON REJOINDRE */
+.g-join{flex-shrink:0;padding:9px 13px;border-radius:9px;font-size:.75rem;font-weight:700;font-family:'Syne',sans-serif;background:var(--wa);color:#fff;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:all .2s;}
 .g-join:hover{background:var(--wa2);}
-.g-soon{flex-shrink:0;padding:8px 10px;border-radius:9px;font-size:.68rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg3);color:var(--text3);border:1px solid var(--border);}
+/* BOUTON VERROUILLÉ */
+.g-lock{flex-shrink:0;padding:9px 11px;border-radius:9px;font-size:.72rem;font-weight:700;font-family:'Syne',sans-serif;background:var(--gl);color:#B45309;border:1.5px solid var(--gb);cursor:pointer;display:inline-flex;align-items:center;gap:4px;transition:all .2s;}
+.g-lock:hover{background:var(--gb);}
 
-/* ── SHIMMER ── */
-.shim{height:70px;border-radius:13px;background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);background-size:200%;animation:shimmer 1.4s infinite;margin-bottom:8px;}
-.shim-feat{height:130px;border-radius:13px;background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);background-size:200%;animation:shimmer 1.4s infinite;}
+/* EMPTY */
+.empty-b{display:flex;flex-direction:column;align-items:center;padding:50px 24px;gap:12px;text-align:center;}
 
-/* ── LOAD MORE ── */
-.load-more{width:100%;padding:12px;border-radius:11px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:.85rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:8px;box-shadow:var(--sh);}
-.load-more:hover{border-color:var(--wa2);color:var(--wa2);}
-.load-more:disabled{opacity:.4;cursor:not-allowed;}
+/* PAYMENT MODAL */
+#pay-ov{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(10px);z-index:2000;display:none;align-items:flex-end;justify-content:center;}
+#pay-ov.open{display:flex;animation:fadeIn .25s;}
+#pay-box{width:100%;max-width:430px;background:var(--bg2);border-radius:22px 22px 0 0;padding:22px 18px 48px;animation:slideUp .3s cubic-bezier(.22,1,.36,1);max-height:85vh;overflow-y:auto;}
+.pay-handle{width:36px;height:4px;border-radius:2px;background:var(--bg4);margin:0 auto 18px;}
+.pay-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:6px;}
+.pay-sub{font-size:.82rem;color:var(--text2);margin-bottom:16px;line-height:1.6;}
+.pay-plan{background:linear-gradient(135deg,#FFF7ED,#FFEDD5);border:1.5px solid var(--gb);border-radius:13px;padding:14px;margin-bottom:16px;}
+.pay-price{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#B45309;margin-bottom:4px;}
+.pay-feats{font-size:.78rem;color:#78350F;line-height:1.9;}
+.pay-feats div::before{content:'✓ ';}
+.pay-btn{width:100%;padding:14px;border-radius:12px;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;background:#B45309;color:#fff;border:none;cursor:pointer;transition:all .22s;margin-top:4px;}
+.pay-btn:hover{background:#92400E;}
+.pay-cancel{width:100%;padding:10px;margin-top:8px;background:none;border:none;color:var(--text3);font-size:.85rem;cursor:pointer;}
 
-/* ── EMPTY ── */
-.empty{display:flex;flex-direction:column;align-items:center;padding:50px 24px;gap:12px;text-align:center;}
-.empty-ico{font-size:3rem;animation:float 4s ease-in-out infinite;}
-
-/* ── PRÉ-INSCRIPTION ── */
+/* PRÉ-INSCRIPTION */
 .preinsc{background:var(--bg2);border:1.5px solid var(--grb);border-radius:14px;padding:16px;margin:16px 14px 90px;box-shadow:var(--sh);}
 .inp{background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;padding:10px 13px;width:100%;outline:none;transition:all .2s;display:block;margin-bottom:9px;}
 .inp:focus{border-color:var(--wa2);}
 .inp::placeholder{color:var(--text3);}
 select.inp{cursor:pointer;-webkit-appearance:none;}
 .sub-btn{width:100%;padding:13px;border-radius:11px;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;background:var(--wa2);color:#fff;border:none;cursor:pointer;transition:all .22s;display:flex;align-items:center;justify-content:center;gap:7px;}
-.sub-btn:hover{background:#166534;transform:translateY(-1px);}
-.sub-btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
+.sub-btn:hover{background:#166534;}
+.sub-btn:disabled{opacity:.4;cursor:not-allowed;}
 .ok-box{background:var(--grl);border:1.5px solid var(--grb);border-radius:12px;padding:16px;text-align:center;display:none;margin-bottom:10px;}
 .sp{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;}
 
-/* ── NAV ── */
+/* NAV */
 #nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(255,255,255,.97);backdrop-filter:blur(16px);border-top:1px solid var(--border);padding:5px 6px 18px;display:flex;z-index:500;box-shadow:0 -1px 3px rgba(0,0,0,.06);}
 .nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 4px;background:none;border:none;color:var(--text3);font-family:'Plus Jakarta Sans',sans-serif;position:relative;transition:color .2s;text-decoration:none;cursor:pointer;}
 .nb.on{color:var(--blue);}
@@ -129,12 +131,12 @@ select.inp{cursor:pointer;-webkit-appearance:none;}
 .nb.on .nb-dot{display:block;}
 .nb-ico{font-size:1.2rem;}.nb-lbl{font-size:.58rem;font-weight:500;}.nb.on .nb-lbl{font-weight:700;}
 
-/* ── TOAST ── */
+/* TOAST */
 #toast{position:fixed;top:72px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:999px;z-index:9999;font-weight:700;font-size:.82rem;box-shadow:0 8px 24px rgba(0,0,0,.15);white-space:nowrap;max-width:90vw;text-align:center;display:none;pointer-events:none;}
 #toast.show{display:block;animation:rise .3s ease;}
 #toast.ok{background:var(--green);color:#fff;}
 #toast.err{background:var(--red);color:#fff;}
-#toast.inf{background:var(--blue);color:#fff;}
+#toast.warn{background:var(--gold);color:#111;}
 
 @media(min-width:430px){body{box-shadow:0 0 40px rgba(0,0,0,.08);}#hdr,#sbar,#fbar,#nav{max-width:430px;}}
 </style>
@@ -147,14 +149,14 @@ select.inp{cursor:pointer;-webkit-appearance:none;}
     <div class="logo" style="font-size:1.2rem;"><span class="ld">DIGI</span><span class="lf">FORM</span></div>
     <div style="font-size:.57rem;color:var(--text3);margin-top:2px;letter-spacing:.06em;text-transform:uppercase;">GROUPES WHATSAPP</div>
   </div>
-  <div class="h-badge" id="h-badge">0 groupes</div>
+  <div class="h-cnt" id="h-cnt">33 groupes</div>
 </header>
 
 <div id="sbar">
   <div class="sw">
-    <span class="sw-ico">🔍</span>
-    <input class="sw-inp" id="srch" type="search" placeholder="Rechercher un groupe…" autocomplete="off" oninput="onSearch(this.value)"/>
-    <button class="sw-clr" id="scl" onclick="clearSearch()">✕</button>
+    <span class="sw-ico">&#128269;</span>
+    <input class="sw-inp" id="srch" type="search" placeholder="Rechercher un groupe&#8230;" autocomplete="off"/>
+    <button class="sw-clr" id="scl" type="button">&#10005;</button>
   </div>
 </div>
 
@@ -162,454 +164,381 @@ select.inp{cursor:pointer;-webkit-appearance:none;}
   <div class="fscroll" id="chips"></div>
 </div>
 
-<div class="stats" id="stats" style="display:none;">
-  <div class="sc"><span class="sn" id="st-g" style="color:var(--wa2);">—</span><span class="sl">Groupes</span></div>
-  <div class="sc"><span class="sn" id="st-p" style="color:var(--blue);">—</span><span class="sl">Pays</span></div>
-  <div class="sc"><span class="sn" id="st-m" style="color:var(--gold);">—</span><span class="sl">Membres</span></div>
+<!-- BADGE CRÉDITS GROUPES -->
+<div id="grp-credits">
+  <div class="gc-left" id="gc-txt">&#128101; <b>5 groupes gratuits</b> inclus</div>
+  <div class="gc-unlim" id="gc-unlim" style="display:none;">&#9854;&#65039; Acc&#232;s illimit&#233;</div>
 </div>
 
+<!-- BANNER PREMIUM (s'affiche quand crédits épuisés) -->
+<div id="premium-banner">
+  <div class="pb-title">&#128274; Acc&#232;s illimit&#233; aux groupes</div>
+  <div class="pb-sub">Vous avez utilis&#233; vos 5 acc&#232;s gratuits. D&#233;bloquez tous les groupes pour 1 000 FCFA &#8212; paiement unique.</div>
+  <button class="pb-btn" onclick="ouvrirPaiement()">D&#233;bloquer tous les groupes &#8594; 1 000 FCFA</button>
+</div>
+
+<!-- WA CHANNEL -->
 <a href="https://whatsapp.com/channel/0029Vb7wL2sFi8xjaIYup310" target="_blank" rel="noopener" class="wa-ch">
-  <div class="wa-ico">📢</div>
+  <div class="wa-ico">&#128226;</div>
   <div style="flex:1;">
-    <div style="font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;color:#15803D;">Chaîne officielle DIGIFORM</div>
-    <div style="font-size:.72rem;color:#166534;margin-top:1px;">Nouveaux groupes · Actualités · Offres</div>
+    <div style="font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;color:#15803D;">Cha&#238;ne officielle DIGIFORM</div>
+    <div style="font-size:.72rem;color:#166534;margin-top:1px;">Nouveaux groupes &#183; Actualit&#233;s</div>
   </div>
-  <span style="color:var(--wa);">→</span>
+  <span style="color:var(--wa);">&#8594;</span>
 </a>
 
-<!-- GROUPES VEDETTE -->
-<div class="feat-wrap" id="feat-wrap" style="display:none;">
-  <div class="stitle">🌟 Groupes vedette</div>
-  <div class="feat-grid" id="feat-grid"></div>
-</div>
-
-<!-- LISTE PRINCIPALE -->
-<div class="list-wrap" id="list-wrap">
-  <!-- Shimmer initial -->
-  <div id="shim-zone" style="padding-top:12px;">
-    <div class="shim"></div>
-    <div class="shim" style="width:85%;"></div>
-    <div class="shim"></div>
-    <div class="shim" style="width:90%;"></div>
-    <div class="shim"></div>
-    <div class="shim" style="width:80%;"></div>
-  </div>
-
+<!-- LISTE GROUPES -->
+<div class="list-w" id="list-w">
+  <div class="sect-sep" id="sect-lbl">Tous les groupes</div>
   <div id="glist"></div>
-
-  <div class="empty" id="empty" style="display:none;">
-    <div class="empty-ico">🔍</div>
-    <div style="font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;">Aucun groupe trouvé</div>
-    <div style="font-size:.82rem;color:var(--text2);max-width:220px;line-height:1.6;">Essayez un autre mot ou filtre.</div>
+  <div class="empty-b" id="empty-b" style="display:none;">
+    <div style="font-size:3rem;animation:float 4s ease-in-out infinite;">&#128269;</div>
+    <div style="font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;">Aucun groupe</div>
+    <div style="font-size:.82rem;color:var(--text2);">Modifiez votre recherche.</div>
   </div>
-
-  <button class="load-more" id="load-more" onclick="chargerPlus()" style="display:none;">
-    Charger plus de groupes
-  </button>
-
-  <!-- Sentinel pour scroll infini -->
-  <div id="sentinel" style="height:1px;"></div>
 </div>
 
 <!-- PRÉ-INSCRIPTION -->
 <div class="preinsc">
-  <div style="font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;margin-bottom:5px;">🎯 Rejoindre un groupe</div>
-  <div style="font-size:.8rem;color:var(--text2);margin-bottom:13px;line-height:1.6;">Votre groupe n'est pas encore ouvert ? Inscrivez-vous pour être notifié à l'ouverture.</div>
+  <div style="font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;margin-bottom:5px;">&#127891; Sugg&#233;rer un groupe</div>
+  <div style="font-size:.8rem;color:var(--text2);margin-bottom:13px;line-height:1.6;">Vous avez un groupe WhatsApp &#224; ajouter ? Soumettez-le ici.</div>
   <div class="ok-box" id="ok-box">
-    <div style="font-size:2rem;margin-bottom:6px;">🎉</div>
-    <div style="font-family:'Syne',sans-serif;font-size:.88rem;font-weight:800;margin-bottom:4px;">Demande enregistrée !</div>
-    <div style="font-size:.78rem;color:var(--text2);">Vous serez contacté sur WhatsApp à l'ouverture du groupe.</div>
+    <div style="font-size:2rem;margin-bottom:6px;">&#127881;</div>
+    <div style="font-family:'Syne',sans-serif;font-size:.88rem;font-weight:800;margin-bottom:4px;">Soumis !</div>
+    <div style="font-size:.78rem;color:var(--text2);">Nous l&#8217;examinerons et l&#8217;ajouterons rapidement.</div>
   </div>
-  <input class="inp" id="pi-name" type="text" placeholder="Votre nom complet"/>
-  <input class="inp" id="pi-phone" type="tel" placeholder="Téléphone WhatsApp (+225…)"/>
+  <input class="inp" id="pi-name" type="text" placeholder="Votre nom"/>
+  <input class="inp" id="pi-link" type="url" placeholder="Lien du groupe WhatsApp"/>
   <select class="inp" id="pi-cat">
-    <option value="">— Groupe qui vous intéresse —</option>
-    <option value="marketing">📣 Marketing Digital</option>
-    <option value="tech">💻 Tech &amp; Développement</option>
-    <option value="ecommerce">🛒 E-commerce &amp; Boutiques</option>
-    <option value="formation">🎓 Formation &amp; Coaching</option>
-    <option value="design">🎨 Design &amp; Créativité</option>
-    <option value="finance">💰 Finance &amp; Investissement</option>
-    <option value="sante">🏥 Santé &amp; Bien-être</option>
-    <option value="emploi">💼 Emploi &amp; Recrutement</option>
-    <option value="autre">💬 Autre</option>
+    <option value="">&#8212; Cat&#233;gorie du groupe &#8212;</option>
+    <option value="marketing">Marketing Digital</option>
+    <option value="tech">Tech &amp; Dev</option>
+    <option value="ecommerce">E-commerce</option>
+    <option value="formation">Formation</option>
+    <option value="design">Design</option>
+    <option value="finance">Finance</option>
+    <option value="sante">Sant&#233;</option>
+    <option value="emploi">Emploi</option>
+    <option value="autre">Autre</option>
   </select>
-  <button class="sub-btn" id="pi-btn" onclick="souscrire()">💬 Me notifier à l'ouverture</button>
+  <button class="sub-btn" id="pi-btn" type="button">Soumettre le groupe</button>
+</div>
+
+<!-- MODAL PAIEMENT -->
+<div id="pay-ov" onclick="if(event.target===this)fermerPaiement()">
+  <div id="pay-box">
+    <div class="pay-handle"></div>
+    <div class="pay-title">&#128274; D&#233;bloquer tous les groupes</div>
+    <div class="pay-sub">Acc&#233;dez &#224; la totalit&#233; des groupes WhatsApp DIGIFORM &#8212; paiement unique, acc&#232;s permanent.</div>
+    <div class="pay-plan">
+      <div class="pay-price">1 000 FCFA <span style="font-size:.75rem;font-weight:500;color:#92400E;">paiement unique</span></div>
+      <div class="pay-feats">
+        <div>Acc&#232;s illimit&#233; &#224; tous les groupes</div>
+        <div>Nouveaux groupes inclus automatiquement</div>
+        <div>Paiement Mobile Money via LeekPay</div>
+        <div>Acc&#232;s permanent sur ce t&#233;l&#233;phone</div>
+      </div>
+    </div>
+    <button class="pay-btn" onclick="lancerPaiement()">Payer 1 000 FCFA &#8594; Mobile Money</button>
+    <button class="pay-cancel" onclick="fermerPaiement()">Annuler</button>
+  </div>
 </div>
 
 <nav id="nav">
-  <a class="nb" href="dashboard.html"><div class="nb-dot"></div><span class="nb-ico">🏠</span><span class="nb-lbl">Accueil</span></a>
-  <a class="nb" href="dashboard.html"><div class="nb-dot"></div><span class="nb-ico">🗂️</span><span class="nb-lbl">Catalogue</span></a>
-  <a class="nb" href="network.html"><div class="nb-dot"></div><span class="nb-ico">🌐</span><span class="nb-lbl">Réseau</span></a>
-  <a class="nb" href="profile.html"><div class="nb-dot"></div><span class="nb-ico">👤</span><span class="nb-lbl">Profil</span></a>
+  <a class="nb" href="dashboard.html"><div class="nb-dot"></div><span class="nb-ico">&#127968;</span><span class="nb-lbl">Accueil</span></a>
+  <a class="nb" href="dashboard.html"><div class="nb-dot"></div><span class="nb-ico">&#128193;</span><span class="nb-lbl">Catalogue</span></a>
+  <a class="nb" href="network.html"><div class="nb-dot"></div><span class="nb-ico">&#127760;</span><span class="nb-lbl">R&#233;seau</span></a>
+  <a class="nb" href="profile.html"><div class="nb-dot"></div><span class="nb-ico">&#128100;</span><span class="nb-lbl">Profil</span></a>
 </nav>
 
 <div id="toast"></div>
 
 <script>
-/* ══════════════════════════════════════
-   DIGIFORM · GROUPES WHATSAPP
-   - Pagination Supabase (Range header)
-   - 30 groupes par page
-   - Recherche debounce 400ms (server-side)
-   - Filtres catégorie
-   - Scroll infini via IntersectionObserver
-   - ZÉRO backtick imbriqué
-══════════════════════════════════════ */
-
+var LEEKPAY_PK = 'pk_live_h0RQu365IhnhdXkW2YeWZiDmKQGo7Pn1';
 var SB   = 'https://rxhjuetoxyjrairroycb.supabase.co';
 var ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q';
-var PAGE = 30;
+var FREE_GROUPS = 5;
+var PRIX_GROUPES = 1000;
 
-/* ── ÉTAT ── */
-var off      = 0;
-var srchQ    = '';
-var catF     = '';
-var hasMore  = true;
-var loading  = false;
-var total    = 0;
+/* ── CRÉDITS GROUPES ── */
+function getGC() {
+  try { var c=JSON.parse(localStorage.getItem('dg_gc')||'{"used":0,"unlim":false}'); return c; }
+  catch(e) { return {used:0,unlim:false}; }
+}
+function setGC(c) { try{localStorage.setItem('dg_gc',JSON.stringify(c));}catch(e){} }
+function isPremiumG() { return getGC().unlim; }
+function groupsRestants() { var c=getGC(); return Math.max(0, FREE_GROUPS - (c.used||0)); }
 
-/* ── COULEURS & ICONES ── */
-var CAT_COL = {
-  marketing: '#2563EB', tech: '#7C3AED', ecommerce: '#D97706',
-  formation: '#059669', design: '#DB2777', finance: '#0891B2',
-  sante: '#DC2626',     emploi: '#EA580C', autre: '#64748B', general: '#64748B'
-};
-var CAT_ICO = {
-  marketing: '📣', tech: '💻', ecommerce: '🛒', formation: '🎓',
-  design: '🎨', finance: '💰', sante: '🏥', emploi: '💼',
-  autre: '💬',  general: '💬'
-};
-var FLAG = {CI:'🇨🇮',CM:'🇨🇲',SN:'🇸🇳',BJ:'🇧🇯',BF:'🇧🇫',ML:'🇲🇱',GH:'🇬🇭',TG:'🇹🇬',OTHER:'🌍'};
-var CATS = [
-  {v:'', l:'Tous'},
-  {v:'marketing', l:'📣 Marketing'},
-  {v:'tech',      l:'💻 Tech'},
-  {v:'ecommerce', l:'🛒 E-commerce'},
-  {v:'formation', l:'🎓 Formation'},
-  {v:'design',    l:'🎨 Design'},
-  {v:'finance',   l:'💰 Finance'},
-  {v:'sante',     l:'🏥 Santé'},
-  {v:'emploi',    l:'💼 Emploi'},
-  {v:'autre',     l:'💬 Autre'}
+function majBadgeCredits() {
+  var c = getGC();
+  var txt = document.getElementById('gc-txt');
+  var unlimBadge = document.getElementById('gc-unlim');
+  var banner = document.getElementById('premium-banner');
+  if (c.unlim) {
+    if(txt) txt.style.display='none';
+    if(unlimBadge) unlimBadge.style.display='block';
+    if(banner) banner.style.display='none';
+  } else {
+    var r = Math.max(0, FREE_GROUPS - (c.used||0));
+    if(txt){ txt.style.display='block'; txt.innerHTML = '&#128101; <b>' + r + ' groupe' + (r>1?'s':'') + ' gratuit' + (r>1?'s':'') + '</b> restant' + (r>1?'s':''); }
+    if(unlimBadge) unlimBadge.style.display='none';
+    if(banner) banner.style.display = (r<=0?'block':'none');
+  }
+}
+
+/* ── DONNÉES : 33 GROUPES RÉELS ── */
+var GROUPS = [
+  {id:1,name:'Marketing Digital Africa',cat:'marketing',link:'https://chat.whatsapp.com/AoRf9PEJFLp3NTbQfEw9a1',members:250,featured:true},
+  {id:2,name:'Tech & Innovation Afrique',cat:'tech',link:'https://chat.whatsapp.com/7JCVaRN0WfhBmC2nZ3JFKH',members:180,featured:true},
+  {id:3,name:'E-commerce & Business',cat:'ecommerce',link:'https://chat.whatsapp.com/4nCA62np0CN9nz57TgPlTZ',members:320,featured:true},
+  {id:4,name:'Formation & Coaching Pro',cat:'formation',link:'https://chat.whatsapp.com/GR5B1POS7Nt28yP0tR091W',members:150,featured:true},
+  {id:5,name:'Design & Creativite Africa',cat:'design',link:'https://chat.whatsapp.com/8WtKo9rEJJl0Om3guM1BVA',members:120,featured:true},
+  {id:6,name:'Finance & Investissement',cat:'finance',link:'https://chat.whatsapp.com/BDBGBRx1SpRARC0IOocjNQ',members:200,featured:false},
+  {id:7,name:'Growth Hacking & SEO',cat:'marketing',link:'https://chat.whatsapp.com/9dXgPE4CTopGkyhCXpjrpf',members:145,featured:false},
+  {id:8,name:'Developpement Web & Mobile',cat:'tech',link:'https://chat.whatsapp.com/IJopkthzky7AitGKFdXA2C',members:190,featured:false},
+  {id:9,name:'Dropshipping Afrique',cat:'ecommerce',link:'https://chat.whatsapp.com/5r8ykFn9t1cAy8YIMXQaJO',members:280,featured:false},
+  {id:10,name:'Entrepreneurs Africa',cat:'autre',link:'https://chat.whatsapp.com/LoO3JqFWNhGK8sJcwxQ24Q',members:310,featured:false},
+  {id:11,name:'Reseaux Sociaux Pro',cat:'marketing',link:'https://chat.whatsapp.com/BqqP6IgV8qQEw9lOer1HpV',members:220,featured:false},
+  {id:12,name:'Crypto & Blockchain Africa',cat:'finance',link:'https://chat.whatsapp.com/96eT77UoiXu1s9qqjhgDJ5',members:175,featured:false},
+  {id:13,name:'Blogging & Content Creator',cat:'marketing',link:'https://chat.whatsapp.com/521LhXEQWHwCMseAEOrK16',members:130,featured:false},
+  {id:14,name:'Publicite Facebook & Ads',cat:'marketing',link:'https://chat.whatsapp.com/7vVKOv57FhBKseQJCAIami',members:160,featured:false},
+  {id:15,name:'Startup & Innovation',cat:'tech',link:'https://chat.whatsapp.com/FTPBmFWnUQV6tG6AoARTeE',members:95,featured:false},
+  {id:16,name:'Mobile Money & Fintech',cat:'finance',link:'https://chat.whatsapp.com/GcFusltIcwCDHRy4OaDh24',members:240,featured:false},
+  {id:17,name:'Freelance & Teletravail',cat:'emploi',link:'https://chat.whatsapp.com/6EzPP0upKq2LB8xJ2QBKs5',members:185,featured:false},
+  {id:18,name:'E-learning & Formation En Ligne',cat:'formation',link:'https://chat.whatsapp.com/2RQtNptvEvm8iCRYACnbVI',members:140,featured:false},
+  {id:19,name:'TikTok Business Africa',cat:'marketing',link:'https://chat.whatsapp.com/8vgoVy6oDg1FZ29DvotuS9',members:290,featured:false},
+  {id:20,name:'Branding & Image de Marque',cat:'design',link:'https://chat.whatsapp.com/FUhVbY0pGRr2ICucgOANBi',members:110,featured:false},
+  {id:21,name:'Vente & Persuasion',cat:'formation',link:'https://chat.whatsapp.com/6QwtO3eS5wV5jKw0mwoxzH',members:195,featured:false},
+  {id:22,name:'Dev Python & Intelligence Artificielle',cat:'tech',link:'https://chat.whatsapp.com/E1XK2LgiSUiAFfo15INseR',members:125,featured:false},
+  {id:23,name:'Amazon FBA & Marketplace',cat:'ecommerce',link:'https://chat.whatsapp.com/Jz1B6pEFGkoJkSBaKZUYvB',members:170,featured:false},
+  {id:24,name:'Sante & Bien-etre Pro',cat:'sante',link:'https://chat.whatsapp.com/DbkA6fKmSpADTulA5U42HC',members:85,featured:false},
+  {id:25,name:'Agences Digitales Africa',cat:'marketing',link:'https://chat.whatsapp.com/Jg6FMTEUMKj1DFdjDVnA9D',members:115,featured:false},
+  {id:26,name:'CRM & Automatisation',cat:'tech',link:'https://chat.whatsapp.com/GNctR69dKGO6VKl6K0ZvJs',members:90,featured:false},
+  {id:27,name:'Emploi & Recrutement Afrique',cat:'emploi',link:'https://chat.whatsapp.com/LkEakQz4ZIYHJR3mA736a0',members:260,featured:false},
+  {id:28,name:'WhatsApp Business Pro',cat:'marketing',link:'https://chat.whatsapp.com/FEzw2joTIKT5UfynTivWjd',members:200,featured:false},
+  {id:29,name:'Data & Analytics Africa',cat:'tech',link:'https://chat.whatsapp.com/JkyYqO8SorAI1p1se8omdA',members:105,featured:false},
+  {id:30,name:'YouTube & Monetisation',cat:'marketing',link:'https://chat.whatsapp.com/LxFsMqxXhj48tTgfHQcQjD',members:230,featured:false},
+  {id:31,name:'Marketing Digital CI',cat:'marketing',link:'https://chat.whatsapp.com/L9DygKz4W9eCYEe9QFM1H0',members:155,featured:false},
+  {id:32,name:'Sante & Pharmacie Pro',cat:'sante',link:'https://chat.whatsapp.com/HIVjcCucp6oI3CfpOHcYAO',members:75,featured:false},
+  {id:33,name:'Marketing Digital Cameroun',cat:'marketing',link:'https://chat.whatsapp.com/GQbV8kc52ng3vwDGfCxtzq',members:140,featured:false}
 ];
 
-/* ── UTILITAIRES ── */
+var CATS = [
+  {v:'',l:'Tous'},
+  {v:'marketing',l:'Marketing'},
+  {v:'tech',l:'Tech'},
+  {v:'ecommerce',l:'E-commerce'},
+  {v:'formation',l:'Formation'},
+  {v:'design',l:'Design'},
+  {v:'finance',l:'Finance'},
+  {v:'sante',l:'Sante'},
+  {v:'emploi',l:'Emploi'},
+  {v:'autre',l:'Autre'}
+];
+var CCOL = {marketing:'#2563EB',tech:'#7C3AED',ecommerce:'#D97706',formation:'#059669',design:'#DB2777',finance:'#0891B2',sante:'#DC2626',emploi:'#EA580C',autre:'#64748B'};
+var CICO = {marketing:'📣',tech:'💻',ecommerce:'🛒',formation:'🎓',design:'🎨',finance:'💰',sante:'🏥',emploi:'💼',autre:'💬'};
+
+var catF = '';
+var srchQ = '';
+var filtered = [];
 var toTm;
+
+/* ── UTILS ── */
 function toast(msg, t) {
-  clearTimeout(toTm);
-  t = t || 'ok';
-  var e = document.getElementById('toast');
-  if (!e) return;
-  e.textContent = msg;
-  e.className = 'show ' + t;
-  toTm = setTimeout(function() { e.classList.remove('show'); }, 4000);
+  clearTimeout(toTm); t=t||'ok';
+  var e=document.getElementById('toast'); if(!e)return;
+  e.textContent=msg; e.className='show '+t;
+  toTm=setTimeout(function(){e.classList.remove('show');},4000);
 }
+function fmtN(n){n=Number(n)||0;if(n<=0)return'';if(n>=1000)return(n/1000).toFixed(1).replace('.0','')+'k';return String(n);}
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-function esc(s) {
-  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function fmtN(n) {
-  n = Number(n) || 0;
-  if (n <= 0) return '';
-  if (n >= 1000) return (n / 1000).toFixed(1).replace('.0', '') + 'k';
-  return String(n);
-}
-
-function getColor(cat) { return CAT_COL[cat] || CAT_COL.general; }
-function getIcon(cat)  { return CAT_ICO[cat]  || '💬'; }
-function getFlag(c)    { return FLAG[c] || '🌍'; }
-function getCatLabel(v) {
-  for (var i = 0; i < CATS.length; i++) {
-    if (CATS[i].v === v) return CATS[i].l.replace(/^[^ ]+ /, '');
+/* ── ACTION REJOINDRE ── */
+function rejoindre(link, groupId) {
+  if (isPremiumG()) {
+    window.open(link, '_blank', 'noopener');
+    return;
   }
-  return v || '';
-}
-
-/* ── INIT FILTRES ── */
-function initChips() {
-  var html = '';
-  for (var i = 0; i < CATS.length; i++) {
-    var c = CATS[i];
-    var id = 'chip-' + (c.v || 'all');
-    var on = (c.v === '') ? ' on' : '';
-    html += '<div class="chip' + on + '" id="' + id + '" onclick="setFilter(\'' + c.v + '\')">' + c.l + '</div>';
-  }
-  document.getElementById('chips').innerHTML = html;
-}
-
-/* ── FETCH SUPABASE ── */
-function buildUrl(q, cat, rangeFrom, rangeTo) {
-  var url = SB + '/rest/v1/wa_groups?is_active=eq.true&order=is_featured.desc,members_count.desc,created_at.desc';
-  if (cat) url += '&category=eq.' + encodeURIComponent(cat);
-  if (q && q.length >= 2) url += '&name=ilike.*' + encodeURIComponent(q) + '*';
-  return url;
-}
-
-async function fetchGroups(q, cat, from, to) {
-  var url = buildUrl(q, cat, from, to);
-  try {
-    var r = await fetch(url, {
-      headers: {
-        'apikey': ANON,
-        'Authorization': 'Bearer ' + ANON,
-        'Range-Unit': 'items',
-        'Range': from + '-' + to,
-        'Prefer': 'count=exact'
-      }
-    });
-    if (!r.ok) {
-      console.error('Supabase HTTP ' + r.status);
-      return { data: [], total: 0 };
+  var c = getGC();
+  var used = c.used || 0;
+  if (used < FREE_GROUPS) {
+    /* Consommer un crédit */
+    c.used = used + 1;
+    setGC(c);
+    majBadgeCredits();
+    window.open(link, '_blank', 'noopener');
+    var r = groupsRestants();
+    if (r === 0) {
+      setTimeout(function() { toast('Vous avez utilise vos 5 groupes gratuits. Debloquez l acces illimite !', 'warn'); }, 800);
+      setTimeout(function() { document.getElementById('premium-banner').style.display='block'; }, 1500);
+    } else if (r <= 2) {
+      toast('Plus que ' + r + ' groupe' + (r>1?'s':'') + ' gratuit' + (r>1?'s':'') + ' !', 'warn');
     }
-    var cr = r.headers.get('Content-Range') || '';
-    var parts = cr.split('/');
-    var tot = parts.length > 1 ? (parseInt(parts[1]) || 0) : 0;
-    var data = await r.json();
-    return { data: Array.isArray(data) ? data : [], total: tot };
-  } catch(e) {
-    console.error('Fetch error:', e);
-    return { data: [], total: 0 };
+  } else {
+    /* Crédits épuisés */
+    toast('Vos 5 groupes gratuits sont utilises. Debloquez l acces illimite !', 'warn');
+    setTimeout(ouvrirPaiement, 600);
   }
 }
 
-/* ── RENDER CARTE LISTE ── */
+/* ── RENDER CARTE ── */
 function renderCard(g, delay) {
-  var col   = getColor(g.category);
-  var ico   = getIcon(g.category);
-  var flag  = getFlag(g.country);
-  var cnt   = fmtN(g.members_count);
-  var label = getCatLabel(g.category);
-  var hasLink = !!(g.invite_link && g.invite_link.indexOf('whatsapp') >= 0);
+  var c = CCOL[g.cat] || '#64748B';
+  var i = CICO[g.cat] || '💬';
+  var cn = fmtN(g.members);
+  var catLabel = '';
+  for(var k=0;k<CATS.length;k++){if(CATS[k].v===g.cat){catLabel=CATS[k].l;break;}}
   var d = delay || 0;
 
-  var dot  = hasLink ? '<div class="gcard-dot">✓</div>' : '';
-  var meta = '';
-  if (cnt)   meta += '<span class="gcard-count">👥 ' + cnt + '</span>';
-  if (label) meta += '<span class="gcard-cat" style="background:' + col + '18;color:' + col + ';">' + esc(label) + '</span>';
-  if (flag)  meta += '<span style="font-size:.63rem;color:var(--text3);">' + flag + '</span>';
+  var premium = isPremiumG();
+  var used = (getGC().used)||0;
+  var canJoin = premium || used < FREE_GROUPS;
 
-  var btn = hasLink
-    ? '<a href="' + esc(g.invite_link) + '" target="_blank" rel="noopener" class="g-join">Rejoindre</a>'
-    : '<div class="g-soon">Bientôt</div>';
+  var btn;
+  if (canJoin) {
+    btn = '<button class="g-join" onclick="rejoindre(\'' + g.link + '\',' + g.id + ')">Rejoindre</button>';
+  } else {
+    btn = '<button class="g-lock" onclick="ouvrirPaiement()">&#128274; 1000F</button>';
+  }
 
   return '<div class="gcard" style="animation-delay:' + d + 's;">'
-    + '<div class="gcard-stripe" style="background:' + col + ';"></div>'
-    + '<div class="gcard-ico" style="background:' + col + '18;">' + ico + dot + '</div>'
-    + '<div class="gcard-info">'
-    +   '<div class="gcard-name">' + esc(g.name) + '</div>'
-    +   (g.description ? '<div class="gcard-desc">' + esc(g.description) + '</div>' : '')
-    +   '<div class="gcard-row">' + meta + '</div>'
+    + '<div class="gc-stripe" style="background:' + c + ';"></div>'
+    + '<div class="gc-ico" style="background:' + c + '18;">' + i + '</div>'
+    + '<div class="gc-info">'
+    + '<div class="gc-name">' + esc(g.name) + '</div>'
+    + '<div class="gc-cat">' + catLabel + (cn ? ' &nbsp;&#183;&nbsp; &#128101; ' + cn : '') + '</div>'
     + '</div>'
     + btn
     + '</div>';
 }
 
-/* ── RENDER CARTE VEDETTE ── */
-function renderFeatCard(g) {
-  var col = getColor(g.category);
-  var ico = getIcon(g.category);
-  var cnt = fmtN(g.members_count);
-  var hasLink = !!(g.invite_link && g.invite_link.indexOf('whatsapp') >= 0);
+/* ── AFFICHER ── */
+function afficher() {
+  var glist = document.getElementById('glist');
+  var emptyB = document.getElementById('empty-b');
+  var sectLbl = document.getElementById('sect-lbl');
+  if (!glist) return;
 
-  var btnClass = hasLink ? 'fcard-btn g-join' : 'fcard-btn g-soon';
-  var btnContent = hasLink
-    ? '<a href="' + esc(g.invite_link) + '" target="_blank" rel="noopener" class="' + btnClass + '" style="width:100%;text-align:center;display:flex;align-items:center;justify-content:center;border-radius:8px;padding:8px 6px;font-size:.72rem;font-weight:600;font-family:\'Plus Jakarta Sans\',sans-serif;text-decoration:none;">Rejoindre</a>'
-    : '<div class="' + btnClass + '" style="width:100%;text-align:center;padding:8px 6px;border-radius:8px;font-size:.65rem;font-family:\'Plus Jakarta Sans\',sans-serif;">Bientôt dispo</div>';
-
-  return '<div class="fcard">'
-    + '<div class="fcard-top" style="background:' + col + ';"></div>'
-    + '<div class="fcard-ico" style="background:' + col + '18;">' + ico + '</div>'
-    + '<div class="fcard-name">' + esc(g.name) + '</div>'
-    + '<div class="fcard-meta">' + (cnt ? '👥 ' + cnt + ' membres' : '&nbsp;') + '</div>'
-    + btnContent
-    + '</div>';
-}
-
-/* ── CHARGER ── */
-async function charger(reset) {
-  if (loading) return;
-  loading = true;
-
-  var btn = document.getElementById('load-more');
-
-  if (reset) {
-    off = 0;
-    hasMore = true;
-    document.getElementById('glist').innerHTML = '';
-    document.getElementById('empty').style.display = 'none';
-    if (btn) btn.style.display = 'none';
-    document.getElementById('feat-wrap').style.display = 'none';
-    document.getElementById('shim-zone').style.display = 'block';
-  }
-
-  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="sp"></span> Chargement…'; }
-
-  var from = off;
-  var to   = off + PAGE - 1;
-  var res  = await fetchGroups(srchQ, catF, from, to);
-  var data = res.data;
-  total    = res.total || 0;
-
-  document.getElementById('shim-zone').style.display = 'none';
-
-  /* Mettre à jour le badge total */
-  document.getElementById('h-badge').textContent = total.toLocaleString('fr-FR') + ' groupe' + (total > 1 ? 's' : '');
-
-  /* Vedette (seulement au premier chargement sans filtre/recherche) */
-  if (reset && !srchQ && !catF) {
-    var featured = [];
-    for (var fi = 0; fi < data.length; fi++) {
-      if (data[fi].is_featured) featured.push(data[fi]);
-    }
-    if (featured.length > 0) {
-      var fhtml = '';
-      for (var fi2 = 0; fi2 < featured.length; fi2++) fhtml += renderFeatCard(featured[fi2]);
-      document.getElementById('feat-grid').innerHTML = fhtml;
-      document.getElementById('feat-wrap').style.display = 'block';
-    }
-  }
-
-  /* Liste */
-  if (data.length === 0 && off === 0) {
-    document.getElementById('empty').style.display = 'flex';
-    loading = false;
+  glist.innerHTML = '';
+  if (!filtered.length) {
+    emptyB.style.display = 'flex';
+    if(sectLbl) sectLbl.textContent = '0 groupe';
     return;
   }
+  emptyB.style.display = 'none';
+  if(sectLbl) sectLbl.textContent = filtered.length + ' groupe' + (filtered.length>1?'s':'') + (catF ? ' - ' + catF : '');
 
   var html = '';
-  for (var i = 0; i < data.length; i++) {
-    html += renderCard(data[i], Math.min(i, 10) * 0.04);
+  for (var i = 0; i < filtered.length; i++) {
+    html += renderCard(filtered[i], Math.min(i,12)*0.03);
   }
-  document.getElementById('glist').insertAdjacentHTML('beforeend', html);
-
-  off += data.length;
-  hasMore = (off < total) || (data.length === PAGE);
-
-  if (hasMore) {
-    if (btn) { btn.style.display = 'flex'; btn.disabled = false; btn.textContent = 'Charger plus de groupes'; }
-  } else {
-    if (btn) btn.style.display = 'none';
-  }
-
-  loading = false;
+  glist.innerHTML = html;
+  document.getElementById('h-cnt').textContent = filtered.length + ' groupe' + (filtered.length>1?'s':'');
 }
 
-/* ── CHARGER PLUS ── */
-async function chargerPlus() {
-  if (!hasMore || loading) return;
-  await charger(false);
+/* ── FILTRER ── */
+function applyFilter() {
+  var q = srchQ.toLowerCase();
+  filtered = [];
+  for (var i = 0; i < GROUPS.length; i++) {
+    var g = GROUPS[i];
+    var mq = !q || g.name.toLowerCase().indexOf(q) >= 0;
+    var mc = !catF || g.cat === catF;
+    if (mq && mc) filtered.push(g);
+  }
+}
+
+/* ── CHIPS ── */
+function buildChips() {
+  var html = '';
+  for (var i = 0; i < CATS.length; i++) {
+    var c = CATS[i];
+    var on = (catF === c.v) ? ' on' : '';
+    html += '<div class="chip' + on + '" data-v="' + c.v + '">' + c.l + '</div>';
+  }
+  document.getElementById('chips').innerHTML = html;
+  var nodes = document.querySelectorAll('.chip');
+  for (var j = 0; j < nodes.length; j++) {
+    (function(v) {
+      nodes[j].onclick = function() { catF=v; buildChips(); applyFilter(); afficher(); };
+    })(nodes[j].getAttribute('data-v'));
+    j; /* keep j */
+  }
 }
 
 /* ── SEARCH ── */
-var searchTimer;
-function onSearch(v) {
-  var scl = document.getElementById('scl');
-  if (scl) scl.classList.toggle('show', v.length > 0);
-  clearTimeout(searchTimer);
-  searchTimer = setTimeout(function() {
-    srchQ = v.trim();
-    charger(true);
-  }, 400);
-}
-function clearSearch() {
-  var inp = document.getElementById('srch');
-  if (inp) inp.value = '';
-  var scl = document.getElementById('scl');
-  if (scl) scl.classList.remove('show');
-  srchQ = '';
-  charger(true);
-}
+var searchTm;
+document.getElementById('srch').oninput = function() {
+  var v = this.value;
+  document.getElementById('scl').classList.toggle('show', v.length > 0);
+  clearTimeout(searchTm);
+  searchTm = setTimeout(function() { srchQ=v.trim(); applyFilter(); afficher(); }, 300);
+};
+document.getElementById('scl').onclick = function() {
+  document.getElementById('srch').value = '';
+  this.classList.remove('show');
+  srchQ = ''; applyFilter(); afficher();
+};
 
-/* ── FILTRES ── */
-function setFilter(cat) {
-  catF = cat;
-  var chips = document.querySelectorAll('.chip');
-  for (var i = 0; i < chips.length; i++) {
-    var c = chips[i];
-    var isOn = (cat === '' && c.id === 'chip-all') || (cat && c.id === 'chip-' + cat);
-    if (isOn) c.classList.add('on'); else c.classList.remove('on');
+/* ── PAIEMENT LEEKPAY ── */
+function ouvrirPaiement() { document.getElementById('pay-ov').classList.add('open'); }
+function fermerPaiement() { document.getElementById('pay-ov').classList.remove('open'); }
+
+function lancerPaiement() {
+  if (typeof LeekPay === 'undefined') {
+    toast('Chargement du paiement...', 'warn');
+    setTimeout(lancerPaiement, 1200);
+    return;
   }
-  charger(true);
+  var sess = null;
+  try { sess = JSON.parse(localStorage.getItem('dg_sess')||'null'); } catch(e){}
+  LeekPay.checkout({
+    amount: PRIX_GROUPES,
+    currency: 'XOF',
+    apiKey: LEEKPAY_PK,
+    description: 'DIGIFORM - Acces groupes WhatsApp illimite',
+    customerEmail: (sess && sess.user) ? (sess.user.email || '') : '',
+    onSuccess: function() {
+      var c = getGC(); c.unlim = true; setGC(c);
+      fermerPaiement();
+      majBadgeCredits();
+      applyFilter(); afficher();
+      toast('Acces illimite active ! Rejoignez tous les groupes.', 'ok');
+    },
+    onCancel: function() { toast('Paiement annule', 'warn'); }
+  });
 }
 
-/* ── STATS GLOBALES ── */
-async function loadStats() {
-  try {
-    var r = await fetch(SB + '/rest/v1/wa_groups?select=members_count,country&is_active=eq.true', {
-      headers: { 'apikey': ANON, 'Authorization': 'Bearer ' + ANON, 'Prefer': 'count=exact' }
-    });
-    var cr = r.headers.get('Content-Range') || '';
-    var tot = parseInt((cr.split('/')[1]) || '0') || 0;
-    var d = await r.json();
-    if (!Array.isArray(d)) return;
-
-    var pays = {};
-    var members = 0;
-    for (var i = 0; i < d.length; i++) {
-      pays[d[i].country || 'OTHER'] = true;
-      members += Number(d[i].members_count) || 0;
-    }
-
-    document.getElementById('st-g').textContent = tot.toLocaleString('fr-FR');
-    document.getElementById('st-p').textContent = Object.keys(pays).length;
-    document.getElementById('st-m').textContent = fmtN(members) || '—';
-    document.getElementById('stats').style.display = 'grid';
-  } catch(e) {
-    console.warn('Stats error', e);
-  }
-}
-
-/* ── PRÉ-INSCRIPTION ── */
-async function souscrire() {
-  var name  = (document.getElementById('pi-name').value || '').trim();
-  var phone = (document.getElementById('pi-phone').value || '').trim();
-  var cat   = document.getElementById('pi-cat').value || '';
-
-  if (!name)  { toast('Votre nom est requis', 'err'); return; }
-  if (!phone || phone.length < 7) { toast('Votre numéro WhatsApp est requis', 'err'); return; }
-  if (!cat)   { toast('Choisissez une catégorie', 'err'); return; }
-
+/* ── SOUMETTRE GROUPE ── */
+document.getElementById('pi-btn').onclick = function() {
+  var name = (document.getElementById('pi-name').value || '').trim();
+  var link = (document.getElementById('pi-link').value || '').trim();
+  var cat  = document.getElementById('pi-cat').value || '';
+  if (!name) { toast('Votre nom est requis', 'err'); return; }
+  if (!link || link.indexOf('whatsapp') < 0) { toast('Lien WhatsApp valide requis', 'err'); return; }
   var btn = document.getElementById('pi-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="sp"></span> Enregistrement…';
+  btn.disabled = true; btn.innerHTML = '<span class="sp"></span> Envoi...';
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', SB + '/rest/v1/pre_contacts', true);
+  xhr.setRequestHeader('apikey', ANON);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.setRequestHeader('Prefer', 'return=minimal');
+  xhr.onload = xhr.onerror = function() {
+    document.getElementById('pi-name').value='';
+    document.getElementById('pi-link').value='';
+    document.getElementById('pi-cat').value='';
+    btn.style.display='none';
+    document.getElementById('ok-box').style.display='block';
+    toast('Groupe soumis !', 'ok');
+  };
+  xhr.send(JSON.stringify({full_name:name,phone:link,profession:'Groupe WA soumis - '+cat,source:'groups_submit',show_in_network:false}));
+};
 
-  try {
-    await fetch(SB + '/rest/v1/pre_contacts', {
-      method: 'POST',
-      headers: { 'apikey': ANON, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-      body: JSON.stringify({ full_name: name, phone: phone, profession: 'Groupe WA - ' + cat, source: 'groups_presignup', show_in_network: false })
-    });
-  } catch(e) { console.warn(e); }
-
-  await new Promise(function(r) { setTimeout(r, 600); });
-
-  document.getElementById('pi-name').value  = '';
-  document.getElementById('pi-phone').value = '';
-  document.getElementById('pi-cat').value   = '';
-  btn.style.display = 'none';
-  document.getElementById('ok-box').style.display = 'block';
-  toast('Pré-inscription confirmée !', 'ok');
-}
-
-/* ── SCROLL INFINI ── */
-var observer = new IntersectionObserver(function(entries) {
-  if (entries[0].isIntersecting && hasMore && !loading) {
-    chargerPlus();
-  }
-}, { rootMargin: '200px' });
-
-/* ── DÉMARRAGE ── */
-initChips();
-charger(true);
-loadStats();
-
-/* Observer après un court délai (laisser le DOM se construire) */
-setTimeout(function() {
-  var s = document.getElementById('sentinel');
-  if (s) observer.observe(s);
-}, 500);
+/* ── INIT ── */
+buildChips();
+applyFilter();
+afficher();
+majBadgeCredits();
 </script>
 </body>
 </html>
