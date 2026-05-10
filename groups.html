@@ -9,75 +9,119 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{--bg:#F8F9FC;--bg2:#FFF;--bg3:#F1F3F8;--bg4:#E4E8F0;--border:#D8DCE8;--text:#111827;--text2:#4B5563;--text3:#9CA3AF;--blue:#2563EB;--blue2:#1D4ED8;--gold:#F59E0B;--green:#10B981;--grl:#F0FDF4;--grb:#BBF7D0;--wa:#25D366;--wa2:#128C7E;--sh:0 1px 3px rgba(0,0,0,.08);}
+:root{
+  --bg:#F8F9FC;--bg2:#FFF;--bg3:#F1F3F8;--bg4:#E4E8F0;
+  --border:#D8DCE8;--text:#111827;--text2:#4B5563;--text3:#9CA3AF;
+  --blue:#2563EB;--gold:#F59E0B;--green:#10B981;--red:#EF4444;
+  --wa:#25D366;--wa2:#128C7E;--grl:#F0FDF4;--grb:#BBF7D0;
+  --sh:0 1px 3px rgba(0,0,0,.08);--sh2:0 4px 16px rgba(0,0,0,.1);
+}
 html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;max-width:430px;margin:0 auto;overflow-x:hidden;}
 *::-webkit-scrollbar{width:3px;}*::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
 @keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
-@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
 @keyframes pop{from{opacity:0;transform:scale(.94);}to{opacity:1;transform:none;}}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.4);}}
+@keyframes shimmer{from{background-position:-200%;}to{background-position:200%;}}
 @keyframes spin{to{transform:rotate(360deg);}}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
 
 .logo{font-family:'Syne',sans-serif;font-weight:800;line-height:1;white-space:nowrap;}
 .ld{color:#1E40AF;}.lf{color:var(--gold);}
 
-#hdr{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:11px 15px;display:flex;align-items:center;gap:10px;box-shadow:var(--sh);}
-.hback{width:34px;height:34px;flex-shrink:0;border-radius:50%;background:var(--bg3);border:1px solid var(--border);color:var(--text2);font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .2s;}
-.hback:hover{border-color:var(--blue);color:var(--blue);}
+/* ── HEADER ── */
+#hdr{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;gap:9px;box-shadow:var(--sh);}
+.hback{width:34px;height:34px;flex-shrink:0;border-radius:50%;background:var(--bg3);border:1px solid var(--border);color:var(--text2);font-size:.9rem;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .2s;}
+.hback:hover{border-color:var(--wa2);color:var(--wa2);}
+.h-badge{background:var(--grl);border:1px solid var(--grb);border-radius:999px;padding:3px 10px;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:800;color:var(--wa2);white-space:nowrap;}
 
-.pg{padding:14px 14px 100px;animation:rise .38s cubic-bezier(.22,1,.36,1) both;}
+/* ── SEARCH ── */
+#sbar{position:sticky;top:57px;z-index:150;background:rgba(248,249,252,.97);backdrop-filter:blur(12px);padding:8px 14px;border-bottom:1px solid var(--border);}
+.sw{position:relative;}
+.sw-ico{position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--text3);}
+.sw-inp{width:100%;background:var(--bg2);border:1.5px solid var(--border);border-radius:11px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;padding:10px 36px 10px 40px;outline:none;transition:all .2s;box-shadow:var(--sh);}
+.sw-inp:focus{border-color:var(--wa2);}
+.sw-inp::placeholder{color:var(--text3);}
+.sw-clr{position:absolute;right:11px;top:50%;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;background:var(--bg4);border:none;color:var(--text3);font-size:.75rem;cursor:pointer;display:none;align-items:center;justify-content:center;}
+.sw-clr.show{display:flex;}
 
-/* HERO */
-.hero{background:linear-gradient(135deg,#F0FDF4,#DCFCE7);border:1.5px solid var(--grb);border-radius:16px;padding:22px 16px;margin-bottom:18px;text-align:center;}
-.hero-ico{font-size:3.5rem;margin-bottom:12px;display:block;animation:float 3.5s ease-in-out infinite;}
-.coming-badge{display:inline-flex;align-items:center;gap:5px;background:#D1FAE5;color:#065F46;border:1px solid var(--grb);border-radius:999px;padding:4px 12px;font-size:.68rem;font-weight:700;letter-spacing:.05em;margin-bottom:12px;}
-.coming-dot{width:6px;height:6px;border-radius:50%;background:#25D366;animation:pulse 2s infinite;}
-.hero-title{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:8px;line-height:1.2;}
-.hero-sub{font-size:.85rem;color:var(--text2);line-height:1.7;max-width:280px;margin:0 auto 16px;}
-.hero-stats{display:flex;gap:16px;justify-content:center;}
-.hstat{text-align:center;}
-.hstat-n{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:var(--wa2);}
-.hstat-l{font-size:.62rem;color:var(--text3);margin-top:1px;text-transform:uppercase;letter-spacing:.04em;}
+/* ── FILTRES ── */
+#fbar{position:sticky;top:112px;z-index:140;background:rgba(248,249,252,.97);backdrop-filter:blur(12px);padding:0 14px 8px;border-bottom:1px solid var(--border);}
+.fscroll{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.fscroll::-webkit-scrollbar{display:none;}
+.chip{flex-shrink:0;padding:6px 13px;border-radius:999px;font-size:.74rem;font-weight:500;cursor:pointer;border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);transition:all .2s;white-space:nowrap;font-family:'Plus Jakarta Sans',sans-serif;}
+.chip.on{background:var(--wa2);color:#fff;border-color:var(--wa2);font-weight:700;}
+.chip:hover:not(.on){border-color:var(--wa2);color:var(--wa2);}
 
-/* WA CHANNEL */
-.wa-ch{display:flex;align-items:center;gap:11px;background:var(--grl);border:1.5px solid var(--grb);border-radius:13px;padding:13px;text-decoration:none;margin-bottom:16px;transition:all .2s;}
+/* ── STATS ── */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:0;}
+.sc{background:var(--bg2);padding:10px 6px;text-align:center;}
+.sn{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;display:block;}
+.sl{font-size:.56rem;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-top:1px;}
+
+/* ── WA CHANNEL ── */
+.wa-ch{display:flex;align-items:center;gap:11px;background:var(--grl);border:1.5px solid var(--grb);border-radius:12px;padding:12px 14px;text-decoration:none;transition:all .2s;margin:12px 14px 4px;}
 .wa-ch:hover{background:#DCFCE7;border-color:var(--wa);}
-.wa-ico{width:40px;height:40px;border-radius:50%;background:var(--wa);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.wa-ico{width:38px;height:38px;border-radius:50%;background:var(--wa);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
 
-/* SECTION TITLE */
-.stitle{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;margin-bottom:11px;display:flex;align-items:center;gap:7px;color:var(--text);}
-.stitle::before{content:'';width:3px;height:13px;border-radius:2px;background:var(--wa2);flex-shrink:0;}
+/* ── FEATURED ── */
+.feat-wrap{padding:12px 14px 4px;}
+.stitle{font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.stitle::before{content:'';width:3px;height:12px;border-radius:2px;background:var(--wa2);flex-shrink:0;}
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.fcard{background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:13px 10px;display:flex;flex-direction:column;align-items:center;text-align:center;box-shadow:var(--sh);transition:all .2s;position:relative;overflow:hidden;animation:pop .3s both;}
+.fcard:hover{box-shadow:var(--sh2);border-color:var(--wa2);}
+.fcard-top{position:absolute;top:0;left:0;right:0;height:3px;border-radius:13px 13px 0 0;}
+.fcard-ico{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:7px;}
+.fcard-name{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;line-height:1.25;margin-bottom:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;width:100%;}
+.fcard-meta{font-size:.63rem;color:var(--text3);margin-bottom:8px;}
 
-/* GROUPES GRID */
-.ggroups{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
-.gcard{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);transition:all .2s;box-shadow:var(--sh);position:relative;overflow:hidden;}
-.gcard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:14px 0 0 14px;}
-.gcard:hover{box-shadow:0 4px 16px rgba(0,0,0,.1);transform:translateY(-1px);}
-.gcard-ico{width:52px;height:52px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
+/* ── LISTE ── */
+.list-wrap{padding:0 14px;}
+.sect-lbl{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;padding:12px 0 7px;display:flex;align-items:center;gap:6px;}
+.sect-lbl::before{content:'';width:3px;height:11px;border-radius:2px;background:var(--wa2);flex-shrink:0;}
+
+/* ── CARTE GROUPE ── */
+.gcard{display:flex;align-items:center;gap:11px;background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:12px 11px;margin-bottom:8px;box-shadow:var(--sh);transition:all .2s;position:relative;overflow:hidden;animation:pop .28s both;}
+.gcard:hover{box-shadow:var(--sh2);border-color:var(--wa2);}
+.gcard-stripe{position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:13px 0 0 13px;}
+.gcard-ico{width:46px;height:46px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;position:relative;}
+.gcard-dot{position:absolute;bottom:-3px;right:-3px;width:16px;height:16px;border-radius:50%;border:2px solid var(--bg2);background:var(--wa);display:flex;align-items:center;justify-content:center;font-size:.6rem;}
 .gcard-info{flex:1;min-width:0;}
-.gcard-name{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.gcard-desc{font-size:.72rem;color:var(--text3);margin-bottom:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.gcard-meta{display:flex;align-items:center;gap:8px;}
-.gcard-members{font-size:.68rem;font-weight:600;color:var(--text2);}
-.gcard-badge{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:999px;font-size:.62rem;font-weight:700;}
-.gb-soon{background:#F0FDF4;color:#065F46;border:1px solid var(--grb);}
-.gb-hot{background:#FEF3C7;color:#92400E;border:1px solid #FCD34D;}
+.gcard-name{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;line-height:1.25;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.gcard-desc{font-size:.71rem;color:var(--text3);margin-bottom:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.gcard-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+.gcard-count{font-size:.67rem;color:var(--text2);font-weight:500;}
+.gcard-cat{font-size:.62rem;font-weight:600;padding:2px 7px;border-radius:999px;}
+.g-join{flex-shrink:0;padding:9px 13px;border-radius:9px;font-size:.75rem;font-weight:700;font-family:'Syne',sans-serif;background:var(--wa);color:#fff;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;transition:all .2s;}
+.g-join:hover{background:var(--wa2);}
+.g-soon{flex-shrink:0;padding:8px 10px;border-radius:9px;font-size:.68rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg3);color:var(--text3);border:1px solid var(--border);}
 
-/* PRÉ-INSCRIPTION */
-.preinscription{background:var(--bg2);border:1.5px solid var(--border);border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:var(--sh);}
-.pre-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;margin-bottom:5px;}
-.pre-sub{font-size:.8rem;color:var(--text2);margin-bottom:14px;line-height:1.6;}
-.inp{background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;padding:10px 13px;width:100%;outline:none;transition:all .2s;display:block;margin-bottom:8px;}
-.inp:focus{border-color:var(--blue);}
+/* ── SHIMMER ── */
+.shim{height:70px;border-radius:13px;background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);background-size:200%;animation:shimmer 1.4s infinite;margin-bottom:8px;}
+.shim-feat{height:130px;border-radius:13px;background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);background-size:200%;animation:shimmer 1.4s infinite;}
+
+/* ── LOAD MORE ── */
+.load-more{width:100%;padding:12px;border-radius:11px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:.85rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:8px;box-shadow:var(--sh);}
+.load-more:hover{border-color:var(--wa2);color:var(--wa2);}
+.load-more:disabled{opacity:.4;cursor:not-allowed;}
+
+/* ── EMPTY ── */
+.empty{display:flex;flex-direction:column;align-items:center;padding:50px 24px;gap:12px;text-align:center;}
+.empty-ico{font-size:3rem;animation:float 4s ease-in-out infinite;}
+
+/* ── PRÉ-INSCRIPTION ── */
+.preinsc{background:var(--bg2);border:1.5px solid var(--grb);border-radius:14px;padding:16px;margin:16px 14px 90px;box-shadow:var(--sh);}
+.inp{background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;padding:10px 13px;width:100%;outline:none;transition:all .2s;display:block;margin-bottom:9px;}
+.inp:focus{border-color:var(--wa2);}
 .inp::placeholder{color:var(--text3);}
 select.inp{cursor:pointer;-webkit-appearance:none;}
 .sub-btn{width:100%;padding:13px;border-radius:11px;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;background:var(--wa2);color:#fff;border:none;cursor:pointer;transition:all .22s;display:flex;align-items:center;justify-content:center;gap:7px;}
-.sub-btn:hover{background:#166534;transform:translateY(-1px);box-shadow:0 6px 20px rgba(22,101,52,.3);}
+.sub-btn:hover{background:#166534;transform:translateY(-1px);}
 .sub-btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
-.success-msg{background:#F0FDF4;border:1.5px solid var(--grb);border-radius:12px;padding:16px;text-align:center;display:none;}
+.ok-box{background:var(--grl);border:1.5px solid var(--grb);border-radius:12px;padding:16px;text-align:center;display:none;margin-bottom:10px;}
 .sp{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;}
 
-/* NAV */
+/* ── NAV ── */
 #nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(255,255,255,.97);backdrop-filter:blur(16px);border-top:1px solid var(--border);padding:5px 6px 18px;display:flex;z-index:500;box-shadow:0 -1px 3px rgba(0,0,0,.06);}
 .nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 4px;background:none;border:none;color:var(--text3);font-family:'Plus Jakarta Sans',sans-serif;position:relative;transition:color .2s;text-decoration:none;cursor:pointer;}
 .nb.on{color:var(--blue);}
@@ -85,156 +129,112 @@ select.inp{cursor:pointer;-webkit-appearance:none;}
 .nb.on .nb-dot{display:block;}
 .nb-ico{font-size:1.2rem;}.nb-lbl{font-size:.58rem;font-weight:500;}.nb.on .nb-lbl{font-weight:700;}
 
+/* ── TOAST ── */
 #toast{position:fixed;top:72px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:999px;z-index:9999;font-weight:700;font-size:.82rem;box-shadow:0 8px 24px rgba(0,0,0,.15);white-space:nowrap;max-width:90vw;text-align:center;display:none;pointer-events:none;}
 #toast.show{display:block;animation:rise .3s ease;}
 #toast.ok{background:var(--green);color:#fff;}
-#toast.err{background:#EF4444;color:#fff;}
+#toast.err{background:var(--red);color:#fff;}
+#toast.inf{background:var(--blue);color:#fff;}
 
-@media(min-width:430px){body{box-shadow:0 0 40px rgba(0,0,0,.08);}#nav,#hdr{max-width:430px;}}
+@media(min-width:430px){body{box-shadow:0 0 40px rgba(0,0,0,.08);}#hdr,#sbar,#fbar,#nav{max-width:430px;}}
 </style>
 </head>
 <body>
 
 <header id="hdr">
   <a class="hback" href="dashboard.html">&#8592;</a>
-  <div style="flex:1;padding-left:8px;">
-    <div class="logo" style="font-size:1.25rem;"><span class="ld">DIGI</span><span class="lf">FORM</span></div>
-    <div style="font-size:.58rem;color:var(--text3);margin-top:2px;letter-spacing:.06em;text-transform:uppercase;">GROUPES WHATSAPP</div>
+  <div style="flex:1;padding-left:6px;">
+    <div class="logo" style="font-size:1.2rem;"><span class="ld">DIGI</span><span class="lf">FORM</span></div>
+    <div style="font-size:.57rem;color:var(--text3);margin-top:2px;letter-spacing:.06em;text-transform:uppercase;">GROUPES WHATSAPP</div>
   </div>
+  <div class="h-badge" id="h-badge">0 groupes</div>
 </header>
 
-<div class="pg">
+<div id="sbar">
+  <div class="sw">
+    <span class="sw-ico">🔍</span>
+    <input class="sw-inp" id="srch" type="search" placeholder="Rechercher un groupe…" autocomplete="off" oninput="onSearch(this.value)"/>
+    <button class="sw-clr" id="scl" onclick="clearSearch()">✕</button>
+  </div>
+</div>
 
-  <!-- HERO -->
-  <div class="hero">
-    <span class="hero-ico">💬</span>
-    <div class="coming-badge"><div class="coming-dot"></div>Bientôt disponible</div>
-    <div class="hero-title">Groupes WhatsApp<br/>DIGIFORM</div>
-    <div class="hero-sub">Rejoignez des groupes de professionnels africains du digital, classés par thématique et secteur.</div>
-    <div class="hero-stats">
-      <div class="hstat"><div class="hstat-n">6+</div><div class="hstat-l">Groupes prévus</div></div>
-      <div class="hstat" style="padding:0 12px;border-left:1px solid var(--grb);border-right:1px solid var(--grb);"><div class="hstat-n">1 200+</div><div class="hstat-l">Membres</div></div>
-      <div class="hstat"><div class="hstat-n">10</div><div class="hstat-l">Pays</div></div>
-    </div>
+<div id="fbar">
+  <div class="fscroll" id="chips"></div>
+</div>
+
+<div class="stats" id="stats" style="display:none;">
+  <div class="sc"><span class="sn" id="st-g" style="color:var(--wa2);">—</span><span class="sl">Groupes</span></div>
+  <div class="sc"><span class="sn" id="st-p" style="color:var(--blue);">—</span><span class="sl">Pays</span></div>
+  <div class="sc"><span class="sn" id="st-m" style="color:var(--gold);">—</span><span class="sl">Membres</span></div>
+</div>
+
+<a href="https://whatsapp.com/channel/0029Vb7wL2sFi8xjaIYup310" target="_blank" rel="noopener" class="wa-ch">
+  <div class="wa-ico">📢</div>
+  <div style="flex:1;">
+    <div style="font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;color:#15803D;">Chaîne officielle DIGIFORM</div>
+    <div style="font-size:.72rem;color:#166534;margin-top:1px;">Nouveaux groupes · Actualités · Offres</div>
+  </div>
+  <span style="color:var(--wa);">→</span>
+</a>
+
+<!-- GROUPES VEDETTE -->
+<div class="feat-wrap" id="feat-wrap" style="display:none;">
+  <div class="stitle">🌟 Groupes vedette</div>
+  <div class="feat-grid" id="feat-grid"></div>
+</div>
+
+<!-- LISTE PRINCIPALE -->
+<div class="list-wrap" id="list-wrap">
+  <!-- Shimmer initial -->
+  <div id="shim-zone" style="padding-top:12px;">
+    <div class="shim"></div>
+    <div class="shim" style="width:85%;"></div>
+    <div class="shim"></div>
+    <div class="shim" style="width:90%;"></div>
+    <div class="shim"></div>
+    <div class="shim" style="width:80%;"></div>
   </div>
 
-  <!-- CHAÎNE WA -->
-  <a href="https://whatsapp.com/channel/0029Vb7wL2sFi8xjaIYup310" target="_blank" rel="noopener" class="wa-ch">
-    <div class="wa-ico">📢</div>
-    <div style="flex:1;"><div style="font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;color:#15803D;">Rejoindre la chaîne DIGIFORM</div><div style="font-size:.72rem;color:#166534;margin-top:1px;">Soyez notifié à l'ouverture des groupes</div></div>
-    <span style="color:var(--wa);font-size:.9rem;">→</span>
-  </a>
+  <div id="glist"></div>
 
-  <!-- GROUPES -->
-  <div class="stitle">Groupes disponibles bientôt</div>
-  <div class="ggroups">
-
-    <div class="gcard" style="border-color:#BBF7D0;">
-      <div style="position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:14px 0 0 14px;background:#25D366;"></div>
-      <div class="gcard-ico" style="background:#25D36618;">📣</div>
-      <div class="gcard-info">
-        <div class="gcard-name">Marketing Digital Africa</div>
-        <div class="gcard-desc">Stratégies, tendances et outils marketing</div>
-        <div class="gcard-meta">
-          <span class="gcard-members">👥 250 membres prévus</span>
-          <span class="gcard-badge gb-hot">🔥 Populaire</span>
-        </div>
-      </div>
-      <span class="gcard-badge gb-soon">Bientôt</span>
-    </div>
-
-    <div class="gcard" style="border-color:#DDD6FE;">
-      <div style="position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:14px 0 0 14px;background:#7C3AED;"></div>
-      <div class="gcard-ico" style="background:#7C3AED18;">💻</div>
-      <div class="gcard-info">
-        <div class="gcard-name">Tech & Développement</div>
-        <div class="gcard-desc">Développeurs web, apps et SaaS africains</div>
-        <div class="gcard-meta">
-          <span class="gcard-members">👥 180 membres prévus</span>
-        </div>
-      </div>
-      <span class="gcard-badge gb-soon">Bientôt</span>
-    </div>
-
-    <div class="gcard" style="border-color:#FDE68A;">
-      <div style="position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:14px 0 0 14px;background:#D97706;"></div>
-      <div class="gcard-ico" style="background:#D9770618;">🛒</div>
-      <div class="gcard-info">
-        <div class="gcard-name">E-commerce & Boutiques</div>
-        <div class="gcard-desc">Vente en ligne, dropshipping, import-export</div>
-        <div class="gcard-meta">
-          <span class="gcard-members">👥 320 membres prévus</span>
-          <span class="gcard-badge gb-hot">🔥 Populaire</span>
-        </div>
-      </div>
-      <span class="gcard-badge gb-soon">Bientôt</span>
-    </div>
-
-    <div class="gcard" style="border-color:#A7F3D0;">
-      <div style="position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:14px 0 0 14px;background:#059669;"></div>
-      <div class="gcard-ico" style="background:#05966918;">🎓</div>
-      <div class="gcard-info">
-        <div class="gcard-name">Formation & Coaching</div>
-        <div class="gcard-desc">Formateurs, coachs et créateurs de cours</div>
-        <div class="gcard-meta">
-          <span class="gcard-members">👥 150 membres prévus</span>
-        </div>
-      </div>
-      <span class="gcard-badge gb-soon">Bientôt</span>
-    </div>
-
-    <div class="gcard" style="border-color:#BFDBFE;">
-      <div style="position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:14px 0 0 14px;background:#2563EB;"></div>
-      <div class="gcard-ico" style="background:#2563EB18;">🎨</div>
-      <div class="gcard-info">
-        <div class="gcard-name">Design & Créa</div>
-        <div class="gcard-desc">Graphistes, designers UI/UX, créatifs</div>
-        <div class="gcard-meta">
-          <span class="gcard-members">👥 120 membres prévus</span>
-        </div>
-      </div>
-      <span class="gcard-badge gb-soon">Bientôt</span>
-    </div>
-
-    <div class="gcard" style="border-color:#FCA5A5;">
-      <div style="position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:14px 0 0 14px;background:#DC2626;"></div>
-      <div class="gcard-ico" style="background:#DC262618;">📊</div>
-      <div class="gcard-info">
-        <div class="gcard-name">Data & Analytics</div>
-        <div class="gcard-desc">Data analysts, BI, dashboards, reporting</div>
-        <div class="gcard-meta">
-          <span class="gcard-members">👥 90 membres prévus</span>
-        </div>
-      </div>
-      <span class="gcard-badge gb-soon">Bientôt</span>
-    </div>
-
+  <div class="empty" id="empty" style="display:none;">
+    <div class="empty-ico">🔍</div>
+    <div style="font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;">Aucun groupe trouvé</div>
+    <div style="font-size:.82rem;color:var(--text2);max-width:220px;line-height:1.6;">Essayez un autre mot ou filtre.</div>
   </div>
 
-  <!-- PRÉ-INSCRIPTION -->
-  <div class="preinscription">
-    <div class="pre-title">🎯 Réservez votre place</div>
-    <div class="pre-sub">Inscrivez-vous maintenant pour être parmi les premiers à accéder aux groupes lors du lancement.</div>
-    <input class="inp" id="pre-name" placeholder="Votre nom complet" type="text"/>
-    <input class="inp" id="pre-phone" placeholder="Téléphone WhatsApp (+225…)" type="tel"/>
-    <select class="inp" id="pre-group">
-      <option value="">— Groupe qui vous intéresse —</option>
-      <option>📣 Marketing Digital Africa</option>
-      <option>💻 Tech & Développement</option>
-      <option>🛒 E-commerce & Boutiques</option>
-      <option>🎓 Formation & Coaching</option>
-      <option>🎨 Design & Créa</option>
-      <option>📊 Data & Analytics</option>
-      <option>Tous les groupes</option>
-    </select>
-    <button class="sub-btn" id="sub-btn" onclick="souscrire()">💬 Je veux rejoindre un groupe</button>
-    <div class="success-msg" id="success-msg">
-      <div style="font-size:2rem;margin-bottom:8px;">🎉</div>
-      <div style="font-family:'Syne',sans-serif;font-size:.92rem;font-weight:800;margin-bottom:5px;">Pré-inscription confirmée !</div>
-      <div style="font-size:.8rem;color:var(--text2);">Vous serez contacté sur WhatsApp au lancement du groupe.</div>
-    </div>
-  </div>
+  <button class="load-more" id="load-more" onclick="chargerPlus()" style="display:none;">
+    Charger plus de groupes
+  </button>
 
+  <!-- Sentinel pour scroll infini -->
+  <div id="sentinel" style="height:1px;"></div>
+</div>
+
+<!-- PRÉ-INSCRIPTION -->
+<div class="preinsc">
+  <div style="font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;margin-bottom:5px;">🎯 Rejoindre un groupe</div>
+  <div style="font-size:.8rem;color:var(--text2);margin-bottom:13px;line-height:1.6;">Votre groupe n'est pas encore ouvert ? Inscrivez-vous pour être notifié à l'ouverture.</div>
+  <div class="ok-box" id="ok-box">
+    <div style="font-size:2rem;margin-bottom:6px;">🎉</div>
+    <div style="font-family:'Syne',sans-serif;font-size:.88rem;font-weight:800;margin-bottom:4px;">Demande enregistrée !</div>
+    <div style="font-size:.78rem;color:var(--text2);">Vous serez contacté sur WhatsApp à l'ouverture du groupe.</div>
+  </div>
+  <input class="inp" id="pi-name" type="text" placeholder="Votre nom complet"/>
+  <input class="inp" id="pi-phone" type="tel" placeholder="Téléphone WhatsApp (+225…)"/>
+  <select class="inp" id="pi-cat">
+    <option value="">— Groupe qui vous intéresse —</option>
+    <option value="marketing">📣 Marketing Digital</option>
+    <option value="tech">💻 Tech &amp; Développement</option>
+    <option value="ecommerce">🛒 E-commerce &amp; Boutiques</option>
+    <option value="formation">🎓 Formation &amp; Coaching</option>
+    <option value="design">🎨 Design &amp; Créativité</option>
+    <option value="finance">💰 Finance &amp; Investissement</option>
+    <option value="sante">🏥 Santé &amp; Bien-être</option>
+    <option value="emploi">💼 Emploi &amp; Recrutement</option>
+    <option value="autre">💬 Autre</option>
+  </select>
+  <button class="sub-btn" id="pi-btn" onclick="souscrire()">💬 Me notifier à l'ouverture</button>
 </div>
 
 <nav id="nav">
@@ -245,28 +245,371 @@ select.inp{cursor:pointer;-webkit-appearance:none;}
 </nav>
 
 <div id="toast"></div>
+
 <script>
-const SB='https://rxhjuetoxyjrairroycb.supabase.co';
-const ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q';
-let toTm;
-function toast(msg,t='ok'){clearTimeout(toTm);const e=document.getElementById('toast');if(!e)return;e.textContent=msg;e.className='show '+t;toTm=setTimeout(()=>e.classList.remove('show'),4000);}
-async function souscrire(){
-  const name=(document.getElementById('pre-name')?.value||'').trim();
-  const phone=(document.getElementById('pre-phone')?.value||'').trim();
-  const group=document.getElementById('pre-group')?.value||'';
-  if(!name){toast('Votre nom est requis','err');return;}
-  if(!phone||phone.length<7){toast('Votre numéro WhatsApp est requis','err');return;}
-  if(!group){toast('Choisissez un groupe','err');return;}
-  const btn=document.getElementById('sub-btn');btn.disabled=true;btn.innerHTML='<span class="sp"></span> Enregistrement…';
-  try{
-    await fetch(`${SB}/rest/v1/pre_contacts`,{method:'POST',headers:{apikey:ANON,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({full_name:name,phone,profession:group,source:'groups_presignup',show_in_network:false})});
-  }catch{}
-  await new Promise(r=>setTimeout(r,700));
-  document.getElementById('pre-name').value='';document.getElementById('pre-phone').value='';document.getElementById('pre-group').value='';
-  document.getElementById('sub-btn').style.display='none';
-  document.getElementById('success-msg').style.display='block';
-  toast('Pré-inscription confirmée !','ok');
+/* ══════════════════════════════════════
+   DIGIFORM · GROUPES WHATSAPP
+   - Pagination Supabase (Range header)
+   - 30 groupes par page
+   - Recherche debounce 400ms (server-side)
+   - Filtres catégorie
+   - Scroll infini via IntersectionObserver
+   - ZÉRO backtick imbriqué
+══════════════════════════════════════ */
+
+var SB   = 'https://rxhjuetoxyjrairroycb.supabase.co';
+var ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q';
+var PAGE = 30;
+
+/* ── ÉTAT ── */
+var off      = 0;
+var srchQ    = '';
+var catF     = '';
+var hasMore  = true;
+var loading  = false;
+var total    = 0;
+
+/* ── COULEURS & ICONES ── */
+var CAT_COL = {
+  marketing: '#2563EB', tech: '#7C3AED', ecommerce: '#D97706',
+  formation: '#059669', design: '#DB2777', finance: '#0891B2',
+  sante: '#DC2626',     emploi: '#EA580C', autre: '#64748B', general: '#64748B'
+};
+var CAT_ICO = {
+  marketing: '📣', tech: '💻', ecommerce: '🛒', formation: '🎓',
+  design: '🎨', finance: '💰', sante: '🏥', emploi: '💼',
+  autre: '💬',  general: '💬'
+};
+var FLAG = {CI:'🇨🇮',CM:'🇨🇲',SN:'🇸🇳',BJ:'🇧🇯',BF:'🇧🇫',ML:'🇲🇱',GH:'🇬🇭',TG:'🇹🇬',OTHER:'🌍'};
+var CATS = [
+  {v:'', l:'Tous'},
+  {v:'marketing', l:'📣 Marketing'},
+  {v:'tech',      l:'💻 Tech'},
+  {v:'ecommerce', l:'🛒 E-commerce'},
+  {v:'formation', l:'🎓 Formation'},
+  {v:'design',    l:'🎨 Design'},
+  {v:'finance',   l:'💰 Finance'},
+  {v:'sante',     l:'🏥 Santé'},
+  {v:'emploi',    l:'💼 Emploi'},
+  {v:'autre',     l:'💬 Autre'}
+];
+
+/* ── UTILITAIRES ── */
+var toTm;
+function toast(msg, t) {
+  clearTimeout(toTm);
+  t = t || 'ok';
+  var e = document.getElementById('toast');
+  if (!e) return;
+  e.textContent = msg;
+  e.className = 'show ' + t;
+  toTm = setTimeout(function() { e.classList.remove('show'); }, 4000);
 }
+
+function esc(s) {
+  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function fmtN(n) {
+  n = Number(n) || 0;
+  if (n <= 0) return '';
+  if (n >= 1000) return (n / 1000).toFixed(1).replace('.0', '') + 'k';
+  return String(n);
+}
+
+function getColor(cat) { return CAT_COL[cat] || CAT_COL.general; }
+function getIcon(cat)  { return CAT_ICO[cat]  || '💬'; }
+function getFlag(c)    { return FLAG[c] || '🌍'; }
+function getCatLabel(v) {
+  for (var i = 0; i < CATS.length; i++) {
+    if (CATS[i].v === v) return CATS[i].l.replace(/^[^ ]+ /, '');
+  }
+  return v || '';
+}
+
+/* ── INIT FILTRES ── */
+function initChips() {
+  var html = '';
+  for (var i = 0; i < CATS.length; i++) {
+    var c = CATS[i];
+    var id = 'chip-' + (c.v || 'all');
+    var on = (c.v === '') ? ' on' : '';
+    html += '<div class="chip' + on + '" id="' + id + '" onclick="setFilter(\'' + c.v + '\')">' + c.l + '</div>';
+  }
+  document.getElementById('chips').innerHTML = html;
+}
+
+/* ── FETCH SUPABASE ── */
+function buildUrl(q, cat, rangeFrom, rangeTo) {
+  var url = SB + '/rest/v1/wa_groups?is_active=eq.true&order=is_featured.desc,members_count.desc,created_at.desc';
+  if (cat) url += '&category=eq.' + encodeURIComponent(cat);
+  if (q && q.length >= 2) url += '&name=ilike.*' + encodeURIComponent(q) + '*';
+  return url;
+}
+
+async function fetchGroups(q, cat, from, to) {
+  var url = buildUrl(q, cat, from, to);
+  try {
+    var r = await fetch(url, {
+      headers: {
+        'apikey': ANON,
+        'Authorization': 'Bearer ' + ANON,
+        'Range-Unit': 'items',
+        'Range': from + '-' + to,
+        'Prefer': 'count=exact'
+      }
+    });
+    if (!r.ok) {
+      console.error('Supabase HTTP ' + r.status);
+      return { data: [], total: 0 };
+    }
+    var cr = r.headers.get('Content-Range') || '';
+    var parts = cr.split('/');
+    var tot = parts.length > 1 ? (parseInt(parts[1]) || 0) : 0;
+    var data = await r.json();
+    return { data: Array.isArray(data) ? data : [], total: tot };
+  } catch(e) {
+    console.error('Fetch error:', e);
+    return { data: [], total: 0 };
+  }
+}
+
+/* ── RENDER CARTE LISTE ── */
+function renderCard(g, delay) {
+  var col   = getColor(g.category);
+  var ico   = getIcon(g.category);
+  var flag  = getFlag(g.country);
+  var cnt   = fmtN(g.members_count);
+  var label = getCatLabel(g.category);
+  var hasLink = !!(g.invite_link && g.invite_link.indexOf('whatsapp') >= 0);
+  var d = delay || 0;
+
+  var dot  = hasLink ? '<div class="gcard-dot">✓</div>' : '';
+  var meta = '';
+  if (cnt)   meta += '<span class="gcard-count">👥 ' + cnt + '</span>';
+  if (label) meta += '<span class="gcard-cat" style="background:' + col + '18;color:' + col + ';">' + esc(label) + '</span>';
+  if (flag)  meta += '<span style="font-size:.63rem;color:var(--text3);">' + flag + '</span>';
+
+  var btn = hasLink
+    ? '<a href="' + esc(g.invite_link) + '" target="_blank" rel="noopener" class="g-join">Rejoindre</a>'
+    : '<div class="g-soon">Bientôt</div>';
+
+  return '<div class="gcard" style="animation-delay:' + d + 's;">'
+    + '<div class="gcard-stripe" style="background:' + col + ';"></div>'
+    + '<div class="gcard-ico" style="background:' + col + '18;">' + ico + dot + '</div>'
+    + '<div class="gcard-info">'
+    +   '<div class="gcard-name">' + esc(g.name) + '</div>'
+    +   (g.description ? '<div class="gcard-desc">' + esc(g.description) + '</div>' : '')
+    +   '<div class="gcard-row">' + meta + '</div>'
+    + '</div>'
+    + btn
+    + '</div>';
+}
+
+/* ── RENDER CARTE VEDETTE ── */
+function renderFeatCard(g) {
+  var col = getColor(g.category);
+  var ico = getIcon(g.category);
+  var cnt = fmtN(g.members_count);
+  var hasLink = !!(g.invite_link && g.invite_link.indexOf('whatsapp') >= 0);
+
+  var btnClass = hasLink ? 'fcard-btn g-join' : 'fcard-btn g-soon';
+  var btnContent = hasLink
+    ? '<a href="' + esc(g.invite_link) + '" target="_blank" rel="noopener" class="' + btnClass + '" style="width:100%;text-align:center;display:flex;align-items:center;justify-content:center;border-radius:8px;padding:8px 6px;font-size:.72rem;font-weight:600;font-family:\'Plus Jakarta Sans\',sans-serif;text-decoration:none;">Rejoindre</a>'
+    : '<div class="' + btnClass + '" style="width:100%;text-align:center;padding:8px 6px;border-radius:8px;font-size:.65rem;font-family:\'Plus Jakarta Sans\',sans-serif;">Bientôt dispo</div>';
+
+  return '<div class="fcard">'
+    + '<div class="fcard-top" style="background:' + col + ';"></div>'
+    + '<div class="fcard-ico" style="background:' + col + '18;">' + ico + '</div>'
+    + '<div class="fcard-name">' + esc(g.name) + '</div>'
+    + '<div class="fcard-meta">' + (cnt ? '👥 ' + cnt + ' membres' : '&nbsp;') + '</div>'
+    + btnContent
+    + '</div>';
+}
+
+/* ── CHARGER ── */
+async function charger(reset) {
+  if (loading) return;
+  loading = true;
+
+  var btn = document.getElementById('load-more');
+
+  if (reset) {
+    off = 0;
+    hasMore = true;
+    document.getElementById('glist').innerHTML = '';
+    document.getElementById('empty').style.display = 'none';
+    if (btn) btn.style.display = 'none';
+    document.getElementById('feat-wrap').style.display = 'none';
+    document.getElementById('shim-zone').style.display = 'block';
+  }
+
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="sp"></span> Chargement…'; }
+
+  var from = off;
+  var to   = off + PAGE - 1;
+  var res  = await fetchGroups(srchQ, catF, from, to);
+  var data = res.data;
+  total    = res.total || 0;
+
+  document.getElementById('shim-zone').style.display = 'none';
+
+  /* Mettre à jour le badge total */
+  document.getElementById('h-badge').textContent = total.toLocaleString('fr-FR') + ' groupe' + (total > 1 ? 's' : '');
+
+  /* Vedette (seulement au premier chargement sans filtre/recherche) */
+  if (reset && !srchQ && !catF) {
+    var featured = [];
+    for (var fi = 0; fi < data.length; fi++) {
+      if (data[fi].is_featured) featured.push(data[fi]);
+    }
+    if (featured.length > 0) {
+      var fhtml = '';
+      for (var fi2 = 0; fi2 < featured.length; fi2++) fhtml += renderFeatCard(featured[fi2]);
+      document.getElementById('feat-grid').innerHTML = fhtml;
+      document.getElementById('feat-wrap').style.display = 'block';
+    }
+  }
+
+  /* Liste */
+  if (data.length === 0 && off === 0) {
+    document.getElementById('empty').style.display = 'flex';
+    loading = false;
+    return;
+  }
+
+  var html = '';
+  for (var i = 0; i < data.length; i++) {
+    html += renderCard(data[i], Math.min(i, 10) * 0.04);
+  }
+  document.getElementById('glist').insertAdjacentHTML('beforeend', html);
+
+  off += data.length;
+  hasMore = (off < total) || (data.length === PAGE);
+
+  if (hasMore) {
+    if (btn) { btn.style.display = 'flex'; btn.disabled = false; btn.textContent = 'Charger plus de groupes'; }
+  } else {
+    if (btn) btn.style.display = 'none';
+  }
+
+  loading = false;
+}
+
+/* ── CHARGER PLUS ── */
+async function chargerPlus() {
+  if (!hasMore || loading) return;
+  await charger(false);
+}
+
+/* ── SEARCH ── */
+var searchTimer;
+function onSearch(v) {
+  var scl = document.getElementById('scl');
+  if (scl) scl.classList.toggle('show', v.length > 0);
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(function() {
+    srchQ = v.trim();
+    charger(true);
+  }, 400);
+}
+function clearSearch() {
+  var inp = document.getElementById('srch');
+  if (inp) inp.value = '';
+  var scl = document.getElementById('scl');
+  if (scl) scl.classList.remove('show');
+  srchQ = '';
+  charger(true);
+}
+
+/* ── FILTRES ── */
+function setFilter(cat) {
+  catF = cat;
+  var chips = document.querySelectorAll('.chip');
+  for (var i = 0; i < chips.length; i++) {
+    var c = chips[i];
+    var isOn = (cat === '' && c.id === 'chip-all') || (cat && c.id === 'chip-' + cat);
+    if (isOn) c.classList.add('on'); else c.classList.remove('on');
+  }
+  charger(true);
+}
+
+/* ── STATS GLOBALES ── */
+async function loadStats() {
+  try {
+    var r = await fetch(SB + '/rest/v1/wa_groups?select=members_count,country&is_active=eq.true', {
+      headers: { 'apikey': ANON, 'Authorization': 'Bearer ' + ANON, 'Prefer': 'count=exact' }
+    });
+    var cr = r.headers.get('Content-Range') || '';
+    var tot = parseInt((cr.split('/')[1]) || '0') || 0;
+    var d = await r.json();
+    if (!Array.isArray(d)) return;
+
+    var pays = {};
+    var members = 0;
+    for (var i = 0; i < d.length; i++) {
+      pays[d[i].country || 'OTHER'] = true;
+      members += Number(d[i].members_count) || 0;
+    }
+
+    document.getElementById('st-g').textContent = tot.toLocaleString('fr-FR');
+    document.getElementById('st-p').textContent = Object.keys(pays).length;
+    document.getElementById('st-m').textContent = fmtN(members) || '—';
+    document.getElementById('stats').style.display = 'grid';
+  } catch(e) {
+    console.warn('Stats error', e);
+  }
+}
+
+/* ── PRÉ-INSCRIPTION ── */
+async function souscrire() {
+  var name  = (document.getElementById('pi-name').value || '').trim();
+  var phone = (document.getElementById('pi-phone').value || '').trim();
+  var cat   = document.getElementById('pi-cat').value || '';
+
+  if (!name)  { toast('Votre nom est requis', 'err'); return; }
+  if (!phone || phone.length < 7) { toast('Votre numéro WhatsApp est requis', 'err'); return; }
+  if (!cat)   { toast('Choisissez une catégorie', 'err'); return; }
+
+  var btn = document.getElementById('pi-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="sp"></span> Enregistrement…';
+
+  try {
+    await fetch(SB + '/rest/v1/pre_contacts', {
+      method: 'POST',
+      headers: { 'apikey': ANON, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ full_name: name, phone: phone, profession: 'Groupe WA - ' + cat, source: 'groups_presignup', show_in_network: false })
+    });
+  } catch(e) { console.warn(e); }
+
+  await new Promise(function(r) { setTimeout(r, 600); });
+
+  document.getElementById('pi-name').value  = '';
+  document.getElementById('pi-phone').value = '';
+  document.getElementById('pi-cat').value   = '';
+  btn.style.display = 'none';
+  document.getElementById('ok-box').style.display = 'block';
+  toast('Pré-inscription confirmée !', 'ok');
+}
+
+/* ── SCROLL INFINI ── */
+var observer = new IntersectionObserver(function(entries) {
+  if (entries[0].isIntersecting && hasMore && !loading) {
+    chargerPlus();
+  }
+}, { rootMargin: '200px' });
+
+/* ── DÉMARRAGE ── */
+initChips();
+charger(true);
+loadStats();
+
+/* Observer après un court délai (laisser le DOM se construire) */
+setTimeout(function() {
+  var s = document.getElementById('sentinel');
+  if (s) observer.observe(s);
+}, 500);
 </script>
 </body>
 </html>
