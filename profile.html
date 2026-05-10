@@ -192,8 +192,19 @@ const SB='https://rxhjuetoxyjrairroycb.supabase.co';
 const ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q';
 const LEEKPAY_PK='pk_live_h0RQu365IhnhdXkW2YeWZiDmKQGo7Pn1';
 function getSess(){try{return JSON.parse(localStorage.getItem('dg_sess')||'null');}catch{return null;}}
-function getCreds(){try{return JSON.parse(localStorage.getItem('dg_creds')||'{"dl":0,"unlim":false}');}catch{return{dl:0,unlim:false};}}
-function setCreds(c){try{localStorage.setItem('dg_creds',JSON.stringify(c));}catch{}}
+function getCredits(){
+  try{
+    const raw=localStorage.getItem('dg_credits');
+    if(!raw){const old=localStorage.getItem('dg_creds');if(old){const c=JSON.parse(old);return{used:c.dl||0,unlimited:c.unlim||false};}return{used:0,unlimited:false};}
+    return JSON.parse(raw);
+  }catch{return{used:0,unlimited:false};}
+}
+function saveCredits(c){
+  try{localStorage.setItem('dg_credits',JSON.stringify(c));localStorage.setItem('dg_creds',JSON.stringify({dl:c.used,unlim:c.unlimited}));}catch{}
+}
+// Alias compat
+function getCreds(){const c=getCredits();return{dl:c.used,unlim:c.unlimited};}
+function setCreds(o){saveCredits({used:o.dl||0,unlimited:o.unlim||false});}
 const sess=getSess();
 let profile=null,visOn=true,toTm;
 function toast(msg,t='ok'){clearTimeout(toTm);const e=document.getElementById('toast');if(!e)return;e.textContent=msg;e.className='show '+t;toTm=setTimeout(()=>e.classList.remove('show'),4000);}
@@ -237,19 +248,19 @@ function afficher(){
   if(p.is_admin)document.getElementById('adm-lk').style.display='flex';
 }
 function majUnlim(){
-  const creds=getCreds();const el=document.getElementById('unlim-st');
+  const creds=getCredits();const creds2={dl:creds.used,unlim:creds.unlimited};const el=document.getElementById('unlim-st');
   if(!el)return;
-  if(creds.unlim){
+  if(creds.unlimited||creds2.unlim){
     el.innerHTML=`<div style="background:var(--grl);border:1px solid var(--grb);border-radius:10px;padding:13px;display:flex;align-items:center;gap:10px;"><div style="font-size:1.5rem;">♾️</div><div><div style="font-size:.85rem;font-weight:700;color:var(--green);">Accès illimité actif</div><div style="font-size:.72rem;color:#059669;margin-top:2px;">Téléchargez autant de contacts que vous voulez</div></div></div>`;
   }else{
-    const dl=creds.dl||0;const restants=Math.max(0,100-dl);
-    el.innerHTML=`<div style="background:var(--bg3);border-radius:10px;padding:12px;margin-bottom:10px;"><div style="font-size:.8rem;font-weight:600;color:var(--text2);margin-bottom:7px;">Crédits de téléchargement</div><div style="background:var(--bg4);border-radius:999px;height:5px;margin-bottom:6px;overflow:hidden;"><div style="height:100%;background:var(--blue);border-radius:999px;width:${Math.min(100,(dl/100)*100)}%;transition:width .5s;"></div></div><div style="font-size:.73rem;color:var(--text3);">${dl}/100 utilisés · ${restants} restants gratuits</div></div><button onclick="payerIllimite()" class="btn b-gd2 b-xl" style="border-radius:11px;font-size:.88rem;">🔓 Débloquer illimité — 2 000 FCFA</button><div style="font-size:.7rem;color:var(--text3);text-align:center;margin-top:7px;">Paiement unique · Accès permanent · LeekPay</div>`;
+    const dl=creds.used||0;const restants=Math.max(0,100-dl);
+    el.innerHTML=`<div style="background:var(--bg3);border-radius:10px;padding:12px;margin-bottom:10px;"><div style="font-size:.8rem;font-weight:600;color:var(--text2);margin-bottom:7px;">Crédits de téléchargement</div><div style="background:var(--bg4);border-radius:999px;height:5px;margin-bottom:6px;overflow:hidden;"><div style="height:100%;background:var(--blue);border-radius:999px;width:${Math.min(100,(dl/100)*100)}%;transition:width .5s;"></div></div><div style="font-size:.73rem;color:var(--text3);">${dl}/100 utilisés · ${restants} restants gratuits</div></div><button onclick="payerIllimite()" class="btn b-gd2 b-xl" style="border-radius:11px;font-size:.88rem;">🔓 Débloquer illimité — 1 200 FCFA</button><div style="font-size:.7rem;color:var(--text3);text-align:center;margin-top:7px;">Paiement unique · Accès permanent · LeekPay</div>`;
   }
 }
 function payerIllimite(){
   if(typeof LeekPay==='undefined'){toast('Chargement paiement en cours…','inf');return;}
   LeekPay.checkout({
-    amount:2000,currency:'XOF',apiKey:LEEKPAY_PK,
+    amount:1200,currency:'XOF',apiKey:LEEKPAY_PK,
     description:'DIGIFORM — Accès contacts illimité',
     customerEmail:sess?.user?.email||'',
     onSuccess:function(){const c=getCreds();c.unlim=true;setCreds(c);toast('🎉 Accès illimité activé !','ok');afficher();majUnlim();},
