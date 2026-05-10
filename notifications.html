@@ -6,166 +6,114 @@
 <title>DIGIFORM · Notifications</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{
-  --bg:#F5F7FA;--bg2:#FFFFFF;--bg3:#F0F2F7;--bg4:#E2E6EF;
-  --border:#D1D9E6;--text:#0F172A;--text2:#475569;--text3:#94A3B8;
-  --blue:#2563EB;--blue2:#1D4ED8;--blue-light:#EFF6FF;--blue-border:#BFDBFE;
-  --gold:#D97706;--green:#059669;--red:#DC2626;
-  --sh:0 1px 2px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.1);
-  --sh2:0 4px 6px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.06);
-}
+:root{--bg:#F5F7FA;--bg2:#FFF;--bg3:#F0F2F7;--bg4:#E2E6EF;--border:#D1D9E6;--text:#0F172A;--text2:#475569;--text3:#94A3B8;--blue:#2563EB;--blue2:#1D4ED8;--blue-l:#EFF6FF;--blue-b:#BFDBFE;--gold:#D97706;--green:#059669;--green-l:#ECFDF5;--green-b:#A7F3D0;--red:#DC2626;--wa:#25D366;--sh:0 1px 3px rgba(0,0,0,.08);--sh2:0 4px 12px rgba(0,0,0,.1);}
 html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;max-width:430px;margin:0 auto;overflow-x:hidden;}
 ::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px;}
 @keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
 @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
 @keyframes shimmer{from{background-position:-200%;}to{background-position:200%;}}
-@keyframes spin{to{transform:rotate(360deg);}}
-
-.logo-brand{font-family:'Syne',sans-serif;font-weight:800;line-height:1;white-space:nowrap;display:inline-flex;}
+.logo{font-family:'Syne',sans-serif;font-weight:800;line-height:1;display:inline-flex;}
 .ld{background:linear-gradient(135deg,#1E3A8A,#2563EB);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .lf{background:linear-gradient(135deg,#D97706,#F59E0B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-
-/* HEADER */
 .hdr{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:11px 15px;display:flex;align-items:center;gap:10px;box-shadow:var(--sh);}
-.hdr-sub{font-size:.58rem;color:var(--text3);margin-top:2px;letter-spacing:.07em;text-transform:uppercase;}
-.hback{width:36px;height:36px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;border:1.5px solid var(--border);cursor:pointer;background:var(--bg2);color:var(--text2);text-decoration:none;transition:all .2s;}
+.hdr-sub{font-size:.58rem;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-top:2px;}
+.hback{width:36px;height:36px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);text-decoration:none;transition:all .2s;cursor:pointer;}
 .hback:hover{border-color:var(--blue);color:var(--blue);}
-
-/* PAGE */
 .pg{padding:16px 14px 90px;animation:rise .38s cubic-bezier(.22,1,.36,1) both;}
-
-/* CONTROLS */
+/* WA BANNER */
+.wa-ban{display:flex;align-items:center;gap:11px;background:var(--green-l);border:1.5px solid var(--green-b);border-radius:12px;padding:13px;text-decoration:none;transition:all .2s;margin-bottom:16px;}
+.wa-ban:hover{border-color:var(--green);}
+.wa-ico{width:38px;height:38px;border-radius:50%;background:var(--wa);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+/* CTRL */
 .ctrl-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;box-shadow:var(--sh);}
 .ctrl-info{font-size:.84rem;font-weight:600;color:var(--text);}
-.ctrl-info span{color:var(--blue);}
-.btn-mark{background:var(--blue-light);border:1px solid var(--blue-border);color:var(--blue);border-radius:9px;padding:7px 12px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
-.btn-mark:hover{background:var(--blue-border);}
+.ctrl-info span{color:var(--blue);font-family:'Syne',sans-serif;}
+.btn-mark{background:var(--blue-l);border:1px solid var(--blue-b);color:var(--blue);border-radius:9px;padding:7px 12px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.btn-mark:hover{background:var(--blue-b);}
 .btn-mark:disabled{opacity:.4;cursor:not-allowed;}
-
 /* SHIMMER */
 .shim-item{height:80px;border-radius:13px;background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);background-size:200%;animation:shimmer 1.4s infinite;margin-bottom:9px;}
-
-/* NOTIF ITEM */
+/* NOTIF */
 .nitem{background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:14px;margin-bottom:9px;transition:all .2s;animation:rise .35s ease both;box-shadow:var(--sh);}
-.nitem.unread{background:var(--blue-light);border-color:var(--blue-border);cursor:pointer;}
-.nitem.unread:hover{border-color:var(--blue);background:#DBEAFE;}
+.nitem.unread{background:var(--blue-l);border-color:var(--blue-b);cursor:pointer;}
+.nitem.unread:hover{border-color:var(--blue);}
 .nhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
 .ntitle{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:var(--text);flex:1;line-height:1.3;}
-.ndot{width:9px;height:9px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:3px;}
+.ndot{width:9px;height:9px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:4px;}
 .nbody{font-size:.8rem;color:var(--text2);line-height:1.65;}
 .ndate{font-size:.68rem;color:var(--text3);margin-top:7px;}
-
 /* EMPTY */
-.empty-box{display:flex;flex-direction:column;align-items:center;padding:52px 24px;gap:12px;text-align:center;}
+.empty{display:flex;flex-direction:column;align-items:center;padding:52px 24px;gap:12px;text-align:center;}
 .empty-ico{font-size:3rem;animation:float 4s ease-in-out infinite;}
-.empty-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;}
-.empty-sub{font-size:.82rem;color:var(--text2);line-height:1.65;max-width:220px;}
-
-/* WA CHANNEL BANNER */
-.wa-banner{display:flex;align-items:center;gap:12px;background:#ECFDF5;border:1.5px solid #A7F3D0;border-radius:14px;padding:14px;margin-bottom:16px;text-decoration:none;transition:all .2s;}
-.wa-banner:hover{border-color:#059669;background:#D1FAE5;}
-.wa-banner-ico{width:42px;height:42px;border-radius:50%;background:#059669;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
-.wa-banner-info{flex:1;}
-.wa-banner-title{font-size:.88rem;font-weight:700;color:#065F46;}
-.wa-banner-sub{font-size:.73rem;color:#047857;margin-top:1px;}
-
-/* GATE */
-.gate{display:flex;flex-direction:column;align-items:center;padding:60px 24px;gap:14px;text-align:center;}
-
+.empty-t{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;}
+.empty-s{font-size:.82rem;color:var(--text2);line-height:1.65;max-width:220px;}
 /* NAV */
-.nav-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:5px 4px 18px;display:flex;z-index:500;box-shadow:0 -2px 8px rgba(0,0,0,.06);}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:5px 4px 18px;display:flex;z-index:500;box-shadow:0 -2px 8px rgba(0,0,0,.06);}
 .nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 4px;background:none;border:none;color:var(--text3);font-family:'DM Sans',sans-serif;position:relative;transition:color .2s;text-decoration:none;cursor:pointer;}
 .nb.on{color:var(--blue);}
-.nb-dot{position:absolute;top:0;left:50%;transform:translateX(-50%);width:20px;height:3px;border-radius:0 0 3px 3px;background:var(--blue);display:none;}
-.nb.on .nb-dot{display:block;}
-.nb-ico{font-size:1.2rem;}
-.nb-lbl{font-size:.58rem;font-weight:500;}
-.nb.on .nb-lbl{font-weight:700;}
-
+.nb-bar{position:absolute;top:0;left:50%;transform:translateX(-50%);width:20px;height:3px;border-radius:0 0 3px 3px;background:var(--blue);display:none;}
+.nb.on .nb-bar{display:block;}
+.nb i{font-size:1.2rem;}.nb span{font-size:.58rem;font-weight:500;}.nb.on span{font-weight:700;}
 /* TOAST */
 #toast{position:fixed;top:72px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:999px;z-index:9999;font-weight:700;font-size:.82rem;box-shadow:0 8px 24px rgba(0,0,0,.15);white-space:nowrap;max-width:90vw;text-align:center;display:none;}
 #toast.show{display:block;animation:rise .3s ease;}
-#toast.ok{background:#059669;color:#fff;}
-#toast.err{background:#DC2626;color:#fff;}
+#toast.ok{background:var(--green);color:#fff;}
+#toast.err{background:var(--red);color:#fff;}
 #toast.inf{background:var(--blue);color:#fff;}
-
-@media(min-width:430px){body{box-shadow:0 0 40px rgba(0,0,0,.1);}#hdr,.nav-bar{max-width:430px;}}
+@media(min-width:430px){body{box-shadow:0 0 40px rgba(0,0,0,.1);}#hdr,.nav{max-width:430px;}}
 </style>
 </head>
 <body>
-
-<header class="hdr">
+<header class="hdr" id="hdr">
   <a class="hback" href="javascript:history.back()">&#8592;</a>
-  <div style="flex:1;min-width:0;padding-left:8px;">
-    <div class="logo-brand" style="font-size:1.25rem;"><span class="ld">DIGI</span><span class="lf">FORM</span></div>
+  <div style="flex:1;padding-left:8px;min-width:0;">
+    <div class="logo" style="font-size:1.25rem;"><span class="ld">DIGI</span><span class="lf">FORM</span></div>
     <div class="hdr-sub" id="hdr-sub">NOTIFICATIONS</div>
   </div>
 </header>
-
 <div class="pg">
-
-  <!-- Gate non connecté -->
+  <!-- GATE -->
   <div id="gate" style="display:none;">
-    <div class="gate">
+    <div class="empty">
       <div class="empty-ico">🔒</div>
-      <div class="empty-title" style="font-family:'Syne',sans-serif;">Réservé aux membres</div>
-      <div class="empty-sub">Connectez-vous pour recevoir les notifications de l'équipe DIGIFORM.</div>
+      <div class="empty-t">Réservé aux membres</div>
+      <div class="empty-s">Connectez-vous pour recevoir les notifications DIGIFORM.</div>
       <a href="auth.html" style="display:inline-flex;align-items:center;padding:11px 22px;border-radius:11px;background:var(--blue);color:#fff;font-weight:700;font-size:.88rem;text-decoration:none;margin-top:6px;">Se connecter</a>
     </div>
   </div>
-
-  <!-- Main -->
   <div id="main" style="display:none;">
-
-    <!-- Chaîne WhatsApp DIGIFORM -->
-    <a href="https://whatsapp.com/channel/0029Vb7wL2sFi8xjaIYup310" target="_blank" class="wa-banner">
-      <div class="wa-banner-ico">📢</div>
-      <div class="wa-banner-info">
-        <div class="wa-banner-title">Rejoindre la chaîne DIGIFORM</div>
-        <div class="wa-banner-sub">Actualités, offres et nouveautés en avant-première</div>
-      </div>
-      <span style="color:#059669;font-size:.9rem;">→</span>
+    <!-- WA CHANNEL -->
+    <a href="https://whatsapp.com/channel/0029Vb7wL2sFi8xjaIYup310" target="_blank" class="wa-ban">
+      <div class="wa-ico">📢</div>
+      <div style="flex:1;"><div style="font-size:.85rem;font-weight:700;color:#065F46;">Rejoindre la chaîne DIGIFORM</div><div style="font-size:.72rem;color:var(--green);margin-top:1px;">Actualités et offres exclusives sur WhatsApp</div></div>
+      <span style="color:var(--green);">→</span>
     </a>
-
-    <!-- Controls -->
+    <!-- CONTROLS -->
     <div class="ctrl-bar">
-      <div class="ctrl-info" id="unread-lbl">Chargement…</div>
-      <button class="btn-mark" id="mark-all-btn" onclick="toutMarquer()">Tout marquer lu</button>
+      <div class="ctrl-info"><span id="unread-n">0</span> non lu(s)</div>
+      <button class="btn-mark" id="mark-all-btn" onclick="toutMarquer()" disabled>Tout marquer lu</button>
     </div>
-
-    <!-- Shimmer -->
-    <div id="shim">
-      <div class="shim-item"></div>
-      <div class="shim-item" style="height:65px;"></div>
-      <div class="shim-item" style="height:90px;"></div>
-    </div>
-
-    <!-- Liste -->
+    <!-- SHIMMER -->
+    <div id="shim"><div class="shim-item"></div><div class="shim-item" style="height:65px;"></div><div class="shim-item" style="height:90px;"></div></div>
+    <!-- LISTE -->
     <div id="nlist"></div>
-
-    <!-- Empty -->
-    <div class="empty-box" id="empt" style="display:none;">
+    <div class="empty" id="empt" style="display:none;">
       <div class="empty-ico">🔕</div>
-      <div class="empty-title">Aucune notification</div>
-      <div class="empty-sub">Vous serez notifié des nouveaux produits et actualités ici.</div>
+      <div class="empty-t">Aucune notification</div>
+      <div class="empty-s">Vous serez notifié des nouveautés et actualités ici.</div>
     </div>
-
   </div>
 </div>
-
-<!-- NAV -->
-<nav class="nav-bar">
-  <a class="nb" href="dashboard.html"><div class="nb-dot"></div><span class="nb-ico">🏠</span><span class="nb-lbl">Accueil</span></a>
-  <a class="nb" href="dashboard.html"><div class="nb-dot"></div><span class="nb-ico">🗂️</span><span class="nb-lbl">Catalogue</span></a>
-  <a class="nb" href="network.html"><div class="nb-dot"></div><span class="nb-ico">🌐</span><span class="nb-lbl">Réseau</span></a>
-  <a class="nb" href="profile.html"><div class="nb-dot"></div><span class="nb-ico">👤</span><span class="nb-lbl">Profil</span></a>
+<nav class="nav">
+  <a class="nb" href="dashboard.html"><div class="nb-bar"></div><i>🏠</i><span>Accueil</span></a>
+  <a class="nb" href="dashboard.html"><div class="nb-bar"></div><i>🗂️</i><span>Catalogue</span></a>
+  <a class="nb" href="network.html"><div class="nb-bar"></div><i>🌐</i><span>Réseau</span></a>
+  <a class="nb" href="profile.html"><div class="nb-bar"></div><i>👤</i><span>Profil</span></a>
 </nav>
-
 <div id="toast"></div>
-
 <script>
 const SB='https://rxhjuetoxyjrairroycb.supabase.co';
 const ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q';
@@ -173,67 +121,49 @@ function getSess(){try{return JSON.parse(localStorage.getItem('dg_sess')||'null'
 const sess=getSess();
 let notifs=[],reads=[],toTm;
 function toast(msg,t='ok'){clearTimeout(toTm);const e=document.getElementById('toast');e.textContent=msg;e.className='show '+t;toTm=setTimeout(()=>e.classList.remove('show'),4000);}
-
-async function dbGet(path,tok){
-  try{const r=await fetch(`${SB}/rest/v1/${path}`,{headers:{apikey:ANON,Authorization:`Bearer ${tok||ANON}`}});const d=await r.json();return Array.isArray(d)?d:[];}
-  catch{return[];}
-}
-async function dbPost(path,body,tok){
-  try{await fetch(`${SB}/rest/v1/${path}`,{method:'POST',headers:{apikey:ANON,Authorization:`Bearer ${tok}`,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(body)});}
-  catch{}
-}
-
+async function dbGet(path){try{const r=await fetch(`${SB}/rest/v1/${path}`,{headers:{apikey:ANON,Authorization:`Bearer ${sess?.access_token||ANON}`}});const d=await r.json();return Array.isArray(d)?d:[];}catch{return[];}}
+async function dbPost(path,body){try{await fetch(`${SB}/rest/v1/${path}`,{method:'POST',headers:{apikey:ANON,Authorization:`Bearer ${sess.access_token}`,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(body)});}catch{}}
 async function init(){
   if(!sess){document.getElementById('gate').style.display='flex';return;}
   document.getElementById('main').style.display='block';
-  const [n,r]=await Promise.all([
-    dbGet('notifications?order=created_at.desc',sess.access_token),
-    dbGet(`notification_reads?user_id=eq.${sess.user.id}&select=notification_id`,sess.access_token)
-  ]);
-  notifs=n; reads=r.map(x=>x.notification_id);
+  const [n,r]=await Promise.all([dbGet('notifications?order=created_at.desc'),dbGet(`notification_reads?user_id=eq.${sess.user.id}&select=notification_id`)]);
+  notifs=n;reads=r.map(x=>x.notification_id);
   document.getElementById('shim').style.display='none';
   render();
 }
-
 function render(){
   const unread=notifs.filter(n=>!reads.includes(n.id)).length;
-  document.getElementById('unread-lbl').innerHTML=`<span>${unread}</span> non lu${unread>1?'s':''}`;
+  document.getElementById('unread-n').textContent=unread;
   document.getElementById('hdr-sub').textContent=`${notifs.length} NOTIFICATION${notifs.length>1?'S':''}`;
   document.getElementById('mark-all-btn').disabled=unread===0;
   if(!notifs.length){document.getElementById('nlist').innerHTML='';document.getElementById('empt').style.display='flex';return;}
   document.getElementById('empt').style.display='none';
-  document.getElementById('nlist').innerHTML=notifs.map((n,i)=>{
+  document.getElementById('nlist').innerHTML=notifs.map(n=>{
     const isRead=reads.includes(n.id);
     const d=new Date(n.created_at).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
-    return`<div class="nitem${isRead?'':' unread'}" id="ni-${n.id}" onclick="${isRead?'':'markOne(\''+n.id+'\')'}"> 
-      <div class="nhead">
-        <div class="ntitle">${n.title}</div>
-        ${!isRead?'<div class="ndot"></div>':''}
-      </div>
+    return`<div class="nitem${isRead?'':' unread'}" id="ni-${n.id}" onclick="${isRead?'':'markOne(\''+n.id+'\')'}" role="${isRead?'':'button'}" tabindex="${isRead?-1:0}">
+      <div class="nhead"><div class="ntitle">${n.title}</div>${!isRead?'<div class="ndot"></div>':''}</div>
       <div class="nbody">${n.body}</div>
       <div class="ndate">${d}</div>
     </div>`;
   }).join('');
 }
-
 async function markOne(nid){
-  await dbPost('notification_reads',{user_id:sess.user.id,notification_id:nid},sess.access_token);
+  await dbPost('notification_reads',{user_id:sess.user.id,notification_id:nid});
   reads.push(nid);
   const el=document.getElementById('ni-'+nid);
-  if(el){el.classList.remove('unread');el.onclick=null;el.querySelector('.ndot')?.remove();}
+  if(el){el.classList.remove('unread');el.removeAttribute('onclick');el.removeAttribute('role');el.removeAttribute('tabindex');const dot=el.querySelector('.ndot');if(dot)dot.remove();}
   const unread=notifs.filter(n=>!reads.includes(n.id)).length;
-  document.getElementById('unread-lbl').innerHTML=`<span>${unread}</span> non lu${unread>1?'s':''}`;
+  document.getElementById('unread-n').textContent=unread;
   document.getElementById('mark-all-btn').disabled=unread===0;
 }
-
 async function toutMarquer(){
-  const btn=document.getElementById('mark-all-btn');btn.disabled=true;btn.textContent='Traitement…';
+  const btn=document.getElementById('mark-all-btn');btn.disabled=true;btn.textContent='En cours…';
   const unreadIds=notifs.filter(n=>!reads.includes(n.id)).map(n=>n.id);
-  await Promise.all(unreadIds.map(nid=>dbPost('notification_reads',{user_id:sess.user.id,notification_id:nid},sess.access_token)));
+  await Promise.all(unreadIds.map(nid=>dbPost('notification_reads',{user_id:sess.user.id,notification_id:nid})));
   reads=[...new Set([...reads,...unreadIds])];
   render();toast('Toutes les notifications lues','ok');
 }
-
 init();
 </script>
 </body>
