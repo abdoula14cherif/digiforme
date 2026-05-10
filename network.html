@@ -166,7 +166,7 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'D
     <div class="logo" style="font-size:1.25rem;"><span class="ld">DIGI</span><span class="lf">FORM</span></div>
     <div class="hdr-sub" id="hdr-sub">RÉSEAU PROFESSIONNEL</div>
   </div>
-  <a href="contacts.html" class="hico" title="Exporter contacts">⬇️</a>
+  <button class="hico" onclick="if(all.length>0)ouvrirVCF('all')" title="Exporter tous les contacts">⬇️</button>
   <button class="hico" id="notif-new-btn" title="Nouveaux membres" onclick="afficherNouveaux()">🔔</button>
 </header>
 
@@ -188,8 +188,8 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'D
       <div class="hero-title-w">Votre réseau professionnel africain</div>
       <div class="hero-sub-w">Connectez-vous avec des professionnels du digital à travers toute l'Afrique.</div>
       <div class="hero-btns-w">
-        <a href="contacts.html" class="hw-btn hw-white">⬇️ Exporter les contacts</a>
-        <button class="hw-btn hw-ghost" id="vcf-rapide" onclick="ouvrirVCF('all')">📱 VCF tout</button>
+        <button class="hw-btn hw-white" onclick="ouvrirVCF('all')">⬇️ Exporter tous les contacts</button>
+        <button class="hw-btn hw-ghost" id="vcf-rapide" onclick="ouvrirVCF('all')">📱 VCF complet</button>
       </div>
     </div>
 
@@ -287,40 +287,82 @@ let all=[],filt=[],sel=new Set(),jobF='all',sortM='recent',vcfList=[],toTm;
 
 function toast(msg,t='ok'){clearTimeout(toTm);const e=document.getElementById('toast');e.textContent=msg;e.className='show '+t;toTm=setTimeout(()=>e.classList.remove('show'),4200);}
 function ini(n){return(n||'?').split(' ').map(w=>w[0]).filter(Boolean).slice(0,2).join('').toUpperCase();}
-function clnPh(p){return(p||'').replace(/[^0-9]/g,'');} // SANS le +
+function clnPh(p){return(p||'').replace(/[^0-9]/g,'');}
 function getPays(p){const ph=p||'';if(ph.startsWith('+225')||ph.startsWith('225'))return'CI';if(ph.startsWith('+237')||ph.startsWith('237'))return'CM';if(ph.startsWith('+221'))return'SN';if(ph.startsWith('+229'))return'BJ';if(ph.startsWith('+226'))return'BF';if(ph.startsWith('+223'))return'ML';if(ph.startsWith('+233'))return'GH';if(ph.startsWith('+228'))return'TG';return'OTHER';}
 function isNew(d){return d&&(Date.now()-new Date(d).getTime())<7*864e5;}
 function today(){return new Date().toISOString().slice(0,10);}
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 
-async function charger(path){
-  const PAGE=1000;let res=[],off=0,done=false;
-  while(!done){
-    try{
-      const r=await fetch(`${SB}/rest/v1/${path}`,{headers:{apikey:ANON,Authorization:`Bearer ${sess?.access_token||ANON}`,'Range-Unit':'items','Range':`${off}-${off+PAGE-1}`,'Prefer':'count=none'}});
-      const d=await r.json();
-      if(!Array.isArray(d)||d.length===0)done=true;
-      else{res=[...res,...d];if(d.length<PAGE)done=true;else off+=PAGE;}
-    }catch{done=true;}
+// CORRECTION : fonction fetch paginée correcte avec URL encodée
+async function fetchAll(table, select) {
+  const PAGE = 500;
+  let allData = [];
+  let offset = 0;
+  let hasMore = true;
+  
+  while (hasMore) {
+    try {
+      const url = `${SB}/rest/v1/${table}?select=${encodeURIComponent(select)}&order=created_at.desc&limit=${PAGE}&offset=${offset}`;
+      const res = await fetch(url, {
+        headers: {
+          apikey: ANON,
+          Authorization: `Bearer ${sess?.access_token || ANON}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!res.ok) {
+        console.error(`Erreur fetch ${table}:`, res.status);
+        hasMore = false;
+        break;
+      }
+      
+      const data = await res.json();
+      if (!Array.isArray(data) || data.length === 0) {
+        hasMore = false;
+      } else {
+        allData = [...allData, ...data];
+        if (data.length < PAGE) hasMore = false;
+        else offset += PAGE;
+      }
+    } catch (err) {
+      console.error(err);
+      hasMore = false;
+    }
   }
-  return res;
+  return allData;
 }
 
 async function init(){
-  if(!sess){document.getElementById('gate').style.display='flex';return;}
+  if(!sess){document.getElementById('gate').style.display='flex';document.getElementById('main').style.display='none';return;}
+  document.getElementById('gate').style.display='none';
   document.getElementById('main').style.display='block';
-  const [m,p]=await Promise.all([
-    charger('profiles?order=created_at.desc&select=id,full_name,profession,phone,show_in_network,created_at'),
-    charger('pre_contacts?order=full_name.asc&select=id,full_name,profession,phone,email,country_code,created_at')
+  
+  toast('Chargement des contacts...','inf');
+  
+  // Charger les deux tables en parallèle
+  const [profiles, preContacts] = await Promise.all([
+    fetchAll('profiles', 'id,full_name,profession,phone,show_in_network,created_at'),
+    fetchAll('pre_contacts', 'id,full_name,profession,phone,email,country_code,created_at')
   ]);
-  const membres=m.filter(c=>c.show_in_network!==false&&(c.full_name||c.phone));
-  const mPh=new Set(membres.map(c=>clnPh(c.phone)).filter(Boolean));
-  const pre=p.filter(c=>!c.phone||!mPh.has(clnPh(c.phone)));
-  all=[...membres,...pre];
+  
+  // Filtrer les membres visibles
+  const membres = (profiles || []).filter(c => c.show_in_network !== false && (c.full_name || c.phone));
+  
+  // Éliminer les doublons de téléphone
+  const phonesMembres = new Set(membres.map(c => clnPh(c.phone)).filter(Boolean));
+  const pre = (preContacts || []).filter(c => !c.phone || !phonesMembres.has(clnPh(c.phone)));
+  
+  all = [...membres, ...pre];
+  
   document.getElementById('shim').style.display='none';
-  majStats();afficherFiltres();appliquerFiltres();
+  majStats();
+  afficherFiltres();
+  appliquerFiltres();
+  
   window.addEventListener('scroll',()=>document.getElementById('stbtn').classList.toggle('show',scrollY>350));
-  document.getElementById('vcf-rapide').disabled=!all.length;
+  
+  toast(`${all.length} contact${all.length>1?'s':''} chargé${all.length>1?'s':''} !`,'ok');
 }
 
 function majStats(){
@@ -366,7 +408,8 @@ function appliquerFiltres(){
     return mf&&mq;
   }));
   document.getElementById('rcnt').textContent=`${filt.length} résultat${filt.length>1?'s':''}`;
-  afficherGrille();majSel();
+  afficherGrille();
+  majSel();
 }
 
 function afficherGrille(){
@@ -375,26 +418,27 @@ function afficherGrille(){
   e.style.display='none';
   g.innerHTML=filt.map((c,i)=>{
     const idx=all.indexOf(c),col=COLS[Math.abs(idx)%COLS.length];
-    const ph=clnPh(c.phone); // SANS + pour wa.me
+    const ph=clnPh(c.phone);
     const isSel=sel.has(c.id),nv=isNew(c.created_at);
     return`<div class="ccard${isSel?' sel':''}" id="cc-${c.id}" style="animation-delay:${Math.min(i,12)*.04}s;">
       <div class="cc-bar" style="background:${col};"></div>
       <div class="cc-sel${isSel?' on':''}" id="cs-${c.id}" onclick="togSel('${c.id}')">${isSel?'✓':''}</div>
       ${nv?'<div class="cc-new">NOUVEAU</div>':''}
       <div class="cc-av" style="background:${col}18;color:${col};">${ini(c.full_name)}${nv?'<div class="cc-dot"></div>':''}</div>
-      <div class="cc-name">${c.full_name||'Membre'}</div>
-      <div class="cc-job">${c.profession||'DIGIFORM'}</div>
+      <div class="cc-name">${escapeHtml(c.full_name||'Membre')}</div>
+      <div class="cc-job">${escapeHtml(c.profession||'DIGIFORM')}</div>
       ${ph
-        ?`<button class="cc-wa" onclick="ouvrirWA('${ph}','${(c.full_name||'').replace(/'/g,"\\'")}')">💬 WhatsApp</button>`
+        ?`<button class="cc-wa" onclick="ouvrirWA('${ph}','${escapeHtml(c.full_name||'').replace(/'/g,"\\'")}')">💬 WhatsApp</button>`
         :`<div class="cc-nowa">📵 Non dispo</div>`
       }
-      <button class="cc-save" onclick="sauvegarderVCF('${(c.full_name||'').replace(/'/g,"\\'")}','${c.phone||''}','${(c.profession||'').replace(/'/g,"\\'")}')">💾 Sauvegarder</button>
+      <button class="cc-save" onclick="sauvegarderVCF('${escapeHtml(c.full_name||'').replace(/'/g,"\\'")}','${c.phone||''}','${escapeHtml(c.profession||'').replace(/'/g,"\\'")}')">💾 Sauvegarder</button>
     </div>`;
   }).join('');
 }
 
+function escapeHtml(str){if(!str)return'';return str.replace(/[&<>]/g,function(m){if(m==='&')return'&amp;';if(m==='<')return'&lt;';if(m==='>')return'&gt;';return m;});}
+
 function ouvrirWA(phone,nom){
-  // phone est déjà sans + (digits seulement)
   if(!phone){toast('Numéro non disponible','warn');return;}
   window.open('https://wa.me/'+phone+'?text='+encodeURIComponent('Bonjour '+(nom||'')+' ! Je vous contacte via le réseau DIGIFORM.'),'_blank','noopener');
 }
@@ -419,8 +463,8 @@ function selCSV(){const cs=all.filter(c=>sel.has(c.id));if(!cs.length)return;dlF
 
 function toVC(c){const ph=(c.phone||'').replace(/[^0-9+]/g,''),pt=(c.full_name||'').split(' ');return['BEGIN:VCARD','VERSION:3.0',`FN:${c.full_name||'Membre DIGIFORM'}`,`N:${pt.slice(1).join(' ')};${pt[0]};;;`,ph?`TEL;TYPE=CELL:${ph}`:'',c.email?`EMAIL:${c.email}`:'',c.profession?`TITLE:${c.profession}`:'','ORG:DIGIFORM Network','END:VCARD'].filter(Boolean).join('\r\n');}
 function genVCF(cs){return cs.map(c=>toVC(c)).join('\r\n\r\n');}
-function ouvrirVCF(mode,custom){
-  vcfList=mode==='all'?[...all]:mode==='sel'?all.filter(c=>sel.has(c.id)):custom||[];
+function ouvrirVCF(mode){
+  vcfList=mode==='all'?[...all]:mode==='sel'?all.filter(c=>sel.has(c.id)):[];
   if(!vcfList.length){toast('Aucun contact','err');return;}
   const prev=vcfList.slice(0,4);
   document.getElementById('v-sub').textContent=`${vcfList.length} contact${vcfList.length>1?'s':''} · fichier .vcf`;
