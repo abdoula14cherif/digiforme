@@ -9,27 +9,40 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{--bg:#F5F7FA;--bg2:#FFFFFF;--bg3:#F0F2F7;--border:#D1D9E6;--text:#0F172A;--text2:#475569;--text3:#94A3B8;--blue:#2563EB;--blue2:#1D4ED8;--blue-light:#EFF6FF;--blue-border:#BFDBFE;--gold:#D97706;--gold-bg:#FFFBEB;--gold-border:#FDE68A;--green:#059669;--green-bg:#ECFDF5;--green-border:#A7F3D0;--sh:0 1px 2px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.1);}
-html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;max-width:430px;margin:0 auto;overflow-x:hidden;}
+:root{
+  --bg:#06071A;--bg2:#0D0F26;--bg3:#12153A;--bg4:#1A1F4A;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.14);
+  --text:#F0F2FF;--text2:#A8B0D8;--text3:#5A6494;
+  --blue:#4F6EF7;--blue2:#7B93FF;--violet:#8B5CF6;--violet2:#A78BFA;
+  --gold:#F59E0B;--gold2:#FCD34D;--gl:rgba(245,158,11,.12);--gb:rgba(245,158,11,.25);
+  --green:#10B981;--green2:#34D399;--red:#EF4444;--wa:#25D366;--wa2:#128C7E;
+  --grl:rgba(37,211,102,.08);--grb:rgba(37,211,102,.2);
+  --sh:0 4px 20px rgba(0,0,0,.4);--sh2:0 8px 40px rgba(0,0,0,.6);
+  --grad-main:linear-gradient(135deg,#4F6EF7,#8B5CF6);
+  --grad-gold:linear-gradient(135deg,#F59E0B,#FCD34D);
+  --grad-text:linear-gradient(135deg,#7B93FF,#A78BFA 50%,#F59E0B);
+  --grad-wa:linear-gradient(135deg,#25D366,#128C7E);
+}
+html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;max-width:430px;margin:0 auto;overflow-x:hidden;}
 @keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
 @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
 @keyframes spin{to{transform:rotate(360deg);}}
 .logo-brand{font-family:'Syne',sans-serif;font-weight:800;line-height:1;white-space:nowrap;display:inline-flex;}
 .ld{background:linear-gradient(135deg,#1E3A8A,#2563EB);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .lf{background:linear-gradient(135deg,#D97706,#F59E0B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.hdr{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:11px 15px;display:flex;align-items:center;gap:10px;box-shadow:var(--sh);}
+.hdr{position:sticky;top:0;z-index:100;background:rgba(6,7,26,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:11px 15px;display:flex;align-items:center;gap:10px;box-shadow:var(--sh);}
 .hback{width:36px;height:36px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;border:1.5px solid var(--border);cursor:pointer;background:var(--bg2);color:var(--text2);text-decoration:none;transition:all .2s;}
 .hback:hover{border-color:var(--blue);color:var(--blue);}
 .pg{padding:24px 18px 100px;animation:rise .38s ease both;}
 /* HERO */
 .hero{text-align:center;padding:20px 0 28px;}
 .big-ico{font-size:4rem;animation:float 3.5s ease-in-out infinite;margin-bottom:18px;display:block;}
-.badge{display:inline-flex;align-items:center;gap:6px;background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold-border);border-radius:999px;padding:5px 14px;font-size:.72rem;font-weight:700;letter-spacing:.05em;margin-bottom:14px;}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,.15);color:var(--gold2);border:1px solid rgba(245,158,11,.25);border-radius:999px;padding:5px 14px;font-size:.72rem;font-weight:700;letter-spacing:.05em;margin-bottom:14px;}
 .hero-title{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;line-height:1.2;margin-bottom:9px;}
 .hero-sub{font-size:.86rem;color:var(--text2);line-height:1.75;max-width:280px;margin:0 auto;}
 /* AVANTAGES */
 .avs{display:flex;flex-direction:column;gap:9px;margin-bottom:22px;}
-.av{display:flex;align-items:flex-start;gap:12px;background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:14px;box-shadow:var(--sh);}
+.av{display:flex;align-items:flex-start;gap:12px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:14px;box-shadow:var(--sh);transition:all .25s;}
 .av-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
 .av-t{font-size:.88rem;font-weight:700;color:var(--text);}
 .av-s{font-size:.75rem;color:var(--text2);margin-top:2px;line-height:1.55;}
@@ -45,12 +58,12 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'D
 .inp::placeholder{color:var(--text3);}
 select.inp{cursor:pointer;-webkit-appearance:none;}
 .lbl{font-size:.7rem;font-weight:600;color:var(--text2);display:block;margin-bottom:4px;}
-.submit-btn{width:100%;padding:14px;border-radius:12px;font-family:'Syne',sans-serif;font-size:.92rem;font-weight:800;background:var(--gold);color:#fff;border:none;cursor:pointer;transition:all .22s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;}
+.submit-btn{width:100%;padding:14px;border-radius:12px;font-family:'Syne',sans-serif;font-size:.92rem;font-weight:800;background:var(--grad-gold);color:#111;border:none;cursor:pointer;transition:all .22s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;box-shadow:0 6px 20px rgba(245,158,11,.3);}
 .submit-btn:hover:not(:disabled){background:#B45309;box-shadow:0 6px 20px rgba(217,119,6,.3);}
 .submit-btn:disabled{opacity:.4;cursor:not-allowed;}
 .success-card{background:var(--green-bg);border:1.5px solid var(--green-border);border-radius:14px;padding:22px;text-align:center;display:none;}
 .spin-s{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;}
-.nav-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:5px 4px 18px;display:flex;z-index:500;box-shadow:0 -2px 8px rgba(0,0,0,.06);}
+.nav-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(6,7,26,.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:5px 4px 18px;display:flex;z-index:500;box-shadow:0 -2px 8px rgba(0,0,0,.06);}
 .nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 4px;background:none;border:none;color:var(--text3);font-family:'DM Sans',sans-serif;position:relative;transition:color .2s;text-decoration:none;cursor:pointer;}
 .nb.on{color:var(--blue);}.nb-dot{position:absolute;top:0;left:50%;transform:translateX(-50%);width:20px;height:3px;border-radius:0 0 3px 3px;background:var(--blue);display:none;}.nb.on .nb-dot{display:block;}
 .nb-ico{font-size:1.2rem;}.nb-lbl{font-size:.58rem;font-weight:500;}.nb.on .nb-lbl{font-weight:700;}
@@ -58,7 +71,7 @@ select.inp{cursor:pointer;-webkit-appearance:none;}
 #toast.show{display:block;animation:rise .3s ease;}
 #toast.ok{background:#059669;color:#fff;}
 #toast.err{background:#DC2626;color:#fff;}
-@media(min-width:430px){body{box-shadow:0 0 40px rgba(0,0,0,.1);}}
+@media(min-width:430px){body{box-shadow:0 0 60px rgba(0,0,0,.7);}}
 </style>
 </head>
 <body>
@@ -144,24 +157,26 @@ select.inp{cursor:pointer;-webkit-appearance:none;}
 <script>
 let toTm;
 function toast(msg,t='ok'){clearTimeout(toTm);const e=document.getElementById('toast');e.textContent=msg;e.className='show '+t;toTm=setTimeout(()=>e.classList.remove('show'),4000);}
-async function souscrire(){
-  const name=(document.getElementById('f-name')?.value||'').trim();
-  const phone=(document.getElementById('f-phone')?.value||'').trim();
-  const type=document.getElementById('f-type')?.value||'';
+function souscrire(){
+  var name=(document.getElementById('f-name')?document.getElementById('f-name').value:'').trim();
+  var phone=(document.getElementById('f-phone')?document.getElementById('f-phone').value:'').trim();
+  var email=(document.getElementById('f-email')?document.getElementById('f-email').value:'').trim();
+  var type=document.getElementById('f-type')?document.getElementById('f-type').value:'';
   if(!name){toast('Nom requis','err');return;}
   if(!phone){toast('Téléphone WhatsApp requis','err');return;}
   if(!type){toast('Choisissez un type de produit','err');return;}
-  const btn=document.getElementById('sub-btn');btn.disabled=true;btn.innerHTML='<span class="spin-s"></span> Envoi…';
-  // Simuler envoi (ou envoyer vers Supabase)
-  try{
-    const SB='https://rxhjuetoxyjrairroycb.supabase.co';
-    const ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q';
-    await fetch(`${SB}/rest/v1/pre_contacts`,{method:'POST',headers:{apikey:ANON,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({full_name:name,phone,profession:type,source:'shop_presignup',show_in_network:false})});
-  }catch{}
-  await new Promise(r=>setTimeout(r,700));
-  document.getElementById('form-section').style.display='none';
-  document.getElementById('success-card').style.display='block';
-  toast('Pré-inscription confirmée !','ok');
+  var btn=document.getElementById('sub-btn');btn.disabled=true;btn.innerHTML='<span class="spin-s"></span> Envoi...';
+  var xhr=new XMLHttpRequest();
+  xhr.open('POST','https://rxhjuetoxyjrairroycb.supabase.co/rest/v1/newsletter',true);
+  xhr.setRequestHeader('apikey','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q');
+  xhr.setRequestHeader('Content-Type','application/json');
+  xhr.setRequestHeader('Prefer','return=minimal');
+  xhr.onload=xhr.onerror=function(){
+    document.getElementById('form-section').style.display='none';
+    document.getElementById('success-card').style.display='block';
+    toast('Pré-inscription confirmée !','ok');
+  };
+  xhr.send(JSON.stringify({name:name,phone:phone,email:email,source:'shop',message:'Vendeur - ' + type,is_read:false}));
 }
 </script>
 </body>
