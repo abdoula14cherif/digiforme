@@ -168,7 +168,7 @@ var BUCKETS = ['digiform', 'images', 'products', 'public'];
 /* ── ÉTAT ── */
 var S = {
   sess: null, prof: null, sub: 'add',
-  products: [], users: [], notifs: [], contacts: [], groups: [],
+  products: [], users: [], notifs: [], contacts: [], groups: [], nl: [], nlUnread: 0,
   cFilt: [], gFilt: [], uFilt: 'all',
   feat: false, uea: false, gFeat: false,
   imgUrl: '', activeBucket: '', gCat: '', gQ: '', gOff: 0
@@ -273,6 +273,20 @@ async function loadP() { var r = await dbReq('products?order=created_at.desc'); 
 async function loadU() { var r = await dbReq('profiles?order=created_at.desc'); if (r.ok && Array.isArray(r.d)) S.users = r.d; }
 async function loadN() { var r = await dbReq('notifications?order=created_at.desc'); if (r.ok && Array.isArray(r.d)) S.notifs = r.d; }
 async function loadC() { S.contacts = await fetchAll('pre_contacts?order=created_at.desc&select=id,full_name,phone,email,profession,country_code,created_at'); filtC(); }
+async function loadNL() {
+  var r = await dbReq('newsletter?order=created_at.desc&is_read=eq.false');
+  var r2 = await dbReq('newsletter?order=created_at.desc');
+  S.nlUnread = (r.ok && Array.isArray(r.d)) ? r.d.length : 0;
+  S.nl = (r2.ok && Array.isArray(r2.d)) ? r2.d : [];
+  renderNLBadge();
+}
+function renderNLBadge() {
+  var tab = document.querySelector('[onclick="setSub(\'newsletter\')"]');
+  if (tab && S.nlUnread > 0) {
+    tab.innerHTML = 'Messages <span style="background:#EF4444;color:#fff;border-radius:999px;padding:1px 7px;font-size:.65rem;margin-left:4px;font-weight:800;">' + S.nlUnread + '</span>';
+  }
+}
+
 async function loadG() {
   var path = 'wa_groups?order=created_at.desc&select=id,name,description,category,country,members_count,invite_link,is_featured,is_active';
   var r = await dbReq(path);
@@ -398,6 +412,7 @@ function hTabs() {
     {id:'users',l:'Membres'},
     {id:'notifs',l:'Notifs'},
     {id:'groups',l:'Groupes WA'},
+    {id:'newsletter',l:'Messages'},
     {id:'sql',l:'Setup'}
   ];
   var html = '<div class="tabs">';
@@ -576,6 +591,105 @@ function hNotifs() {
 }
 
 /* ── GROUPES WA ── */
+function hNewsletter() {
+  var SOURCES = {
+    blog: {l:'Blog', ico:'📝', col:'#8B5CF6'},
+    shop: {l:'Boutique', ico:'🛒', col:'#F59E0B'},
+    groups_presignup: {l:'Groupes WA', ico:'💬', col:'#25D366'},
+    groups_submit: {l:'Suggestion groupe', ico:'💬', col:'#10B981'},
+    contact: {l:'Contact', ico:'📧', col:'#4F6EF7'},
+    other: {l:'Autre', ico:'📩', col:'#64748B'}
+  };
+  var unread = S.nl.filter(function(m){return !m.is_read;}).length;
+  var html = '<div class="sub on">';
+
+  // Stats
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:14px;">'
+    + '<div class="stat-c"><div class="stat-n" style="color:var(--blue2);">' + S.nl.length + '</div><div class="stat-l">Total</div></div>'
+    + '<div class="stat-c" style="border-color:rgba(239,68,68,.3);"><div class="stat-n" style="color:var(--red);">' + unread + '</div><div class="stat-l">Non lus</div></div>'
+    + '<div class="stat-c" style="border-color:rgba(16,185,129,.3);"><div class="stat-n" style="color:var(--green);">' + (S.nl.length - unread) + '</div><div class="stat-l">Lus</div></div>'
+    + '</div>';
+
+  // Bouton tout marquer lu
+  if (unread > 0) {
+    html += '<button onclick="toutLuNL()" class="btn b-bl" style="width:100%;padding:11px;border-radius:10px;font-size:.82rem;font-weight:700;margin-bottom:12px;">Tout marquer comme lu (' + unread + ')</button>';
+  }
+
+  // Filtres source
+  html += '<div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;margin-bottom:10px;">';
+  var srcFilter = S.nlSrc || '';
+  html += '<div onclick="setNLSrc(this.dataset.v)" data-v="" style="flex-shrink:0;padding:5px 11px;border-radius:999px;font-size:.72rem;cursor:pointer;border:1.5px solid var(--border);white-space:nowrap;background:' + (srcFilter===''?'var(--blue2)':'var(--bg3)') + ';color:' + (srcFilter===''?'#fff':'var(--text2)') + ';">Tous</div>';
+  var srcs = ['blog','shop','groups_presignup','contact'];
+  for (var si = 0; si < srcs.length; si++) {
+    var s = srcs[si]; var sd = SOURCES[s] || SOURCES.other;
+    html += '<div onclick="setNLSrc(this.dataset.v)" data-v="' + s + '" style="flex-shrink:0;padding:5px 11px;border-radius:999px;font-size:.72rem;cursor:pointer;border:1.5px solid var(--border);white-space:nowrap;background:' + (srcFilter===s?sd.col:'var(--bg3)') + ';color:' + (srcFilter===s?'#fff':'var(--text2)') + ';">' + sd.ico + ' ' + sd.l + '</div>';
+  }
+  html += '</div>';
+
+  // Liste messages
+  var list = S.nl.filter(function(m){ return !srcFilter || m.source === srcFilter; });
+
+  if (!list.length) {
+    html += '<div style="text-align:center;padding:32px 20px;"><div style="font-size:2.5rem;margin-bottom:10px;opacity:.4;">📭</div><div style="font-size:.88rem;color:var(--text3);">Aucun message</div></div>';
+  } else {
+    for (var i = 0; i < list.length; i++) {
+      var m = list[i];
+      var sd2 = SOURCES[m.source] || SOURCES.other;
+      var d = m.created_at ? new Date(m.created_at).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
+      var isUnread = !m.is_read;
+      html += '<div style="background:var(--bg2);border:1px solid ' + (isUnread?'rgba(79,110,247,.3)':'var(--border)') + ';border-radius:13px;padding:13px;margin-bottom:9px;position:relative;' + (isUnread?'border-left:3px solid var(--blue2);':'') + '">'
+        + (isUnread ? '<div style="position:absolute;top:12px;right:12px;width:8px;height:8px;border-radius:50%;background:var(--blue2);"></div>' : '')
+        + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;">'
+        +   '<div style="width:32px;height:32px;border-radius:9px;background:' + sd2.col + '18;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;">' + sd2.ico + '</div>'
+        +   '<div style="flex:1;min-width:0;">'
+        +     '<div style="font-size:.83rem;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + esc(m.name || 'Anonyme') + '</div>'
+        +     '<div style="font-size:.7rem;color:var(--text3);">' + sd2.l + ' &bull; ' + d + '</div>'
+        +   '</div>'
+        + '</div>'
+        + (m.email ? '<div style="font-size:.78rem;color:var(--blue2);margin-bottom:4px;">📧 ' + esc(m.email) + '</div>' : '')
+        + (m.phone ? '<div style="font-size:.78rem;color:var(--text2);margin-bottom:4px;">📱 ' + esc(m.phone) + '</div>' : '')
+        + (m.message ? '<div style="font-size:.78rem;color:var(--text2);line-height:1.6;margin-bottom:8px;padding:8px;background:var(--bg3);border-radius:8px;">' + esc(m.message) + '</div>' : '')
+        + '<div style="display:flex;gap:7px;">'
+        + (isUnread ? '<button class="btn b-bl nl-lu" data-id="' + m.id + '" style="flex:1;padding:7px;border-radius:8px;font-size:.75rem;">Marquer lu</button>' : '<span style="font-size:.7rem;color:var(--text3);padding:7px 0;">&#10003; Lu</span>')
+        + (m.email ? '<a href="mailto:' + esc(m.email) + '" class="btn" style="flex:1;padding:7px;border-radius:8px;font-size:.75rem;background:rgba(79,110,247,.15);color:var(--blue2);text-decoration:none;text-align:center;">Répondre</a>' : '')
+        + '<button class="btn b-rd nl-su" data-id="' + m.id + '" style="padding:7px 10px;font-size:.75rem;">&#128465;</button>'
+        + '</div>'
+        + '</div>';
+    }
+  }
+
+  return html + '</div>';
+}
+
+var S_nlSrc = '';
+function setNLSrc(src) { S.nlSrc = src; renderContent(); }
+
+async function marquerLuNL(id) {
+  var r = await dbReq('newsletter?id=eq.' + id, { method: 'PATCH', body: JSON.stringify({ is_read: true }) });
+  if (r.ok) {
+    var m = S.nl.find(function(x){return x.id===id;}); if (m) m.is_read = true;
+    S.nlUnread = Math.max(0, S.nlUnread - 1);
+    renderNLBadge(); renderContent();
+  }
+}
+
+async function toutLuNL() {
+  var unread = S.nl.filter(function(m){return !m.is_read;});
+  for (var i = 0; i < unread.length; i++) {
+    await dbReq('newsletter?id=eq.' + unread[i].id, { method: 'PATCH', body: JSON.stringify({ is_read: true }) });
+    unread[i].is_read = true;
+  }
+  S.nlUnread = 0; renderNLBadge(); renderContent(); toast('Tout marqué comme lu', 'ok');
+}
+
+async function supNL(id) {
+  if (!confirm('Supprimer ce message ?')) return;
+  var r = await dbReq('newsletter?id=eq.' + id, { method: 'DELETE' });
+  if (r.ok) { S.nl = S.nl.filter(function(m){return m.id!==id;}); toast('Supprimé'); renderContent(); }
+  else toast('Erreur', 'err');
+}
+
+
 function hGroups() {
   var CATS_G = [{v:'',l:'Tous'},{v:'marketing',l:'Marketing'},{v:'tech',l:'Tech'},{v:'ecommerce',l:'E-commerce'},{v:'formation',l:'Formation'},{v:'design',l:'Design'},{v:'finance',l:'Finance'},{v:'sante',l:'Santé'},{v:'emploi',l:'Emploi'},{v:'autre',l:'Autre'}];
   var catOpts = '';
@@ -636,7 +750,10 @@ var SQL = 'CREATE TABLE IF NOT EXISTS public.profiles(id UUID REFERENCES auth.us
 + 'CREATE OR REPLACE FUNCTION public.handle_new_user() RETURNS TRIGGER LANGUAGE plpgsql SECURITY DEFINER AS $$BEGIN INSERT INTO public.profiles(id,email,full_name,phone,profession,show_in_network) VALUES(NEW.id,NEW.email,COALESCE(NEW.raw_user_meta_data->>\'full_name\',\'\'),COALESCE(NEW.raw_user_meta_data->>\'phone\',\'\'),COALESCE(NEW.raw_user_meta_data->>\'profession\',\'\'),COALESCE((NEW.raw_user_meta_data->>\'show_in_network\')::boolean,true)) ON CONFLICT(id) DO UPDATE SET email=EXCLUDED.email;RETURN NEW;END;$$;\n'
 + 'DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;\n'
 + 'CREATE TRIGGER on_auth_user_created AFTER INSERT ON auth.users FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();\n'
-+ '-- DEVENIR ADMIN: UPDATE public.profiles SET is_admin=true WHERE email=\'votre@email.com\';';
++ '-- DEVENIR ADMIN: UPDATE public.profiles SET is_admin=true WHERE email=\'votre@email.com\';\
+CREATE TABLE IF NOT EXISTS public.newsletter(id UUID DEFAULT gen_random_uuid() PRIMARY KEY,name TEXT DEFAULT \'\',email TEXT DEFAULT \'\',phone TEXT DEFAULT \'\',source TEXT DEFAULT \'\',message TEXT DEFAULT \'\',is_read BOOLEAN DEFAULT false,created_at TIMESTAMPTZ DEFAULT NOW());\
+ALTER TABLE public.newsletter DISABLE ROW LEVEL SECURITY;\
+GRANT ALL ON public.newsletter TO anon,authenticated;';
 
 function hSql() {
   return '<div class="sub on">'
@@ -676,6 +793,7 @@ function renderSub() {
   if (S.sub === 'users')    return hUsers();
   if (S.sub === 'notifs')   return hNotifs();
   if (S.sub === 'groups')   return hGroups();
+  if (S.sub === 'newsletter') return hNewsletter();
   if (S.sub === 'sql')      return hSql();
   return '';
 }
@@ -702,6 +820,7 @@ async function setSub(s) {
   if (s === 'list')     await loadP();
   if (s === 'contacts') { renderContent(); if (!S.contacts.length) loadC(); return; }
   if (s === 'groups')   { renderContent(); loadG(); return; }
+  if (s === 'newsletter') { await loadNL(); renderContent(); return; }
   renderContent();
 }
 
@@ -1052,6 +1171,19 @@ function bindLogin() {
 /* ─── BIND PANEL ─── */
 function bindPanel() {}
 function bindContent() {
+  if (S.sub === 'newsletter') {
+    setTimeout(function() {
+      document.querySelectorAll('.nl-read').forEach(function(btn) {
+        btn.onclick = function() { marquerLuNL(this.getAttribute('data-id')); };
+      });
+      document.querySelectorAll('.nl-del').forEach(function(btn) {
+        btn.onclick = function() { supNL(this.getAttribute('data-id')); };
+      });
+      document.querySelectorAll('.nl-chip').forEach(function(el) {
+        el.onclick = function(){setNLSrc(this.getAttribute('data-v'));};
+      });
+    }, 50);
+  }
   if (S.sub === 'contacts' && S.contacts.length) filtC();
   if (S.sub === 'groups' && S.groups.length) filtG();
 }
@@ -1065,7 +1197,7 @@ async function init() {
       var pr = await dbReq('profiles?id=eq.' + s.user.id);
       if (pr.ok && Array.isArray(pr.d) && pr.d[0] && pr.d[0].is_admin) {
         S.prof = pr.d[0];
-        await Promise.all([loadP(), loadU(), loadN()]);
+        await Promise.all([loadP(), loadU(), loadN(), loadNL()]);
       } else {
         S.sess = null;
         localStorage.removeItem('dg_adm_sess');
