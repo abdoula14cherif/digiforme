@@ -10,20 +10,15 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#06071A;--bg2:#0D0F26;--bg3:#12153A;--bg4:#1A1F4A;
-  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.14);
-  --text:#F0F2FF;--text2:#A8B0D8;--text3:#5A6494;
-  --blue:#4F6EF7;--blue2:#7B93FF;--violet:#8B5CF6;--violet2:#A78BFA;
-  --gold:#F59E0B;--gold2:#FCD34D;--gl:rgba(245,158,11,.12);--gb:rgba(245,158,11,.25);
+  --bg:#EEF0F8;--bg2:#FFFFFF;--bg3:#E4E8F4;--bg4:#D4D9EE;
+  --navy:#1C2B6E;--navy2:#152055;--navy3:#0F1840;--navy-l:rgba(28,43,110,.08);
+  --orange:#F5A623;--orange2:#E8960F;--orange3:#FFC355;--orange-l:rgba(245,166,35,.12);
+  --text:#1C2B6E;--text2:#4A5580;--text3:#8892B0;
+  --border:#D8DCF0;--border2:#C4CAE8;
   --green:#10B981;--red:#EF4444;--wa:#25D366;--wa2:#128C7E;
-  --grl:rgba(37,211,102,.08);--grb:rgba(37,211,102,.2);
-  --sh:0 4px 20px rgba(0,0,0,.4);--sh2:0 8px 40px rgba(0,0,0,.6);
-  --sh3:0 16px 64px rgba(0,0,0,.7);
-  --grad-main:linear-gradient(135deg,#4F6EF7,#8B5CF6);
-  --grad-gold:linear-gradient(135deg,#F59E0B,#FCD34D);
-  --grad-text:linear-gradient(135deg,#7B93FF,#A78BFA 50%,#F59E0B);
+  --sh:0 2px 8px rgba(28,43,110,.10);--sh2:0 4px 20px rgba(28,43,110,.14);--sh3:0 8px 32px rgba(28,43,110,.18);
 }
-html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;max-width:430px;margin:0 auto;overflow-x:hidden;}
+html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;max-width:430px;margin:0 auto;overflow-x:hidden;}
 ::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px;}
 @keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
 @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
@@ -31,7 +26,7 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'D
 .logo{font-family:'Syne',sans-serif;font-weight:800;line-height:1;display:inline-flex;}
 .ld{background:linear-gradient(135deg,#1E3A8A,#2563EB);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .lf{background:linear-gradient(135deg,#D97706,#F59E0B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.hdr{position:sticky;top:0;z-index:100;background:rgba(6,7,26,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:11px 15px;display:flex;align-items:center;gap:10px;box-shadow:var(--sh);}
+.hdr{position:sticky;top:0;z-index:100;background:var(--navy);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:11px 15px;display:flex;align-items:center;gap:10px;box-shadow:var(--sh);}
 .hdr-sub{font-size:.58rem;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-top:2px;}
 .hback{width:36px;height:36px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;border:1.5px solid var(--border);background:var(--bg2);color:var(--text2);text-decoration:none;transition:all .2s;cursor:pointer;}
 .hback:hover{border-color:var(--blue);color:var(--blue);}
@@ -55,7 +50,7 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'D
 .nitem.unread:hover{border-color:var(--blue);}
 .nhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
 .ntitle{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:var(--text);flex:1;line-height:1.3;}
-.ndot{width:9px;height:9px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:4px;}
+.ndot{width:9px;height:9px;border-radius:50%;background:var(--navy);flex-shrink:0;margin-top:4px;}
 .nbody{font-size:.8rem;color:var(--text2);line-height:1.65;}
 .ndate{font-size:.68rem;color:var(--text3);margin-top:7px;}
 /* EMPTY */
@@ -64,10 +59,10 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'D
 .empty-t{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;}
 .empty-s{font-size:.82rem;color:var(--text2);line-height:1.65;max-width:220px;}
 /* NAV */
-.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(6,7,26,.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:5px 4px 18px;display:flex;z-index:500;box-shadow:0 -2px 8px rgba(0,0,0,.06);}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--navy);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:5px 4px 18px;display:flex;z-index:500;box-shadow:0 -2px 8px rgba(0,0,0,.06);}
 .nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 4px;background:none;border:none;color:var(--text3);font-family:'DM Sans',sans-serif;position:relative;transition:color .2s;text-decoration:none;cursor:pointer;}
-.nb.on{color:var(--blue);}
-.nb-bar{position:absolute;top:0;left:50%;transform:translateX(-50%);width:20px;height:3px;border-radius:0 0 3px 3px;background:var(--blue);display:none;}
+.nb.on{color:var(--navy);}
+.nb-bar{position:absolute;top:0;left:50%;transform:translateX(-50%);width:20px;height:3px;border-radius:0 0 3px 3px;background:var(--navy);display:none;}
 .nb.on .nb-bar{display:block;}
 .nb i{font-size:1.2rem;}.nb span{font-size:.58rem;font-weight:500;}.nb.on span{font-weight:700;}
 /* TOAST */
@@ -75,8 +70,8 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'D
 #toast.show{display:block;animation:rise .3s ease;}
 #toast.ok{background:var(--green);color:#fff;}
 #toast.err{background:var(--red);color:#fff;}
-#toast.inf{background:var(--blue);color:#fff;}
-@media(min-width:430px){body{box-shadow:0 0 60px rgba(0,0,0,.7);}#hdr,.nav{max-width:430px;}}
+#toast.inf{background:var(--navy);color:#fff;}
+@media(min-width:430px){body{box-shadow:0 0 50px rgba(28,43,110,.15);}#hdr,.nav{max-width:430px;}}
 </style>
 </head>
 <body>
@@ -94,7 +89,7 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'D
       <div class="empty-ico">🔒</div>
       <div class="empty-t">Réservé aux membres</div>
       <div class="empty-s">Connectez-vous pour recevoir les notifications DIGIFORM.</div>
-      <a href="auth.html" style="display:inline-flex;align-items:center;padding:11px 22px;border-radius:11px;background:var(--blue);color:#fff;font-weight:700;font-size:.88rem;text-decoration:none;margin-top:6px;">Se connecter</a>
+      <a href="auth.html" style="display:inline-flex;align-items:center;padding:11px 22px;border-radius:11px;background:var(--navy);color:#fff;font-weight:700;font-size:.88rem;text-decoration:none;margin-top:6px;">Se connecter</a>
     </div>
   </div>
   <div id="main" style="display:none;">
