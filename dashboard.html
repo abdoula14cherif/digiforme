@@ -62,8 +62,8 @@ body{max-width:430px;margin:0 auto;position:relative;}
 
 /* ── HEADER ── */
 #header{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--navy);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:10px 14px;z-index:200;display:flex;align-items:center;justify-content:space-between;}
-.hdr-brand{font-family:'Syne',sans-serif;font-weight:800;font-size:21px;line-height:1;}
-.hdr-sub{font-size:10px;color:var(--text3);margin-top:3px;}
+.hdr-brand{font-family:'Syne',sans-serif;font-weight:800;font-size:1.25rem;line-height:1;display:flex;align-items:center;gap:2px;white-space:nowrap;}
+.hdr-sub{font-size:.58rem;color:rgba(255,255,255,.6);margin-top:3px;letter-spacing:.05em;text-transform:uppercase;}
 .hdr-right{display:flex;gap:9px;}
 .hdr-btn{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;border:none;position:relative;}
 .hdr-bell{background:var(--gold-bg,#FFFBEB);border:1px solid var(--gold-border,#FDE68A)!important;}
@@ -332,7 +332,7 @@ pre.sql-code{padding:13px;font-size:10px;color:var(--text2);overflow:auto;line-h
 <!-- HEADER -->
 <header id="header">
   <div>
-    <div class="hdr-brand"><span class="g-cyan">DIGI</span><span class="g-gold">FORM</span></div>
+    <div class="hdr-brand"><span style="color:#fff;font-family:'Syne',sans-serif;font-weight:800;">DIGI</span><span style="color:var(--orange);font-family:'Syne',sans-serif;font-weight:800;">FORM</span></div>
     <div class="hdr-sub">Livres · Formations · Logiciels · Audio</div>
   </div>
   <div class="hdr-right">
