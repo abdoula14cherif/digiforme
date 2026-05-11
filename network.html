@@ -170,6 +170,7 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'P
 
 @media(min-width:430px){body{box-shadow:0 0 50px rgba(28,43,110,.15);}}
 </style>
+<script src="https://leekpay.fr/js/leekpay.js" defer></script>
 </head>
 <body>
 
@@ -208,8 +209,8 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'P
 
   <!-- ACTIONS -->
   <div style="display:flex;gap:8px;margin-bottom:13px;">
-    <button class="btn b-navy" style="flex:1;padding:11px 8px;font-size:.78rem;" onclick="ouvrirVCF('all')">&#128222; Tout exporter VCF</button>
-    <button id="vcf-rapide" class="btn b-orange" style="flex:1;padding:11px 8px;font-size:.78rem;" onclick="ouvrirVCF('all')" disabled>&#9889; Export rapide</button>
+    <button id="btn-vcf-all" class="btn b-navy" style="flex:1;padding:11px 8px;font-size:.78rem;" onclick="ouvrirVCF('all')">&#128222; Tout exporter VCF</button>
+    <button id="btn-vcf-rapide" class="btn b-orange" style="flex:1;padding:11px 8px;font-size:.78rem;" onclick="ouvrirVCF('all')">&#9889; Export rapide</button>
   </div>
 
   <!-- SEARCH -->
@@ -284,6 +285,24 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'P
   </div>
 </div>
 
+<!-- MODAL PAIEMENT CRÉDITS -->
+<div id="pay-ov" onclick="if(event.target===this)this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(15,24,64,.6);backdrop-filter:blur(8px);z-index:2000;align-items:flex-end;justify-content:center;">
+  <div style="width:100%;max-width:430px;background:#fff;border-radius:22px 22px 0 0;border-top:3px solid var(--orange);padding:22px 18px 48px;">
+    <div style="width:38px;height:4px;border-radius:2px;background:var(--bg4);margin:0 auto 18px;"></div>
+    <div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:var(--navy);margin-bottom:6px;">&#128274; Débloquer l'accès illimité</div>
+    <div style="font-size:.82rem;color:var(--text2);margin-bottom:16px;line-height:1.6;">Vos 100 crédits gratuits sont épuisés. Débloquez l'accès illimité une seule fois pour continuer à exporter.</div>
+    <div style="background:var(--navy);border-radius:14px;padding:16px;margin-bottom:16px;color:#fff;">
+      <div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--orange);">1 200 FCFA <span style="font-size:.75rem;font-weight:500;color:rgba(255,255,255,.7);">paiement unique</span></div>
+      <div style="font-size:.78rem;color:rgba(255,255,255,.75);line-height:1.9;margin-top:8px;">
+        <div>&#10003; Export illimité CSV + VCF</div>
+        <div>&#10003; Tous les contacts disponibles</div>
+        <div>&#10003; Accès permanent</div>
+      </div>
+    </div>
+    <button class="btn b-orange b-xl" onclick="document.getElementById('pay-ov').style.display='none';lancerPaiement();" style="margin-bottom:10px;padding:14px;border-radius:13px;font-size:.92rem;">Payer 1 200 FCFA — Mobile Money</button>
+    <button onclick="document.getElementById('pay-ov').style.display='none'" style="width:100%;padding:10px;background:none;border:none;color:var(--text3);font-size:.85rem;cursor:pointer;">Annuler</button>
+  </div>
+</div>
 <nav class="nav">
   <a class="nb" href="dashboard.html"><div class="nb-dot"></div><span class="nb-ico">&#127968;</span><span class="nb-lbl">Accueil</span></a>
   <a class="nb" href="dashboard.html"><div class="nb-dot"></div><span class="nb-ico">&#128193;</span><span class="nb-lbl">Catalogue</span></a>
@@ -297,6 +316,54 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'P
 const SB='https://rxhjuetoxyjrairroycb.supabase.co';
 const ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q';
 function getSess(){try{return JSON.parse(localStorage.getItem('dg_sess')||'null');}catch{return null;}}
+function getCredits(){try{var r=localStorage.getItem('dg_credits');if(!r)return{used:0,unlimited:false};var c=JSON.parse(r);return{used:Number(c.used)||0,unlimited:Boolean(c.unlimited)};}catch{return{used:0,unlimited:false};}}
+function isPremium(){return getCredits().unlimited;}
+function credRestants(){return Math.max(0,FREE_LIMIT-(getCredits().used||0));}
+function ouvrirModalPay(){var el=document.getElementById('pay-ov');if(el)el.style.display='flex';}
+function lancerPaiement(){
+  if(typeof LeekPay==='undefined'){toast('Chargement...','inf');setTimeout(lancerPaiement,1500);return;}
+  var s=getSess();
+  LeekPay.checkout({
+    amount:PRIX_CONTACTS,currency:'XOF',apiKey:LEEKPAY_PK,
+    description:'DIGIFORM - Acces contacts illimite',
+    customerEmail:s&&s.user?s.user.email||'':'',
+    onSuccess:function(){
+      var c=getCredits();c.unlimited=true;
+      try{localStorage.setItem('dg_credits',JSON.stringify(c));}catch{}
+      toast('Acces illimite active !','ok');
+      majNetCredit();majBoutonsExport();
+    },
+    onCancel:function(){toast('Paiement annule','warn');}
+  });
+}
+function majBoutonsExport(){
+  var prem=isPremium();
+  var r=credRestants();
+  var btnAll=document.getElementById('btn-vcf-all');
+  var btnRapide=document.getElementById('btn-vcf-rapide');
+  if(!btnAll||!btnRapide)return;
+  if(prem){
+    btnAll.className='btn b-navy'; btnAll.style.opacity='1'; btnAll.style.cursor='pointer';
+    btnAll.innerHTML='&#128222; Tout exporter VCF';
+    btnRapide.className='btn b-orange'; btnRapide.style.opacity='1'; btnRapide.style.cursor='pointer';
+    btnRapide.innerHTML='&#9889; Export rapide';
+    btnAll.onclick=function(){ouvrirVCF('all');};
+    btnRapide.onclick=function(){ouvrirVCF('all');};
+  } else if(r<=0){
+    btnAll.className='btn b-navy'; btnAll.style.opacity='1'; btnAll.style.cursor='pointer';
+    btnAll.innerHTML='&#128274; Illimite — 1 200 FCFA';
+    btnRapide.className='btn b-orange'; btnRapide.style.opacity='1'; btnRapide.style.cursor='pointer';
+    btnRapide.innerHTML='&#128274; Debloquer — 1 200 FCFA';
+    btnAll.onclick=function(){lancerPaiement();};
+    btnRapide.onclick=function(){lancerPaiement();};
+  } else {
+    btnAll.innerHTML='&#128222; Tout exporter VCF';
+    btnRapide.innerHTML='&#9889; Export rapide ('+r+' restants)';
+    btnAll.onclick=function(){ouvrirVCF('all');};
+    btnRapide.onclick=function(){ouvrirVCF('all');};
+  }
+}
+
 const sess=getSess();
 const COLS=['#2563EB','#7C3AED','#059669','#D97706','#DC2626','#0891B2','#C026D3','#065F46'];
 const CN={CI:"Cote d'Ivoire",CM:'Cameroun',SN:'Senegal',BJ:'Benin',BF:'Burkina',ML:'Mali',GH:'Ghana',TG:'Togo',OTHER:'Intl'};
@@ -309,7 +376,8 @@ function isNew(d){return d&&(Date.now()-new Date(d).getTime())<7*864e5;}
 function today(){return new Date().toISOString().slice(0,10);}
 function sleep(ms){return new Promise(function(r){setTimeout(r,ms);});}
 async function charger(path){const PAGE=1000;var res=[],off=0,done=false;while(!done){try{const r=await fetch(SB+'/rest/v1/'+path,{headers:{apikey:ANON,Authorization:'Bearer '+((sess&&sess.access_token)||ANON),'Range-Unit':'items','Range':off+'-'+(off+PAGE-1),'Prefer':'count=none'}});const d=await r.json();if(!Array.isArray(d)||d.length===0)done=true;else{res=res.concat(d);if(d.length<PAGE)done=true;else off+=PAGE;}}catch{done=true;}}return res;}
-async function init(){if(!sess){document.getElementById('gate').style.display='flex';return;}document.getElementById('main').style.display='block';const m=await charger('profiles?order=created_at.desc&select=id,full_name,profession,phone,show_in_network,created_at');const p=await charger('pre_contacts?order=full_name.asc&select=id,full_name,profession,phone,email,country_code,created_at');const membres=m.filter(function(c){return c.show_in_network!==false&&(c.full_name||c.phone);});const mPh=new Set(membres.map(function(c){return clnPh(c.phone);}).filter(Boolean));const pre=p.filter(function(c){return!c.phone||!mPh.has(clnPh(c.phone));});all=membres.concat(pre);document.getElementById('shim').style.display='none';majStats();afficherFiltres();appliquerFiltres();window.addEventListener('scroll',function(){document.getElementById('stbtn').classList.toggle('show',scrollY>350);});document.getElementById('vcf-rapide').disabled=!all.length;majNetCredit();}
+async function init(){if(!sess){document.getElementById('gate').style.display='flex';return;}document.getElementById('main').style.display='block';const m=await charger('profiles?order=created_at.desc&select=id,full_name,profession,phone,show_in_network,created_at');const p=await charger('pre_contacts?order=full_name.asc&select=id,full_name,profession,phone,email,country_code,created_at');const membres=m.filter(function(c){return c.show_in_network!==false&&(c.full_name||c.phone);});const mPh=new Set(membres.map(function(c){return clnPh(c.phone);}).filter(Boolean));const pre=p.filter(function(c){return!c.phone||!mPh.has(clnPh(c.phone));});all=membres.concat(pre);document.getElementById('shim').style.display='none';majStats();afficherFiltres();appliquerFiltres();window.addEventListener('scroll',function(){document.getElementById('stbtn').classList.toggle('show',scrollY>350);});document.getElementById('vcf-rapide').disabled=!all.length;
+  majBoutonsExport();majNetCredit();}
 function majStats(){const n=all.length,wa=all.filter(function(c){return c.phone;}).length;const nw=all.filter(function(c){return isNew(c.created_at);}).length;const pp=new Set(all.map(function(c){return c.country_code||getPays(c.phone||'');}).filter(Boolean)).size;document.getElementById('st').textContent=n;document.getElementById('sw').textContent=wa;document.getElementById('sn2').textContent=nw;document.getElementById('sp').textContent=pp;document.getElementById('hdr-sub').textContent=n+' MEMBRE'+(n>1?'S':'')+' DIGIFORM';document.getElementById('net-badge').textContent=n;document.getElementById('net-badge').classList.toggle('show',n>0);}
 function afficherNouveaux(){const n=all.filter(function(c){return isNew(c.created_at);}).length;toast(n>0?n+' nouveau'+(n>1?'x':'')+' membre'+(n>1?'s':'')+' cette semaine':'Aucun nouveau membre cette semaine','inf');}
 function afficherFiltres(){const jobs=[];const seen={};all.forEach(function(c){if(c.profession&&!seen[c.profession]){seen[c.profession]=true;jobs.push(c.profession);}});jobs.splice(5);const pays=[];const seenP={};all.forEach(function(c){const p=c.country_code||getPays(c.phone||'');if(p&&p!=='OTHER'&&!seenP[p]){seenP[p]=true;pays.push(p);}});pays.splice(4);var html='<div class="chip'+(jobF==='all'?' on':'')+'" onclick="setF(\'all\')">&#127760; Tous</div>';pays.forEach(function(p){html+='<div class="chip'+(jobF==='cc:'+p?' on':'')+'" onclick="setF(\'cc:'+p+'\')">'+(CN[p]||p)+'</div>';});jobs.forEach(function(j){html+='<div class="chip'+(jobF===j?' on':'')+'" onclick="setF(\''+j.replace(/\'/g,'')+'\')">'+(j.slice(0,12))+'</div>';});document.getElementById('filtres').innerHTML=html;}
@@ -327,13 +395,14 @@ function toutSel(){const ids=filt.map(function(c){return c.id;});const tousOn=id
 function majSel(){const n=sel.size;document.getElementById('bbar').classList.toggle('show',n>0);document.getElementById('bb-info').textContent=n+' contact'+(n>1?'s':'');}
 function genCSV(cs){var H=['Nom','Prenom','Telephone','Email','Profession','Pays'].map(function(f){return'"'+f+'"';}).join(',');var R=cs.map(function(c){var p=(c.full_name||'').split(' ');return[p.slice(1).join(' '),p[0]||'',c.phone||'',c.email||'',c.profession||'',CN[c.country_code||getPays(c.phone||'')]||''].map(function(f){return'"'+(f||'').replace(/"/g,'""')+'"';}).join(',');});return'\uFEFF'+[H].concat(R).join('\r\n');}
 function dlFile(c,n,m){var b=new Blob([c],{type:m});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.click();setTimeout(function(){URL.revokeObjectURL(a.href);},1000);}
-function selCSV(){var cs=all.filter(function(c){return sel.has(c.id);});if(!cs.length)return;dlFile(genCSV(cs),'digiform_sel_'+today()+'.csv','text/csv;charset=utf-8;');toast(cs.length+' contacts CSV','ok');}
+function selCSV(){if(!isPremium()&&credRestants()<=0){toast('Credits epuises !','warn');setTimeout(lancerPaiement,800);return;}var cs=all.filter(function(c){return sel.has(c.id);});if(!cs.length)return;dlFile(genCSV(cs),'digiform_sel_'+today()+'.csv','text/csv;charset=utf-8;');toast(cs.length+' contacts CSV','ok');}
 function toVC(c){var ph=(c.phone||'').replace(/[^0-9+]/g,'');var pt=(c.full_name||'').split(' ');return['BEGIN:VCARD','VERSION:3.0','FN:'+(c.full_name||'Membre DIGIFORM'),'N:'+(pt.slice(1).join(' '))+';'+(pt[0]||'')+';;;',ph?'TEL;TYPE=CELL:'+ph:'',c.email?'EMAIL:'+c.email:'',c.profession?'TITLE:'+c.profession:'','ORG:DIGIFORM Network','END:VCARD'].filter(Boolean).join('\r\n');}
 function genVCF(cs){return cs.map(toVC).join('\r\n\r\n');}
-function ouvrirVCF(mode,custom){vcfList=mode==='all'?all.slice():mode==='sel'?all.filter(function(c){return sel.has(c.id);}):custom||[];if(!vcfList.length){toast('Aucun contact','err');return;}var prev=vcfList.slice(0,4);document.getElementById('v-sub').textContent=vcfList.length+' contact'+(vcfList.length>1?'s':'')+' · fichier .vcf';var ph='';for(var i=0;i<prev.length;i++){const c=prev[i];const col=COLS[i%COLS.length];ph+='<div style="display:flex;align-items:center;gap:10px;padding:9px 11px;background:var(--bg3);border-radius:10px;border:1px solid var(--border);margin-bottom:7px;"><div style="width:32px;height:32px;border-radius:50%;background:'+col+'18;color:'+col+';display:flex;align-items:center;justify-content:center;font-family:\'Syne\',sans-serif;font-weight:800;font-size:.78rem;flex-shrink:0;">'+ini(c.full_name)+'</div><div><div style="font-size:.83rem;font-weight:700;">'+(c.full_name||'Membre')+'</div><div style="font-size:.72rem;color:var(--text3);">'+(c.phone||'—')+'</div></div></div>';}if(vcfList.length>4)ph+='<div style="text-align:center;font-size:.75rem;color:var(--text3);padding:7px;">+'+(vcfList.length-4)+' autres...</div>';document.getElementById('v-prev').innerHTML=ph;var btn=document.getElementById('v-dl');btn.disabled=false;btn.textContent='Telecharger '+vcfList.length+' contact'+(vcfList.length>1?'s':'')+' (.vcf)';document.getElementById('vov').classList.add('open');}
+function ouvrirVCF(mode,custom){
+  if(!isPremium()&&credRestants()<=0){toast('Credits epuises ! Debloquez acces illimite pour exporter.','warn');setTimeout(lancerPaiement,800);return;}vcfList=mode==='all'?all.slice():mode==='sel'?all.filter(function(c){return sel.has(c.id);}):custom||[];if(!vcfList.length){toast('Aucun contact','err');return;}var prev=vcfList.slice(0,4);document.getElementById('v-sub').textContent=vcfList.length+' contact'+(vcfList.length>1?'s':'')+' · fichier .vcf';var ph='';for(var i=0;i<prev.length;i++){const c=prev[i];const col=COLS[i%COLS.length];ph+='<div style="display:flex;align-items:center;gap:10px;padding:9px 11px;background:var(--bg3);border-radius:10px;border:1px solid var(--border);margin-bottom:7px;"><div style="width:32px;height:32px;border-radius:50%;background:'+col+'18;color:'+col+';display:flex;align-items:center;justify-content:center;font-family:\'Syne\',sans-serif;font-weight:800;font-size:.78rem;flex-shrink:0;">'+ini(c.full_name)+'</div><div><div style="font-size:.83rem;font-weight:700;">'+(c.full_name||'Membre')+'</div><div style="font-size:.72rem;color:var(--text3);">'+(c.phone||'—')+'</div></div></div>';}if(vcfList.length>4)ph+='<div style="text-align:center;font-size:.75rem;color:var(--text3);padding:7px;">+'+(vcfList.length-4)+' autres...</div>';document.getElementById('v-prev').innerHTML=ph;var btn=document.getElementById('v-dl');btn.disabled=false;btn.textContent='Telecharger '+vcfList.length+' contact'+(vcfList.length>1?'s':'')+' (.vcf)';document.getElementById('vov').classList.add('open');}
 function fermerVCF(){document.getElementById('vov').classList.remove('open');}
 async function telechargerVCF(){var btn=document.getElementById('v-dl');btn.disabled=true;btn.textContent='Generation...';await sleep(250);dlFile(genVCF(vcfList),'digiform_'+vcfList.length+'contacts_'+today()+'.vcf','text/vcard');btn.textContent=vcfList.length+' contacts telecharges';await sleep(1500);fermerVCF();toast('Fichier VCF telecharge','ok');}
-function majNetCredit(){try{var raw=localStorage.getItem('dg_credits');var c=raw?JSON.parse(raw):{used:0,unlimited:false};var bar=document.getElementById('net-cred-fill');var num=document.getElementById('net-cred-num');var widget=document.getElementById('net-credit-bar');if(!bar||!num)return;if(c.unlimited){num.textContent='Illimite';bar.style.width='100%';bar.style.background='linear-gradient(90deg,#10B981,#34D399)';if(widget)widget.style.borderColor='rgba(16,185,129,.3)';}else{var pct=Math.min(100,((c.used||0)/100)*100);bar.style.width=pct+'%';num.textContent=(c.used||0)+'/100';if(pct>=80){bar.style.background='linear-gradient(90deg,#EF4444,#F87171)';if(widget)widget.style.borderColor='rgba(239,68,68,.3)';}}}catch{}}
+function majNetCredit(){majBoutonsExport();try{var raw=localStorage.getItem('dg_credits');var c=raw?JSON.parse(raw):{used:0,unlimited:false};var bar=document.getElementById('net-cred-fill');var num=document.getElementById('net-cred-num');var widget=document.getElementById('net-credit-bar');if(!bar||!num)return;if(c.unlimited){num.textContent='Illimite';bar.style.width='100%';bar.style.background='linear-gradient(90deg,#10B981,#34D399)';if(widget)widget.style.borderColor='rgba(16,185,129,.3)';}else{var pct=Math.min(100,((c.used||0)/100)*100);bar.style.width=pct+'%';num.textContent=(c.used||0)+'/100';if(pct>=80){bar.style.background='linear-gradient(90deg,#EF4444,#F87171)';if(widget)widget.style.borderColor='rgba(239,68,68,.3)';}}}catch{}}
 init();
 </script>
 </body>
