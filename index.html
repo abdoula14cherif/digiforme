@@ -6,300 +6,243 @@
 <title>DIGIFORM · Plateforme Digitale Africaine</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#06071A;--bg2:#0D0F26;--bg3:#12153A;--bg4:#1A1F4A;
-  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.15);
-  --text:#F0F2FF;--text2:#A8B0D8;--text3:#5A6494;
-  --blue:#4F6EF7;--blue2:#7B93FF;
-  --violet:#8B5CF6;--violet2:#A78BFA;
-  --gold:#F59E0B;--gold2:#FCD34D;
-  --green:#10B981;--red:#EF4444;
-  --wa:#25D366;
-  --grad-main:linear-gradient(135deg,#4F6EF7,#8B5CF6);
-  --grad-gold:linear-gradient(135deg,#F59E0B,#FCD34D);
-  --grad-text:linear-gradient(135deg,#7B93FF 0%,#A78BFA 50%,#F59E0B 100%);
-  --grad-hero:linear-gradient(160deg,#06071A 0%,#0D0F26 40%,#12153A 100%);
-  --sh-blue:0 8px 32px rgba(79,110,247,.35);
-  --sh-gold:0 8px 32px rgba(245,158,11,.3);
-  --sh-card:0 4px 24px rgba(0,0,0,.4);
+  --bg:#EEF0F8;--bg2:#FFFFFF;--bg3:#E4E8F4;--bg4:#D4D9EE;
+  --navy:#1C2B6E;--navy2:#152055;--navy3:#0F1840;--navy-l:rgba(28,43,110,.08);
+  --orange:#F5A623;--orange2:#E8960F;--orange-l:rgba(245,166,35,.12);
+  --text:#1C2B6E;--text2:#4A5580;--text3:#8892B0;
+  --border:#D8DCF0;--border2:#C4CAE8;
+  --green:#10B981;--red:#EF4444;--wa:#25D366;
+  --sh:0 2px 8px rgba(28,43,110,.10);--sh2:0 4px 20px rgba(28,43,110,.14);--sh3:0 8px 32px rgba(28,43,110,.18);
 }
 html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;max-width:430px;margin:0 auto;overflow-x:hidden;}
-::selection{background:rgba(79,110,247,.4);color:#fff;}
+::selection{background:rgba(28,43,110,.15);}
 ::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px;}
+@keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+@keyframes slide{from{transform:translateX(-8px);opacity:0;}to{transform:none;opacity:1;}}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
 
-@keyframes rise{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
-@keyframes glow{0%,100%{opacity:.6;}50%{opacity:1;}}
-@keyframes float{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-12px) rotate(2deg);}}
-@keyframes shimmer{from{background-position:-200%;}to{background-position:200%;}}
-@keyframes pulse-ring{0%{transform:scale(1);opacity:.6;}100%{transform:scale(1.8);opacity:0;}}
-@keyframes slide-in{from{opacity:0;transform:translateX(-20px);}to{opacity:1;transform:none;}}
+/* HEADER */
+header{background:var(--navy);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 16px rgba(15,24,64,.3);}
+.logo-wrap{display:flex;align-items:center;gap:10px;}
+.logo-box{width:38px;height:38px;border-radius:11px;background:var(--orange);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(245,166,35,.5);}
+.logo-box span{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:800;color:#fff;}
+.logo-name{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:#fff;}
+.logo-name em{color:var(--orange);font-style:normal;}
+.btn-header{background:var(--orange);color:#fff;border:none;border-radius:999px;padding:9px 20px;font-size:.82rem;font-weight:700;cursor:pointer;text-decoration:none;box-shadow:0 3px 12px rgba(245,166,35,.4);transition:all .22s;}
+.btn-header:hover{background:var(--orange2);transform:translateY(-1px);}
 
-/* ── GRADIENTS TEXT ── */
-.g-text{background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.g-blue{background:linear-gradient(135deg,#7B93FF,#A78BFA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.g-gold{background:var(--grad-gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+/* HERO */
+.hero{background:var(--navy);padding:32px 20px 40px;text-align:center;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(160deg,#1C2B6E 0%,#152055 60%,#0F1840 100%);z-index:0;}
+.hero-circle{position:absolute;border-radius:50%;z-index:0;}
+.hero-c1{width:200px;height:200px;background:rgba(245,166,35,.08);top:-60px;right:-60px;}
+.hero-c2{width:140px;height:140px;background:rgba(245,166,35,.05);bottom:-30px;left:-30px;}
+.hero-inner{position:relative;z-index:1;}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(245,166,35,.15);border:1.5px solid rgba(245,166,35,.3);border-radius:999px;padding:6px 16px;font-size:.72rem;font-weight:700;color:var(--orange);letter-spacing:.05em;margin-bottom:20px;}
+.hero-dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite;}
+.hero h1{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;line-height:1.2;color:#fff;margin-bottom:14px;letter-spacing:-.02em;}
+.hero h1 span{color:var(--orange);}
+.hero p{font-size:.88rem;color:rgba(255,255,255,.75);line-height:1.8;margin-bottom:28px;max-width:300px;margin-left:auto;margin-right:auto;}
+.hero-btns{display:flex;flex-direction:column;gap:10px;max-width:280px;margin:0 auto;}
+.btn-p{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--orange);color:#fff;border:none;border-radius:14px;padding:15px;font-family:'Syne',sans-serif;font-size:.92rem;font-weight:800;cursor:pointer;text-decoration:none;box-shadow:0 6px 20px rgba(245,166,35,.45);transition:all .25s;}
+.btn-p:hover{background:var(--orange2);transform:translateY(-2px);}
+.btn-s{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.2);border-radius:14px;padding:15px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .25s;}
+.btn-s:hover{background:rgba(255,255,255,.18);}
 
-/* ── LOGO ── */
-.logo{font-family:'Syne',sans-serif;font-weight:800;line-height:1;display:inline-flex;align-items:baseline;gap:1px;}
-.ld{background:linear-gradient(135deg,#7B93FF,#4F6EF7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.lf{background:var(--grad-gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+/* STATS */
+.stats{background:var(--bg2);border-bottom:1px solid var(--border);display:grid;grid-template-columns:repeat(3,1fr);}
+.sc{padding:16px 6px;text-align:center;position:relative;}
+.sc+.sc::before{content:'';position:absolute;left:0;top:20%;height:60%;width:1px;background:var(--border);}
+.sn{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:var(--navy);display:block;}
+.sl{font-size:.6rem;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-top:3px;}
 
-/* ── HEADER ── */
-header{position:sticky;top:0;z-index:100;background:rgba(6,7,26,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;}
-.btn-login{background:var(--grad-main);color:#fff;border:none;border-radius:999px;padding:9px 20px;font-size:.82rem;font-weight:700;font-family:'Syne',sans-serif;cursor:pointer;text-decoration:none;box-shadow:var(--sh-blue);transition:all .25s;}
-.btn-login:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(79,110,247,.5);}
+/* WA */
+.wa-sect{padding:16px 16px 4px;}
+.wa-card{display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid rgba(37,211,102,.25);border-radius:16px;padding:14px;text-decoration:none;transition:all .22s;box-shadow:var(--sh);position:relative;overflow:hidden;}
+.wa-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#25D366,#128C7E);}
+.wa-card:hover{border-color:#25D366;transform:translateY(-2px);box-shadow:var(--sh2);}
+.wa-ico{width:44px;height:44px;border-radius:12px;background:#25D366;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;box-shadow:0 4px 12px rgba(37,211,102,.35);}
+.wa-title{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:var(--navy);}
+.wa-sub{font-size:.72rem;color:var(--text3);margin-top:2px;}
 
-/* ── HERO ── */
-.hero{position:relative;padding:40px 20px 50px;text-align:center;overflow:hidden;background:var(--grad-hero);}
-/* Orbes de fond */
-.orb{position:absolute;border-radius:50%;filter:blur(60px);animation:glow 4s ease-in-out infinite;pointer-events:none;}
-.orb-1{width:200px;height:200px;background:rgba(79,110,247,.3);top:-40px;left:-60px;animation-delay:0s;}
-.orb-2{width:160px;height:160px;background:rgba(139,92,246,.25);top:20px;right:-40px;animation-delay:1.5s;}
-.orb-3{width:120px;height:120px;background:rgba(245,158,11,.2);bottom:0;left:30%;animation-delay:3s;}
-.hero-tag{display:inline-flex;align-items:center;gap:7px;background:rgba(79,110,247,.15);border:1px solid rgba(79,110,247,.3);border-radius:999px;padding:6px 16px;font-size:.72rem;font-weight:700;color:var(--blue2);letter-spacing:.06em;margin-bottom:22px;position:relative;z-index:1;}
-.hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--blue2);position:relative;}
-.hero-tag-dot::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:1px solid var(--blue2);animation:pulse-ring 1.5s ease-out infinite;}
-.hero h1{font-family:'Syne',sans-serif;font-size:2.4rem;font-weight:800;line-height:1.15;margin-bottom:16px;position:relative;z-index:1;letter-spacing:-.02em;}
-.hero h1 span{display:block;}
-.hero p{font-size:.9rem;color:var(--text2);line-height:1.8;max-width:320px;margin:0 auto 28px;position:relative;z-index:1;}
-.hero-btns{display:flex;flex-direction:column;gap:10px;max-width:280px;margin:0 auto;position:relative;z-index:1;}
-.btn-primary{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--grad-main);color:#fff;border:none;border-radius:14px;padding:15px;font-family:'Syne',sans-serif;font-size:.92rem;font-weight:800;cursor:pointer;text-decoration:none;box-shadow:var(--sh-blue);transition:all .25s;}
-.btn-primary:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(79,110,247,.5);}
-.btn-secondary{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,.06);color:var(--text);border:1px solid var(--border2);border-radius:14px;padding:15px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .25s;backdrop-filter:blur(10px);}
-.btn-secondary:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25);}
-
-/* ── STATS ── */
-.stats-section{padding:24px 16px;background:rgba(255,255,255,.02);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:transparent;}
-.stat{text-align:center;padding:8px 4px;position:relative;}
-.stat+.stat::before{content:'';position:absolute;left:0;top:20%;height:60%;width:1px;background:var(--border);}
-.stat-n{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;display:block;line-height:1;}
-.stat-l{font-size:.62rem;color:var(--text3);margin-top:4px;text-transform:uppercase;letter-spacing:.08em;}
-
-/* ── WA CHANNEL ── */
-.wa-section{margin:20px 16px;}
-.wa-card{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,rgba(37,211,102,.12),rgba(37,211,102,.06));border:1px solid rgba(37,211,102,.25);border-radius:16px;padding:14px;text-decoration:none;transition:all .25s;position:relative;overflow:hidden;}
-.wa-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--wa),#128C7E);}
-.wa-card:hover{border-color:rgba(37,211,102,.5);transform:translateY(-2px);}
-.wa-ico{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#25D366,#128C7E);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;box-shadow:0 4px 16px rgba(37,211,102,.35);}
-.wa-title{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:#4ADE80;}
-.wa-sub{font-size:.72rem;color:rgba(74,222,128,.7);margin-top:2px;}
-.wa-arrow{font-size:1rem;color:var(--wa);margin-left:auto;flex-shrink:0;}
-
-/* ── FEATURES ── */
-.features-section{padding:28px 16px;}
-.section-tag{font-size:.62rem;font-weight:700;color:var(--violet2);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
-.section-tag::before{content:'';width:20px;height:2px;border-radius:2px;background:var(--grad-main);}
-.section-title{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;line-height:1.2;margin-bottom:5px;}
-.section-sub{font-size:.83rem;color:var(--text2);line-height:1.7;margin-bottom:22px;}
-.feat-grid{display:flex;flex-direction:column;gap:12px;}
-.feat-card{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:18px;display:flex;gap:14px;align-items:flex-start;position:relative;overflow:hidden;transition:all .25s;}
-.feat-card::after{content:'';position:absolute;inset:0;border-radius:18px;opacity:0;transition:opacity .25s;background:linear-gradient(135deg,rgba(79,110,247,.05),rgba(139,92,246,.05));}
-.feat-card:hover{border-color:var(--border2);transform:translateX(4px);}
-.feat-card:hover::after{opacity:1;}
-.feat-ico-wrap{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
-.feat-title{font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;margin-bottom:4px;}
+/* FEATURES */
+.feat-sect{padding:24px 16px;}
+.sect-label{font-size:.62rem;font-weight:700;color:var(--orange2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.sect-label::before{content:'';width:18px;height:3px;border-radius:2px;background:var(--orange);}
+.sect-title{font-family:'Syne',sans-serif;font-size:1.45rem;font-weight:800;color:var(--navy);line-height:1.25;margin-bottom:5px;}
+.sect-sub{font-size:.83rem;color:var(--text2);line-height:1.7;margin-bottom:20px;}
+.feat-list{display:flex;flex-direction:column;gap:10px;}
+.feat{background:var(--bg2);border:1.5px solid var(--border);border-radius:16px;padding:16px;display:flex;gap:14px;align-items:flex-start;text-decoration:none;transition:all .22s;position:relative;overflow:hidden;box-shadow:var(--sh);}
+.feat::after{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:16px 0 0 16px;}
+.feat-1::after{background:var(--orange);}
+.feat-2::after{background:var(--navy);}
+.feat-3::after{background:#25D366;}
+.feat-4::after{background:var(--orange2);}
+.feat:hover{border-color:var(--navy);transform:translateX(4px);box-shadow:var(--sh2);}
+.feat-ico{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+.feat-title{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:var(--navy);margin-bottom:4px;}
 .feat-desc{font-size:.78rem;color:var(--text2);line-height:1.6;}
-.feat-arrow{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:.8rem;color:var(--text3);}
+.feat-arr{margin-left:auto;font-size:.9rem;color:var(--text3);flex-shrink:0;align-self:center;}
 
-/* ── HOW IT WORKS ── */
-.how-section{padding:28px 16px;background:rgba(255,255,255,.02);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+/* STEPS */
+.how-sect{background:var(--navy);padding:28px 20px;margin-top:4px;}
+.how-title{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:#fff;margin-bottom:4px;}
+.how-sub{font-size:.83rem;color:rgba(255,255,255,.65);margin-bottom:22px;}
 .steps{display:flex;flex-direction:column;gap:0;}
-.step{display:flex;gap:16px;padding:16px 0;position:relative;}
-.step+.step::before{content:'';position:absolute;left:19px;top:0;width:2px;height:16px;background:linear-gradient(180deg,rgba(79,110,247,.5),rgba(79,110,247,0));}
-.step-num{width:40px;height:40px;border-radius:12px;background:var(--grad-main);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:.88rem;font-weight:800;color:#fff;flex-shrink:0;box-shadow:var(--sh-blue);}
-.step-title{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;margin-bottom:4px;}
-.step-desc{font-size:.78rem;color:var(--text2);line-height:1.6;}
+.step{display:flex;gap:16px;padding:14px 0;position:relative;}
+.step+.step::before{content:'';position:absolute;left:19px;top:0;width:2px;height:14px;background:rgba(245,166,35,.4);}
+.step-n{width:40px;height:40px;border-radius:12px;background:var(--orange);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:.88rem;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 4px 12px rgba(245,166,35,.4);}
+.step-title{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:#fff;margin-bottom:4px;}
+.step-desc{font-size:.78rem;color:rgba(255,255,255,.65);line-height:1.6;}
 
-/* ── CTA FINAL ── */
-.cta-section{padding:40px 20px;text-align:center;background:linear-gradient(180deg,var(--bg) 0%,rgba(79,110,247,.08) 100%);}
-.cta-icon{font-size:3.5rem;margin-bottom:18px;display:block;animation:float 4s ease-in-out infinite;}
-.cta-title{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;line-height:1.2;margin-bottom:10px;}
-.cta-sub{font-size:.85rem;color:var(--text2);line-height:1.75;margin-bottom:28px;}
+/* CTA FINAL */
+.cta-sect{background:var(--bg2);padding:36px 20px;text-align:center;border-top:1.5px solid var(--border);}
+.cta-ico{font-size:3.5rem;margin-bottom:16px;display:block;animation:float 4s ease-in-out infinite;}
+.cta-title{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--navy);line-height:1.25;margin-bottom:9px;}
+.cta-title span{color:var(--orange);}
+.cta-sub{font-size:.84rem;color:var(--text2);line-height:1.75;margin-bottom:26px;}
 .cta-btns{display:flex;flex-direction:column;gap:10px;max-width:280px;margin:0 auto;}
+.btn-cta-p{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--orange);color:#fff;border:none;border-radius:14px;padding:15px;font-family:'Syne',sans-serif;font-size:.92rem;font-weight:800;text-decoration:none;box-shadow:0 6px 20px rgba(245,166,35,.4);transition:all .25s;}
+.btn-cta-p:hover{background:var(--orange2);transform:translateY(-2px);}
+.btn-cta-s{display:flex;align-items:center;justify-content:center;background:var(--navy-l);color:var(--navy);border:2px solid var(--border2);border-radius:14px;padding:15px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:600;text-decoration:none;transition:all .25s;}
+.btn-cta-s:hover{border-color:var(--navy);}
 
-/* ── FOOTER ── */
-footer{padding:24px 20px;border-top:1px solid var(--border);text-align:center;}
-.footer-logo{margin-bottom:14px;}
-.footer-links{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;}
-.footer-links a{font-size:.75rem;color:var(--text3);text-decoration:none;transition:color .2s;}
-.footer-links a:hover{color:var(--blue2);}
-.footer-copy{font-size:.68rem;color:var(--text3);}
+/* FOOTER */
+footer{background:var(--navy3);padding:24px 20px;text-align:center;}
+.f-logo{display:flex;align-items:center;gap:9px;justify-content:center;margin-bottom:14px;}
+.f-box{width:32px;height:32px;border-radius:9px;background:var(--orange);display:flex;align-items:center;justify-content:center;}
+.f-box span{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:800;color:#fff;}
+.f-name{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:#fff;}
+.f-name em{color:var(--orange);font-style:normal;}
+.f-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
+.f-links a{font-size:.72rem;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s;}
+.f-links a:hover{color:var(--orange);}
+.f-copy{font-size:.68rem;color:rgba(255,255,255,.3);}
 
-@media(min-width:430px){body{box-shadow:0 0 60px rgba(0,0,0,.6);}}
+@media(min-width:430px){body{box-shadow:0 0 50px rgba(28,43,110,.15);}}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo" style="font-size:1.3rem;"><span class="ld">DIGI</span><span class="lf">FORM</span></div>
-  <a href="auth.html" class="btn-login">Connexion</a>
+  <div class="logo-wrap">
+    <div class="logo-box"><span>DF</span></div>
+    <div class="logo-name">DIGI<em>FORM</em></div>
+  </div>
+  <a href="auth.html" class="btn-header">Connexion</a>
 </header>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-
-  <div class="hero-tag">
-    <div class="hero-tag-dot"></div>
-    Plateforme Digitale Africaine
-  </div>
-
-  <h1>
-    <span class="g-blue">Le réseau</span>
-    <span class="g-text">des pros du digital</span>
-    <span style="color:var(--text);">en Afrique</span>
-  </h1>
-
-  <p>Catalogue de produits numériques, réseau de 10&thinsp;000+ contacts, groupes WhatsApp et export CSV/VCF en quelques clics.</p>
-
-  <div class="hero-btns" id="hero-btns">
-    <a href="auth.html?m=register" class="btn-primary">
-      <span>&#9889;</span> Rejoindre gratuitement
-    </a>
-    <a href="dashboard.html" class="btn-secondary">
-      Parcourir le catalogue &#8594;
-    </a>
-  </div>
-</section>
-
-<!-- STATS -->
-<section class="stats-section">
-  <div class="stats-grid">
-    <div class="stat">
-      <span class="stat-n g-blue" id="st-m">10K+</span>
-      <span class="stat-l">Membres</span>
-    </div>
-    <div class="stat">
-      <span class="stat-n g-gold" id="st-p">—</span>
-      <span class="stat-l">Produits</span>
-    </div>
-    <div class="stat">
-      <span class="stat-n" style="background:linear-gradient(135deg,#25D366,#128C7E);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">33</span>
-      <span class="stat-l">Groupes WA</span>
+  <div class="hero-bg"></div>
+  <div class="hero-circle hero-c1"></div>
+  <div class="hero-circle hero-c2"></div>
+  <div class="hero-inner">
+    <div class="hero-badge"><div class="hero-dot"></div> Plateforme Digitale Africaine</div>
+    <h1>Le réseau des<br/><span>pros du digital</span><br/>en Afrique</h1>
+    <p>Catalogue numérique, réseau de 10 000+ contacts, groupes WhatsApp et export de contacts qualifiés.</p>
+    <div class="hero-btns" id="hero-btns">
+      <a href="auth.html?m=register" class="btn-p">&#9889; Rejoindre gratuitement</a>
+      <a href="dashboard.html" class="btn-s">Parcourir le catalogue &#8594;</a>
     </div>
   </div>
 </section>
 
-<!-- WA CHANNEL -->
-<div class="wa-section">
+<section class="stats">
+  <div class="sc"><span class="sn" id="st-m">10K+</span><span class="sl">Membres</span></div>
+  <div class="sc"><span class="sn" id="st-p" style="color:var(--orange);">—</span><span class="sl">Produits</span></div>
+  <div class="sc"><span class="sn" style="color:#25D366;">33</span><span class="sl">Groupes WA</span></div>
+</section>
+
+<div class="wa-sect">
   <a href="https://whatsapp.com/channel/0029Vb7wL2sFi8xjaIYup310" target="_blank" rel="noopener" class="wa-card">
     <div class="wa-ico">&#128226;</div>
     <div>
       <div class="wa-title">Chaîne DIGIFORM WhatsApp</div>
       <div class="wa-sub">Actualités &bull; Offres exclusives &bull; Nouveautés</div>
     </div>
-    <div class="wa-arrow">&#8594;</div>
+    <span style="color:#25D366;font-size:1rem;margin-left:auto;">&#8594;</span>
   </a>
 </div>
 
-<!-- FEATURES -->
-<section class="features-section">
-  <div class="section-tag">Pourquoi DIGIFORM</div>
-  <h2 class="section-title">
-    Tout ce qu'il vous faut<br/>
-    <span class="g-text">en un seul endroit</span>
-  </h2>
-  <p class="section-sub">Connectez-vous, apprenez, développez votre activité avec la communauté digitale africaine.</p>
+<section class="feat-sect">
+  <div class="sect-label">Fonctionnalités</div>
+  <h2 class="sect-title">Tout ce qu'il vous faut<br/>pour réussir</h2>
+  <p class="sect-sub">Des outils pensés pour les professionnels africains du digital.</p>
 
-  <div class="feat-grid">
-
-    <a href="dashboard.html" class="feat-card" style="text-decoration:none;">
-      <div class="feat-ico-wrap" style="background:linear-gradient(135deg,rgba(79,110,247,.2),rgba(79,110,247,.1));border:1px solid rgba(79,110,247,.2);">&#128218;</div>
+  <div class="feat-list">
+    <a href="dashboard.html" class="feat feat-1" style="text-decoration:none;">
+      <div class="feat-ico" style="background:var(--orange-l);">&#128218;</div>
       <div style="flex:1;">
-        <div class="feat-title"><span class="g-blue">Catalogue Digital</span></div>
-        <div class="feat-desc">Livres, formations, logiciels et outils digitaux sélectionnés pour les pros africains.</div>
+        <div class="feat-title">Catalogue Digital</div>
+        <div class="feat-desc">Livres, formations, logiciels et outils sélectionnés pour les pros.</div>
       </div>
-      <div class="feat-arrow">&#8594;</div>
+      <div class="feat-arr">&#8594;</div>
     </a>
-
-    <a href="network.html" class="feat-card" style="text-decoration:none;">
-      <div class="feat-ico-wrap" style="background:linear-gradient(135deg,rgba(139,92,246,.2),rgba(139,92,246,.1));border:1px solid rgba(139,92,246,.2);">&#127760;</div>
+    <a href="network.html" class="feat feat-2" style="text-decoration:none;">
+      <div class="feat-ico" style="background:var(--navy-l);">&#127760;</div>
       <div style="flex:1;">
-        <div class="feat-title"><span class="g-text">Réseau Professionnel</span></div>
-        <div class="feat-desc">10&thinsp;000+ contacts qualifiés. Exportez en CSV ou VCF, contactez directement sur WhatsApp.</div>
+        <div class="feat-title">Réseau Professionnel</div>
+        <div class="feat-desc">10 000+ contacts réels. Export CSV/VCF, contact WhatsApp direct.</div>
       </div>
-      <div class="feat-arrow">&#8594;</div>
+      <div class="feat-arr">&#8594;</div>
     </a>
-
-    <a href="groups.html" class="feat-card" style="text-decoration:none;">
-      <div class="feat-ico-wrap" style="background:linear-gradient(135deg,rgba(37,211,102,.2),rgba(37,211,102,.1));border:1px solid rgba(37,211,102,.2);">&#128172;</div>
+    <a href="groups.html" class="feat feat-3" style="text-decoration:none;">
+      <div class="feat-ico" style="background:rgba(37,211,102,.1);">&#128172;</div>
       <div style="flex:1;">
-        <div class="feat-title" style="background:linear-gradient(135deg,#4ADE80,#25D366);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Groupes WhatsApp</div>
-        <div class="feat-desc">33 groupes thématiques : marketing, tech, e-commerce, finance, design et plus.</div>
+        <div class="feat-title">Groupes WhatsApp</div>
+        <div class="feat-desc">33 groupes thématiques : marketing, tech, e-commerce, finance…</div>
       </div>
-      <div class="feat-arrow">&#8594;</div>
+      <div class="feat-arr">&#8594;</div>
     </a>
-
-    <a href="contacts.html" class="feat-card" style="text-decoration:none;">
-      <div class="feat-ico-wrap" style="background:linear-gradient(135deg,rgba(245,158,11,.2),rgba(245,158,11,.1));border:1px solid rgba(245,158,11,.2);">&#128242;</div>
+    <a href="contacts.html" class="feat feat-4" style="text-decoration:none;">
+      <div class="feat-ico" style="background:var(--orange-l);">&#128242;</div>
       <div style="flex:1;">
-        <div class="feat-title"><span class="g-gold">Export Contacts</span></div>
-        <div class="feat-desc">Téléchargez 100 contacts gratuitement. Format CSV, VCF ou liste WhatsApp.</div>
+        <div class="feat-title">Export Contacts</div>
+        <div class="feat-desc">100 contacts gratuits. CSV, VCF ou liste WhatsApp en 1 clic.</div>
       </div>
-      <div class="feat-arrow">&#8594;</div>
+      <div class="feat-arr">&#8594;</div>
     </a>
-
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
-<section class="how-section">
-  <div class="section-tag">Comment ça marche</div>
-  <h2 class="section-title" style="margin-bottom:20px;">
-    <span class="g-blue">Simple</span> et rapide
-  </h2>
-
+<section class="how-sect">
+  <div class="sect-label" style="color:var(--orange);margin-bottom:6px;"><span style="width:18px;height:3px;border-radius:2px;background:var(--orange);display:inline-block;margin-right:6px;vertical-align:middle;"></span>Comment ça marche</div>
+  <div class="how-title">Simple et rapide</div>
+  <div class="how-sub">3 étapes pour rejoindre la communauté</div>
   <div class="steps">
     <div class="step">
-      <div class="step-num">1</div>
-      <div>
-        <div class="step-title">Créez votre compte</div>
-        <div class="step-desc">Inscription gratuite en 60 secondes. Email + mot de passe, c'est tout.</div>
-      </div>
+      <div class="step-n">1</div>
+      <div><div class="step-title">Créez votre compte</div><div class="step-desc">Inscription gratuite en 60 secondes.</div></div>
     </div>
     <div class="step">
-      <div class="step-num" style="background:linear-gradient(135deg,#8B5CF6,#A78BFA);">2</div>
-      <div>
-        <div class="step-title">Accédez au réseau</div>
-        <div class="step-desc">Parcourez les profils, rejoignez les groupes, téléchargez les contacts.</div>
-      </div>
+      <div class="step-n">2</div>
+      <div><div class="step-title">Accédez au réseau</div><div class="step-desc">Parcourez, rejoignez les groupes, exportez les contacts.</div></div>
     </div>
     <div class="step">
-      <div class="step-num" style="background:linear-gradient(135deg,#F59E0B,#FCD34D);">3</div>
-      <div>
-        <div class="step-title">Développez votre activité</div>
-        <div class="step-desc">Trouvez des clients, partenaires et opportunités au sein de la communauté.</div>
-      </div>
+      <div class="step-n">3</div>
+      <div><div class="step-title">Développez votre activité</div><div class="step-desc">Trouvez clients, partenaires et opportunités.</div></div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta-section">
-  <span class="cta-icon">&#9889;</span>
-  <h2 class="cta-title">
-    Prêt à rejoindre<br/>
-    <span class="g-text">la communauté ?</span>
-  </h2>
-  <p class="cta-sub">Inscription gratuite &bull; Visible en 2 minutes<br/>10&thinsp;000+ professionnels africains du digital</p>
+<section class="cta-sect">
+  <span class="cta-ico">&#9889;</span>
+  <h2 class="cta-title">Rejoignez<br/><span>la communauté</span></h2>
+  <p class="cta-sub">Inscription gratuite &bull; 10 000+ professionnels<br/>Visible en 2 minutes</p>
   <div class="cta-btns">
-    <a href="auth.html?m=register" class="btn-primary">Créer mon compte gratuit</a>
-    <a href="dashboard.html" class="btn-secondary">Parcourir sans compte</a>
+    <a href="auth.html?m=register" class="btn-cta-p">Créer mon compte gratuit</a>
+    <a href="dashboard.html" class="btn-cta-s">Parcourir sans compte</a>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
-  <div class="footer-logo">
-    <div class="logo" style="font-size:1.4rem;justify-content:center;"><span class="ld">DIGI</span><span class="lf">FORM</span></div>
-  </div>
-  <div class="footer-links">
+  <div class="f-logo"><div class="f-box"><span>DF</span></div><div class="f-name">DIGI<em>FORM</em></div></div>
+  <div class="f-links">
     <a href="dashboard.html">Catalogue</a>
     <a href="network.html">Réseau</a>
     <a href="groups.html">Groupes</a>
@@ -307,19 +250,16 @@ footer{padding:24px 20px;border-top:1px solid var(--border);text-align:center;}
     <a href="blog.html">Blog</a>
     <a href="auth.html">Connexion</a>
   </div>
-  <div class="footer-copy">© 2026 DIGIFORM &bull; Plateforme Digitale Africaine</div>
+  <div class="f-copy">© 2026 DIGIFORM &bull; Plateforme Digitale Africaine</div>
 </footer>
 
 <script>
 var sess=null;try{sess=JSON.parse(localStorage.getItem('dg_sess')||'null');}catch(e){}
-if(sess){
-  var hb=document.getElementById('hero-btns');
-  if(hb)hb.innerHTML='<a href="dashboard.html" class="btn-primary"><span>&#127968;</span> Mon espace</a><a href="network.html" class="btn-secondary">Voir le réseau &#8594;</a>';
-}
+if(sess){var hb=document.getElementById('hero-btns');if(hb)hb.innerHTML='<a href="dashboard.html" class="btn-p">&#127968; Mon espace</a><a href="network.html" class="btn-s">Voir le réseau &#8594;</a>';}
 var SB='https://rxhjuetoxyjrairroycb.supabase.co';
 var ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q';
 function fetchStat(path,cb){var x=new XMLHttpRequest();x.open('GET',SB+'/rest/v1/'+path,true);x.setRequestHeader('apikey',ANON);x.setRequestHeader('Prefer','count=exact');x.setRequestHeader('Range','0-0');x.onload=function(){var cr=x.getResponseHeader('Content-Range')||'';var n=parseInt((cr.split('/')[1])||'0')||0;cb(n);};x.onerror=function(){cb(0);};x.send();}
-fetchStat('profiles?select=id',function(n){var e=document.getElementById('st-m');if(e&&n>0)e.textContent=n>1000?(n/1000).toFixed(1)+'K+':String(n);});
+fetchStat('profiles?select=id',function(n){var e=document.getElementById('st-m');if(e&&n>0)e.textContent=n>999?(n/1000).toFixed(1).replace('.0','')+'K+':String(n);});
 fetchStat('products?select=id',function(n){var e=document.getElementById('st-p');if(e)e.textContent=n>0?String(n):'—';});
 </script>
 </body>
