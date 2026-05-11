@@ -3,183 +3,587 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
-<title>DIGIFORM · Ma Boutique</title>
+<title>DIGIFORM · Boutique</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<script src="https://leekpay.fr/js/leekpay.js" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
   --bg:#EEF0F8;--bg2:#FFFFFF;--bg3:#E4E8F4;--bg4:#D4D9EE;
-  --navy:#1C2B6E;--navy2:#152055;--navy3:#0F1840;--navy-l:rgba(28,43,110,.08);
+  --navy:#1C2B6E;--navy2:#152055;--navy-l:rgba(28,43,110,.08);
   --orange:#F5A623;--orange2:#E8960F;--orange-l:rgba(245,166,35,.12);
   --text:#1C2B6E;--text2:#4A5580;--text3:#8892B0;
   --border:#D8DCF0;--border2:#C4CAE8;
   --green:#10B981;--green-l:rgba(16,185,129,.1);--green-b:rgba(16,185,129,.25);
-  --red:#EF4444;--red-l:rgba(239,68,68,.1);--red-b:rgba(239,68,68,.25);
-  --wa:#25D366;--wa2:#128C7E;
-  --grl:rgba(37,211,102,.08);--grb:rgba(37,211,102,.2);
-  --blue:#4F6EF7;--blue2:#7B93FF;--blue-l:rgba(79,110,247,.1);--blue-b:rgba(79,110,247,.25);
-  --gold:#F59E0B;--gold2:#FCD34D;--gl:rgba(245,158,11,.1);--gb:rgba(245,158,11,.25);
-  --sh:0 2px 8px rgba(28,43,110,.10);
-  --sh2:0 4px 20px rgba(28,43,110,.15);
-  --sh3:0 8px 36px rgba(28,43,110,.20);
+  --red:#EF4444;--wa:#25D366;--wa2:#128C7E;
+  --sh:0 2px 8px rgba(28,43,110,.10);--sh2:0 4px 20px rgba(28,43,110,.15);--sh3:0 8px 36px rgba(28,43,110,.20);
 }
 html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;max-width:430px;margin:0 auto;overflow-x:hidden;}
-@keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
-@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px;}
+@keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+@keyframes pop{from{opacity:0;transform:scale(.94);}to{opacity:1;transform:none;}}
 @keyframes spin{to{transform:rotate(360deg);}}
-.logo-brand{font-family:'Syne',sans-serif;font-weight:800;line-height:1;white-space:nowrap;display:inline-flex;}
-.ld{background:linear-gradient(135deg,#1E3A8A,#2563EB);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.lf{background:linear-gradient(135deg,#D97706,#F59E0B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.hdr{position:sticky;top:0;z-index:100;background:var(--navy);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:11px 15px;display:flex;align-items:center;gap:10px;box-shadow:var(--sh);}
-.hback{width:36px;height:36px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;border:1.5px solid var(--border);cursor:pointer;background:var(--bg2);color:var(--text2);text-decoration:none;transition:all .2s;}
-.hback:hover{border-color:var(--blue);color:var(--blue);}
-.pg{padding:24px 18px 100px;animation:rise .38s ease both;}
-/* HERO */
-.hero{text-align:center;padding:20px 0 28px;}
-.big-ico{font-size:4rem;animation:float 3.5s ease-in-out infinite;margin-bottom:18px;display:block;}
-.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,.15);color:var(--gold2);border:1px solid rgba(245,158,11,.25);border-radius:999px;padding:5px 14px;font-size:.72rem;font-weight:700;letter-spacing:.05em;margin-bottom:14px;}
-.hero-title{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;line-height:1.2;margin-bottom:9px;}
-.hero-sub{font-size:.86rem;color:var(--text2);line-height:1.75;max-width:280px;margin:0 auto;}
-/* AVANTAGES */
-.avs{display:flex;flex-direction:column;gap:9px;margin-bottom:22px;}
-.av{display:flex;align-items:flex-start;gap:12px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:14px;box-shadow:var(--sh);transition:all .25s;}
-.av-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
-.av-t{font-size:.88rem;font-weight:700;color:var(--text);}
-.av-s{font-size:.75rem;color:var(--text2);margin-top:2px;line-height:1.55;}
-/* WA */
-.wa-cta{display:flex;align-items:center;gap:12px;background:var(--green-bg);border:1.5px solid var(--green-border);border-radius:14px;padding:14px;margin-bottom:16px;text-decoration:none;transition:all .2s;}
-.wa-cta:hover{border-color:#059669;}
-/* FORM */
-.form-card{background:var(--bg2);border:1.5px solid var(--gold-border);border-radius:16px;padding:20px;box-shadow:var(--sh);}
-.form-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;margin-bottom:4px;}
-.form-sub{font-size:.8rem;color:var(--text2);margin-bottom:16px;line-height:1.55;}
-.inp{background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.88rem;padding:11px 14px;width:100%;outline:none;transition:all .2s;display:block;margin-bottom:9px;}
-.inp:focus{border-color:var(--blue);background:var(--blue-light);}
-.inp::placeholder{color:var(--text3);}
-select.inp{cursor:pointer;-webkit-appearance:none;}
-.lbl{font-size:.7rem;font-weight:600;color:var(--text2);display:block;margin-bottom:4px;}
-.submit-btn{width:100%;padding:14px;border-radius:12px;font-family:'Syne',sans-serif;font-size:.92rem;font-weight:800;background:var(--orange);color:#111;border:none;cursor:pointer;transition:all .22s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;box-shadow:0 6px 20px rgba(245,158,11,.3);}
-.submit-btn:hover:not(:disabled){background:#B45309;box-shadow:0 6px 20px rgba(217,119,6,.3);}
-.submit-btn:disabled{opacity:.4;cursor:not-allowed;}
-.success-card{background:var(--green-bg);border:1.5px solid var(--green-border);border-radius:14px;padding:22px;text-align:center;display:none;}
-.spin-s{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;}
-.nav-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--navy);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:5px 4px 18px;display:flex;z-index:500;box-shadow:0 -2px 8px rgba(0,0,0,.06);}
-.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 4px;background:none;border:none;color:var(--text3);font-family:'DM Sans',sans-serif;position:relative;transition:color .2s;text-decoration:none;cursor:pointer;}
-.nb.on{color:var(--navy);}.nb-dot{position:absolute;top:0;left:50%;transform:translateX(-50%);width:20px;height:3px;border-radius:0 0 3px 3px;background:var(--navy);display:none;}.nb.on .nb-dot{display:block;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+@keyframes shimmer{from{background-position:-200%;}to{background-position:200%;}}
+@keyframes slideUp{from{transform:translateY(100%);opacity:0;}to{transform:none;opacity:1;}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+/* HEADER */
+.hdr{position:sticky;top:0;z-index:200;background:var(--navy);padding:10px 15px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 16px rgba(15,24,64,.25);}
+.hdr-box{width:34px;height:34px;border-radius:10px;background:var(--orange);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 3px 10px rgba(245,166,35,.45);}
+.hdr-box span{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:800;color:#fff;}
+.hdr-name{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;color:#fff;flex:1;}
+.hdr-name em{color:var(--orange);font-style:normal;}
+.hdr-ico{width:34px;height:34px;flex-shrink:0;border-radius:50%;background:rgba(255,255,255,.14);border:none;display:flex;align-items:center;justify-content:center;font-size:.85rem;cursor:pointer;color:#fff;text-decoration:none;transition:all .2s;}
+.hdr-ico:hover{background:rgba(255,255,255,.24);}
+
+/* PAGE */
+.pg{padding:0 0 90px;}
+
+/* HERO BOUTIQUE */
+.hero{background:var(--navy);padding:20px 16px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:rgba(245,166,35,.1);}
+.hero::after{content:'';position:absolute;left:-20px;bottom:-20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.04);}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(245,166,35,.2);border:1px solid rgba(245,166,35,.4);border-radius:999px;padding:4px 12px;font-size:.7rem;font-weight:700;color:var(--orange);margin-bottom:10px;position:relative;z-index:1;}
+.hero h2{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:6px;position:relative;z-index:1;line-height:1.25;}
+.hero h2 span{color:var(--orange);}
+.hero p{font-size:.78rem;color:rgba(255,255,255,.7);line-height:1.7;position:relative;z-index:1;}
+
+/* SEARCH */
+.sw{position:sticky;top:57px;z-index:100;background:rgba(238,240,248,.97);backdrop-filter:blur(12px);padding:10px 14px;border-bottom:1px solid var(--border);}
+.sw-inner{position:relative;}
+.sw-ico{position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--text3);}
+.sw-inp{background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;padding:11px 36px 11px 40px;width:100%;outline:none;transition:all .2s;box-shadow:var(--sh);}
+.sw-inp:focus{border-color:var(--navy);}
+.sw-inp::placeholder{color:var(--text3);}
+.sw-clr{position:absolute;right:11px;top:50%;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;background:var(--bg4);border:none;color:var(--text3);font-size:.75rem;cursor:pointer;display:none;align-items:center;justify-content:center;}
+.sw-clr.show{display:flex;}
+
+/* CHIPS */
+.chips-wrap{padding:10px 14px 6px;overflow-x:auto;display:flex;gap:6px;scrollbar-width:none;border-bottom:1px solid var(--border);background:var(--bg);}
+.chips-wrap::-webkit-scrollbar{display:none;}
+.chip{flex-shrink:0;padding:7px 14px;border-radius:999px;font-size:.73rem;font-weight:500;cursor:pointer;border:1.5px solid var(--border2);background:var(--bg2);color:var(--text2);transition:all .2s;white-space:nowrap;}
+.chip.on{background:var(--navy);color:#fff;border-color:var(--navy);font-weight:700;}
+
+/* SECTIONS */
+.section{padding:16px 14px 4px;}
+.stitle{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+.stitle::before{content:'';width:4px;height:13px;border-radius:2px;background:var(--orange);margin-right:8px;flex-shrink:0;}
+.stitle-left{display:flex;align-items:center;}
+.see-all{font-size:.72rem;color:var(--orange2);font-weight:700;cursor:pointer;}
+
+/* CAROUSSEL VEDETTE */
+.feat-scroll{display:flex;gap:12px;overflow-x:auto;padding:0 14px 12px;scrollbar-width:none;}
+.feat-scroll::-webkit-scrollbar{display:none;}
+.feat-card{flex-shrink:0;width:200px;background:var(--bg2);border-radius:16px;overflow:hidden;border:1.5px solid var(--border);box-shadow:var(--sh2);transition:all .2s;cursor:pointer;position:relative;}
+.feat-card:hover{box-shadow:var(--sh3);transform:translateY(-2px);}
+.feat-img{width:100%;height:110px;object-fit:cover;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:2.5rem;position:relative;}
+.feat-type{position:absolute;top:8px;right:8px;padding:3px 8px;border-radius:999px;font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#fff;}
+.feat-info{padding:11px 10px 12px;}
+.feat-name{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;color:var(--navy);margin-bottom:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3;}
+.feat-price{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:800;color:var(--orange2);}
+.feat-old{font-size:.68rem;color:var(--text3);text-decoration:line-through;margin-left:5px;}
+
+/* GRILLE PRODUITS */
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 14px 14px;}
+.pcard{background:var(--bg2);border-radius:14px;overflow:hidden;border:1.5px solid var(--border);box-shadow:var(--sh);transition:all .2s;cursor:pointer;animation:pop .3s both;}
+.pcard:hover{box-shadow:var(--sh2);border-color:var(--navy);}
+.pc-img{width:100%;height:90px;object-fit:cover;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:2rem;position:relative;overflow:hidden;}
+.pc-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.pc-type{position:absolute;bottom:5px;left:5px;padding:2px 7px;border-radius:999px;font-size:.55rem;font-weight:800;text-transform:uppercase;color:#fff;letter-spacing:.05em;}
+.pc-info{padding:10px 9px;}
+.pc-name{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--navy);margin-bottom:5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3;min-height:2.6em;}
+.pc-price{font-family:'Syne',sans-serif;font-size:.85rem;font-weight:800;color:var(--orange2);margin-bottom:8px;}
+.pc-buy{width:100%;padding:8px;border-radius:9px;background:var(--navy);color:#fff;border:none;cursor:pointer;font-size:.72rem;font-weight:700;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;}
+.pc-buy:hover{background:var(--navy2);}
+.pc-wa{width:100%;padding:8px;border-radius:9px;background:var(--wa);color:#fff;border:none;cursor:pointer;font-size:.72rem;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;margin-top:5px;}
+
+/* SHIMMER */
+.shim-g{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 14px 14px;}
+.shim-c{height:190px;border-radius:14px;background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);background-size:200%;animation:shimmer 1.4s infinite;}
+
+/* MODAL PRODUIT */
+#pov{position:fixed;inset:0;background:rgba(15,24,64,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:1000;display:none;align-items:flex-end;justify-content:center;}
+#pov.open{display:flex;animation:fadeIn .25s;}
+.pbox{width:100%;max-width:430px;background:var(--bg2);border-radius:22px 22px 0 0;border-top:3px solid var(--orange);padding:20px 16px 48px;animation:slideUp .3s cubic-bezier(.22,1,.36,1);max-height:85vh;overflow-y:auto;}
+.phandle{width:38px;height:4px;border-radius:2px;background:var(--bg4);margin:0 auto 16px;}
+.pm-img{width:100%;height:180px;object-fit:cover;border-radius:14px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:4rem;margin-bottom:14px;overflow:hidden;position:relative;}
+.pm-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.pm-type-badge{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 12px;font-size:.68rem;font-weight:700;margin-bottom:8px;}
+.pm-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:var(--navy);margin-bottom:6px;line-height:1.3;}
+.pm-desc{font-size:.82rem;color:var(--text2);line-height:1.75;margin-bottom:14px;}
+.pm-price-row{display:flex;align-items:baseline;gap:8px;margin-bottom:16px;}
+.pm-price{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--orange2);}
+.pm-old{font-size:.85rem;color:var(--text3);text-decoration:line-through;}
+.pm-buy{width:100%;padding:14px;border-radius:13px;background:var(--orange);color:#fff;border:none;cursor:pointer;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;transition:all .22s;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 20px rgba(245,166,35,.4);}
+.pm-buy:hover{background:var(--orange2);}
+.pm-wa{width:100%;padding:12px;border-radius:13px;background:var(--wa);color:#fff;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;}
+
+/* SECTION VENDEUR */
+.seller-sec{margin:14px;background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:18px;padding:18px;color:#fff;position:relative;overflow:hidden;}
+.seller-sec::before{content:'';position:absolute;right:-30px;top:-30px;width:120px;height:120px;border-radius:50%;background:rgba(245,166,35,.12);}
+.seller-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;margin-bottom:5px;}
+.seller-sub{font-size:.78rem;color:rgba(255,255,255,.7);line-height:1.65;margin-bottom:14px;}
+.s-form{display:flex;flex-direction:column;gap:9px;}
+.s-inp{background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.2);border-radius:11px;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;padding:11px 13px;width:100%;outline:none;transition:all .2s;}
+.s-inp:focus{border-color:var(--orange);background:rgba(255,255,255,.18);}
+.s-inp::placeholder{color:rgba(255,255,255,.5);}
+select.s-inp{cursor:pointer;-webkit-appearance:none;}
+select.s-inp option{background:var(--navy);color:#fff;}
+.s-btn{width:100%;padding:12px;border-radius:11px;background:var(--orange);color:#fff;border:none;cursor:pointer;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;transition:all .22s;box-shadow:0 4px 14px rgba(245,166,35,.4);}
+.s-btn:hover:not(:disabled){background:var(--orange2);}
+.s-btn:disabled{opacity:.4;cursor:not-allowed;}
+.s-ok{background:rgba(16,185,129,.15);border:1.5px solid rgba(16,185,129,.35);border-radius:12px;padding:14px;text-align:center;display:none;margin-top:4px;}
+
+/* EMPTY */
+.empty{display:flex;flex-direction:column;align-items:center;padding:50px 24px;gap:12px;text-align:center;}
+.empty-ico{font-size:3rem;animation:float 4s ease-in-out infinite;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;transition:all .22s;border-radius:12px;text-decoration:none;}
+.b-orange{background:var(--orange);color:#fff;box-shadow:0 4px 14px rgba(245,166,35,.35);}
+.b-orange:hover{background:var(--orange2);}
+.b-out{background:var(--bg2);color:var(--navy);border:1.5px solid var(--border2);}
+.b-xl{width:100%;padding:13px;font-size:.9rem;border-radius:14px;}
+.sp{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;}
+
+/* NAV */
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--bg2);border-top:1.5px solid var(--border);padding:5px 4px 18px;display:flex;z-index:500;box-shadow:0 -4px 20px rgba(28,43,110,.1);}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 4px;background:none;border:none;color:var(--text3);font-family:'Plus Jakarta Sans',sans-serif;position:relative;transition:color .2s;text-decoration:none;}
+.nb.on{color:var(--navy);}
+.nb-dot{position:absolute;top:0;left:50%;transform:translateX(-50%);width:22px;height:3px;border-radius:0 0 3px 3px;background:var(--orange);display:none;}
+.nb.on .nb-dot{display:block;}
 .nb-ico{font-size:1.2rem;}.nb-lbl{font-size:.58rem;font-weight:500;}.nb.on .nb-lbl{font-weight:700;}
-#toast{position:fixed;top:72px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:999px;z-index:9999;font-weight:700;font-size:.82rem;box-shadow:0 8px 24px rgba(0,0,0,.15);white-space:nowrap;max-width:90vw;text-align:center;display:none;}
+
+/* TOAST */
+#toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);padding:10px 22px;border-radius:999px;z-index:9999;font-weight:700;font-size:.82rem;box-shadow:0 8px 28px rgba(28,43,110,.25);white-space:nowrap;max-width:90vw;text-align:center;display:none;pointer-events:none;}
 #toast.show{display:block;animation:rise .3s ease;}
-#toast.ok{background:#059669;color:#fff;}
-#toast.err{background:#DC2626;color:#fff;}
+#toast.ok{background:var(--green);color:#fff;}
+#toast.err{background:var(--red);color:#fff;}
+#toast.inf{background:var(--navy);color:#fff;}
+#toast.warn{background:var(--orange);color:#fff;}
+
 @media(min-width:430px){body{box-shadow:0 0 50px rgba(28,43,110,.15);}}
 </style>
 </head>
 <body>
+
 <header class="hdr">
-  <a class="hback" href="dashboard.html">&#8592;</a>
-  <div style="flex:1;padding-left:8px;">
-    <div class="logo-brand" style="font-size:1.25rem;"><span class="ld">DIGI</span><span class="lf">FORM</span></div>
-    <div style="font-size:.58rem;color:var(--text3);margin-top:2px;letter-spacing:.07em;text-transform:uppercase;">MA BOUTIQUE</div>
+  <a href="dashboard.html" class="hdr-ico">&#8592;</a>
+  <div class="hdr-box"><span>DF</span></div>
+  <div style="flex:1;">
+    <div class="hdr-name">DIGI<em>FORM</em></div>
+    <div style="font-size:.55rem;color:rgba(255,255,255,.55);margin-top:2px;letter-spacing:.07em;text-transform:uppercase;">BOUTIQUE DIGITALE</div>
   </div>
+  <div class="hdr-ico" id="cart-ico" onclick="voirPanier()" title="Achats">&#128722;</div>
+  <a href="notifications.html" class="hdr-ico">&#128276;</a>
 </header>
 
-<div class="pg">
-  <div class="hero">
-    <span class="big-ico">🛒</span>
-    <div class="badge">🚀 Bientôt disponible</div>
-    <div class="hero-title">Vendez vos produits<br/>digitaux sur DIGIFORM</div>
-    <div class="hero-sub">Livres, formations, logiciels, fichiers audio — touchez des milliers de professionnels africains.</div>
-  </div>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">&#127381; Boutique Digitale Africaine</div>
+  <h2>Formations &amp; Outils<br/><span>pour réussir en ligne</span></h2>
+  <p>Livres, formations vidéo, logiciels et templates sélectionnés pour les pros africains.</p>
+</div>
 
-  <!-- AVANTAGES -->
-  <div class="avs">
-    <div class="av">
-      <div class="av-ico" style="background:#DBEAFE;">💼</div>
-      <div><div class="av-t">Boutique professionnelle</div><div class="av-s">Page dédiée avec vos produits, votre prix et votre contact WhatsApp.</div></div>
-    </div>
-    <div class="av">
-      <div class="av-ico" style="background:#D1FAE5;">💰</div>
-      <div><div class="av-t">Paiement Mobile Money</div><div class="av-s">MTN MoMo, Orange Money, Wave — vos clients paient directement.</div></div>
-    </div>
-    <div class="av">
-      <div class="av-ico" style="background:#FEF3C7;">📊</div>
-      <div><div class="av-t">Tableau de bord des ventes</div><div class="av-s">Suivez vos ventes, revenus et clients en temps réel.</div></div>
-    </div>
-    <div class="av">
-      <div class="av-ico" style="background:#EDE9FE;">🌍</div>
-      <div><div class="av-t">Réseau de 10 000+ membres</div><div class="av-s">Accès direct à une communauté de professionnels qualifiés.</div></div>
-    </div>
-  </div>
-
-  <!-- WA CHANNEL -->
-  <a href="https://whatsapp.com/channel/0029Vb7wL2sFi8xjaIYup310" target="_blank" class="wa-cta">
-    <div style="width:40px;height:40px;border-radius:50%;background:#059669;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">📢</div>
-    <div style="flex:1;"><div style="font-size:.85rem;font-weight:700;color:#065F46;">Rejoindre la chaîne DIGIFORM</div><div style="font-size:.72rem;color:#059669;margin-top:1px;">Soyez notifié du lancement de la boutique</div></div>
-    <span style="color:#059669;">→</span>
-  </a>
-
-  <!-- FORM PRÉ-INSCRIPTION -->
-  <div class="form-card" id="form-section">
-    <div class="form-title">Pré-inscription vendeur</div>
-    <div class="form-sub">Inscrivez-vous maintenant pour être parmi les premiers vendeurs lors du lancement.</div>
-    <div><label class="lbl">Nom complet *</label><input class="inp" id="f-name" placeholder="Votre nom complet"/></div>
-    <div><label class="lbl">Téléphone WhatsApp *</label><input class="inp" id="f-phone" type="tel" placeholder="+225 07 00 00 00 00"/></div>
-    <div><label class="lbl">Email</label><input class="inp" id="f-email" type="email" placeholder="votre@email.com"/></div>
-    <div><label class="lbl">Type de produit à vendre *</label>
-      <select class="inp" id="f-type">
-        <option value="">— Choisir —</option>
-        <option>📚 Livre / E-book</option>
-        <option>🎬 Formation vidéo</option>
-        <option>💻 Logiciel / Application</option>
-        <option>🎧 Audio / Podcast</option>
-        <option>🎨 Template / Design</option>
-        <option>📊 Données / Base de contacts</option>
-        <option>Autre produit digital</option>
-      </select>
-    </div>
-    <button class="submit-btn" id="sub-btn" onclick="souscrire()">Je veux vendre sur DIGIFORM</button>
-  </div>
-
-  <div class="success-card" id="success-card">
-    <div style="font-size:2.5rem;margin-bottom:10px;">🎉</div>
-    <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;margin-bottom:6px;">Pré-inscription confirmée !</div>
-    <div style="font-size:.82rem;color:var(--text2);line-height:1.65;">Vous serez parmi les premiers vendeurs. On vous contacte sur WhatsApp au lancement.</div>
+<!-- SEARCH -->
+<div class="sw">
+  <div class="sw-inner">
+    <span class="sw-ico">&#128269;</span>
+    <input class="sw-inp" id="srch" type="search" placeholder="Rechercher un produit…" oninput="onSearch(this.value)" autocomplete="off"/>
+    <button class="sw-clr" id="scl" onclick="clearSearch()">&#10005;</button>
   </div>
 </div>
 
-<nav class="nav-bar">
-  <a class="nb" href="dashboard.html"><div class="nb-dot"></div><span class="nb-ico">🏠</span><span class="nb-lbl">Accueil</span></a>
-  <a class="nb" href="dashboard.html"><div class="nb-dot"></div><span class="nb-ico">🗂️</span><span class="nb-lbl">Catalogue</span></a>
-  <a class="nb" href="network.html"><div class="nb-dot"></div><span class="nb-ico">🌐</span><span class="nb-lbl">Réseau</span></a>
-  <a class="nb" href="profile.html"><div class="nb-dot"></div><span class="nb-ico">👤</span><span class="nb-lbl">Profil</span></a>
+<!-- CHIPS CATÉGORIES -->
+<div class="chips-wrap" id="chips-wrap"></div>
+
+<!-- SHIMMER -->
+<div id="shim">
+  <div class="section"><div class="stitle"><div class="stitle-left" style="padding-left:12px;">&#11088; En vedette</div></div></div>
+  <div style="display:flex;gap:12px;padding:0 14px 12px;overflow:hidden;">
+    <div style="flex-shrink:0;width:200px;height:160px;border-radius:16px;background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);background-size:200%;animation:shimmer 1.4s infinite;"></div>
+    <div style="flex-shrink:0;width:200px;height:160px;border-radius:16px;background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);background-size:200%;animation:shimmer 1.4s infinite;"></div>
+  </div>
+  <div class="shim-g">
+    <div class="shim-c"></div><div class="shim-c"></div>
+    <div class="shim-c"></div><div class="shim-c"></div>
+  </div>
+</div>
+
+<!-- VEDETTE -->
+<div id="feat-section" style="display:none;">
+  <div class="section">
+    <div class="stitle"><div class="stitle-left">&#11088; En vedette</div></div>
+  </div>
+  <div class="feat-scroll" id="feat-scroll"></div>
+</div>
+
+<!-- CATALOGUE -->
+<div id="cat-section" style="display:none;">
+  <div class="section">
+    <div class="stitle">
+      <div class="stitle-left" id="cat-title">Tous les produits</div>
+      <span class="see-all" id="cat-count"></span>
+    </div>
+  </div>
+  <div class="pgrid" id="pgrid"></div>
+  <div class="empty" id="empty" style="display:none;">
+    <div class="empty-ico">&#128722;</div>
+    <div style="font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:var(--navy);">Aucun produit</div>
+    <div style="font-size:.82rem;color:var(--text2);">Modifiez votre recherche ou filtre.</div>
+  </div>
+</div>
+
+<!-- SECTION VENDEUR -->
+<div class="seller-sec" id="seller-sec" style="display:none;">
+  <div class="seller-title">&#128722; Devenez vendeur DIGIFORM</div>
+  <div class="seller-sub">Vous avez un livre, une formation ou un outil digital à vendre ? Rejoignez notre marketplace et atteignez 10 000+ membres.</div>
+  <div class="s-ok" id="s-ok">
+    <div style="font-size:1.8rem;margin-bottom:7px;">&#127881;</div>
+    <div style="font-family:'Syne',sans-serif;font-size:.9rem;font-weight:800;color:#10B981;">Demande envoyée !</div>
+    <div style="font-size:.75rem;color:rgba(255,255,255,.7);margin-top:4px;">Nous vous contacterons sur WhatsApp sous 24h.</div>
+  </div>
+  <div class="s-form" id="s-form">
+    <input class="s-inp" id="s-name" type="text" placeholder="Votre nom complet"/>
+    <input class="s-inp" id="s-phone" type="tel" placeholder="WhatsApp (+225…)"/>
+    <input class="s-inp" id="s-desc" type="text" placeholder="Titre de votre produit digital"/>
+    <select class="s-inp" id="s-type">
+      <option value="">— Type de produit —</option>
+      <option value="livre">📚 Livre / Ebook</option>
+      <option value="formation">🎬 Formation vidéo</option>
+      <option value="logiciel">💻 Logiciel / SaaS</option>
+      <option value="template">🎨 Templates / Design</option>
+      <option value="audio">🎧 Audio / Podcast</option>
+      <option value="autre">📦 Autre</option>
+    </select>
+    <button class="s-btn" id="s-btn" onclick="soumettreVendeur()">Proposer mon produit &#8594;</button>
+  </div>
+</div>
+
+<!-- MODAL PRODUIT -->
+<div id="pov" onclick="if(event.target===this)fermerProduit()">
+  <div class="pbox" id="pbox"></div>
+</div>
+
+<nav class="nav">
+  <a class="nb" href="dashboard.html"><div class="nb-dot"></div><span class="nb-ico">&#127968;</span><span class="nb-lbl">Accueil</span></a>
+  <a class="nb on" href="shop.html"><div class="nb-dot"></div><span class="nb-ico">&#128722;</span><span class="nb-lbl">Boutique</span></a>
+  <a class="nb" href="network.html"><div class="nb-dot"></div><span class="nb-ico">&#127760;</span><span class="nb-lbl">Réseau</span></a>
+  <a class="nb" href="profile.html"><div class="nb-dot"></div><span class="nb-ico">&#128100;</span><span class="nb-lbl">Profil</span></a>
 </nav>
+
 <div id="toast"></div>
+
 <script>
+var SB   = 'https://rxhjuetoxyjrairroycb.supabase.co';
+var ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q';
+var LEEKPAY_PK = 'pk_live_h0RQu365IhnhdXkW2YeWZiDmKQGo7Pn1';
+
+var TYPE_CONFIG = {
+  livre:     {ico:'📚', col:'#2563EB', label:'Livre'},
+  formation: {ico:'🎬', col:'#DC2626', label:'Formation'},
+  logiciel:  {ico:'💻', col:'#059669', label:'Logiciel'},
+  template:  {ico:'🎨', col:'#DB2777', label:'Template'},
+  audio:     {ico:'🎧', col:'#7C3AED', label:'Audio'},
+  autre:     {ico:'📦', col:'#D97706', label:'Produit'}
+};
+
+var CATS = [
+  {v:'',l:'Tous'},
+  {v:'livre',l:'📚 Livres'},
+  {v:'formation',l:'🎬 Formations'},
+  {v:'logiciel',l:'💻 Logiciels'},
+  {v:'template',l:'🎨 Templates'},
+  {v:'audio',l:'🎧 Audio'}
+];
+
+function getSess() { try{return JSON.parse(localStorage.getItem('dg_sess')||'null');}catch{return null;} }
+
+var all = [], filtered = [], catF = '', srchQ = '';
+var curProduct = null;
 var toTm;
-function toast(msg, t) { clearTimeout(toTm); t = t || 'ok'; var e = document.getElementById('toast'); if (!e) return; e.textContent = msg; e.className = 'show ' + t; toTm = setTimeout(function() { e.classList.remove('show'); }, 4000); }
-function souscrire(){
-  var name=(document.getElementById('f-name')?document.getElementById('f-name').value:'').trim();
-  var phone=(document.getElementById('f-phone')?document.getElementById('f-phone').value:'').trim();
-  var email=(document.getElementById('f-email')?document.getElementById('f-email').value:'').trim();
-  var type=document.getElementById('f-type')?document.getElementById('f-type').value:'';
-  if(!name){toast('Nom requis','err');return;}
-  if(!phone){toast('Téléphone WhatsApp requis','err');return;}
-  if(!type){toast('Choisissez un type de produit','err');return;}
-  var btn=document.getElementById('sub-btn');btn.disabled=true;btn.innerHTML='<span class="spin-s"></span> Envoi...';
-  var xhr=new XMLHttpRequest();
-  xhr.open('POST','https://rxhjuetoxyjrairroycb.supabase.co/rest/v1/newsletter',true);
-  xhr.setRequestHeader('apikey','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q');
-  xhr.setRequestHeader('Content-Type','application/json');
-  xhr.setRequestHeader('Prefer','return=minimal');
-  xhr.onload=xhr.onerror=function(){
-    document.getElementById('form-section').style.display='none';
-    document.getElementById('success-card').style.display='block';
-    toast('Pré-inscription confirmée !','ok');
-  };
-  xhr.send(JSON.stringify({name:name,phone:phone,email:email,source:'shop',message:'Vendeur - ' + type,is_read:false}));
+
+function toast(msg, t) {
+  clearTimeout(toTm); t = t || 'ok';
+  var e = document.getElementById('toast');
+  e.textContent = msg; e.className = 'show ' + t;
+  toTm = setTimeout(function() { e.classList.remove('show'); }, 4000);
 }
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmtPrix(p) {
+  p = Number(p)||0;
+  if (p <= 0) return 'Gratuit';
+  return p.toLocaleString('fr-FR') + ' FCFA';
+}
+
+/* ── CHARGEMENT ── */
+function charger() {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', SB + '/rest/v1/products?is_active=not.eq.false&order=featured.desc,created_at.desc', true);
+  xhr.setRequestHeader('apikey', ANON);
+  xhr.onload = function() {
+    try { all = JSON.parse(xhr.responseText); } catch(e) { all = []; }
+    if (!Array.isArray(all)) all = [];
+    document.getElementById('shim').style.display = 'none';
+    document.getElementById('feat-section').style.display = 'block';
+    document.getElementById('cat-section').style.display = 'block';
+    document.getElementById('seller-sec').style.display = 'block';
+    buildChips();
+    filtrer();
+    afficherVedette();
+  };
+  xhr.onerror = function() {
+    document.getElementById('shim').style.display = 'none';
+    document.getElementById('cat-section').style.display = 'block';
+    document.getElementById('seller-sec').style.display = 'block';
+    document.getElementById('empty').style.display = 'flex';
+    document.getElementById('cat-count').textContent = '0 produit';
+    buildChips();
+  };
+  xhr.send();
+}
+
+/* ── CHIPS ── */
+function buildChips() {
+  var html = '';
+  for (var i = 0; i < CATS.length; i++) {
+    var c = CATS[i];
+    var count = c.v ? all.filter(function(p){return p.type===c.v;}).length : all.length;
+    if (c.v && count === 0) continue;
+    var on = catF === c.v ? ' on' : '';
+    html += '<div class="chip' + on + '" data-v="' + c.v + '">' + c.l + (count?' ('+count+')':'') + '</div>';
+  }
+  var el = document.getElementById('chips-wrap');
+  if (!el) return;
+  el.innerHTML = html;
+  var chips = el.querySelectorAll('.chip');
+  for (var j = 0; j < chips.length; j++) {
+    (function(chip) {
+      chip.onclick = function() {
+        catF = chip.getAttribute('data-v');
+        buildChips();
+        filtrer();
+      };
+    })(chips[j]);
+  }
+}
+
+/* ── FILTRER ── */
+function filtrer() {
+  var q = srchQ.toLowerCase();
+  filtered = all.filter(function(p) {
+    var mq = !q || (p.title||'').toLowerCase().indexOf(q) >= 0 || (p.description||'').toLowerCase().indexOf(q) >= 0;
+    var mc = !catF || p.type === catF;
+    return mq && mc;
+  });
+  afficherGrille();
+}
+
+/* ── SEARCH ── */
+var searchTm;
+function onSearch(v) {
+  document.getElementById('scl').classList.toggle('show', v.length > 0);
+  clearTimeout(searchTm);
+  searchTm = setTimeout(function() {
+    srchQ = v.trim();
+    filtrer();
+  }, 300);
+}
+function clearSearch() {
+  document.getElementById('srch').value = '';
+  document.getElementById('scl').classList.remove('show');
+  srchQ = '';
+  filtrer();
+}
+
+/* ── VEDETTE CAROUSSEL ── */
+function afficherVedette() {
+  var feats = all.filter(function(p) { return p.featured; });
+  var el = document.getElementById('feat-scroll');
+  var sec = document.getElementById('feat-section');
+  if (!feats.length || !el) { if(sec) sec.style.display='none'; return; }
+  var html = '';
+  for (var i = 0; i < feats.length; i++) {
+    var p = feats[i];
+    var tc = TYPE_CONFIG[p.type] || TYPE_CONFIG.autre;
+    var imgH = p.image_url
+      ? '<div class="feat-img" style="background:#000;"><img src="' + esc(p.image_url) + '" alt="' + esc(p.title) + '" onerror="this.style.display=\'none\'"/>' + tc.ico + '</div>'
+      : '<div class="feat-img" style="background:' + tc.col + '18;font-size:3rem;">' + tc.ico + '</div>';
+    html += '<div class="feat-card" onclick="ouvrirProduit(' + i + 'true)">'
+      + imgH
+      + '<div class="feat-type" style="background:' + tc.col + ';">' + tc.label + '</div>'
+      + '<div class="feat-info">'
+      +   '<div class="feat-name">' + esc(p.title) + '</div>'
+      +   '<div><span class="feat-price">' + fmtPrix(p.price) + '</span>'
+      +   (p.price_old ? '<span class="feat-old">' + fmtPrix(p.price_old) + '</span>' : '')
+      +   '</div>'
+      + '</div>'
+      + '</div>';
+  }
+  el.innerHTML = html;
+  // Fix onclick avec index
+  var cards = el.querySelectorAll('.feat-card');
+  for (var j = 0; j < cards.length; j++) {
+    (function(card, prod) {
+      card.onclick = function() { ouvrirProduitObj(prod); };
+    })(cards[j], feats[j]);
+  }
+}
+
+/* ── GRILLE ── */
+function afficherGrille() {
+  var el   = document.getElementById('pgrid');
+  var emp  = document.getElementById('empty');
+  var cnt  = document.getElementById('cat-count');
+  var ttl  = document.getElementById('cat-title');
+
+  var label = catF ? (TYPE_CONFIG[catF]||{}).label||catF : 'Tous les produits';
+  if (ttl) ttl.textContent = label;
+  if (cnt) cnt.textContent = filtered.length + ' produit' + (filtered.length > 1 ? 's' : '');
+
+  if (!filtered.length) {
+    if(el) el.innerHTML = '';
+    if(emp) emp.style.display = 'flex';
+    return;
+  }
+  if(emp) emp.style.display = 'none';
+
+  var html = '';
+  for (var i = 0; i < filtered.length; i++) {
+    var p = filtered[i];
+    var tc = TYPE_CONFIG[p.type] || TYPE_CONFIG.autre;
+    var imgH = p.image_url
+      ? '<div class="pc-img" style="background:#000;"><img src="' + esc(p.image_url) + '" alt="' + esc(p.title) + '" onerror="this.style.display=\'none\'"/><div class="pc-type" style="background:' + tc.col + ';">' + tc.label + '</div></div>'
+      : '<div class="pc-img" style="background:' + tc.col + '18;">' + tc.ico + '<div class="pc-type" style="background:' + tc.col + ';">' + tc.label + '</div></div>';
+    html += '<div class="pcard" id="pc-' + i + '">'
+      + imgH
+      + '<div class="pc-info">'
+      +   '<div class="pc-name">' + esc(p.title) + '</div>'
+      +   '<div class="pc-price">' + fmtPrix(p.price) + '</div>'
+      +   '<button class="pc-buy">Voir le produit</button>'
+      + '</div>'
+      + '</div>';
+  }
+  if(el) el.innerHTML = html;
+
+  var cards = el.querySelectorAll('.pcard');
+  for (var j = 0; j < cards.length; j++) {
+    (function(card, prod) {
+      card.onclick = function() { ouvrirProduitObj(prod); };
+    })(cards[j], filtered[j]);
+  }
+}
+
+/* ── MODAL PRODUIT ── */
+function ouvrirProduitObj(p) {
+  curProduct = p;
+  var pov = document.getElementById('pov');
+  var pbox = document.getElementById('pbox');
+  var tc = TYPE_CONFIG[p.type] || TYPE_CONFIG.autre;
+  var whatsapp = p.whatsapp_number ? p.whatsapp_number.replace(/[^0-9]/g,'') : '';
+
+  var imgH = p.image_url
+    ? '<div class="pm-img" style="background:#000;"><img src="' + esc(p.image_url) + '" alt="' + esc(p.title) + '" onerror="this.style.display=\'none\'"/></div>'
+    : '<div class="pm-img" style="background:' + tc.col + '18;">' + tc.ico + '</div>';
+
+  var waBtn = whatsapp
+    ? '<button class="pm-wa" onclick="contactWA(\'' + whatsapp + '\',\'' + esc(p.title) + '\')">&#128172; Contacter le vendeur</button>'
+    : '';
+
+  pbox.innerHTML = '<div class="phandle"></div>'
+    + imgH
+    + '<div class="pm-type-badge" style="background:' + tc.col + '18;color:' + tc.col + ';">' + tc.ico + ' ' + tc.label + '</div>'
+    + '<div class="pm-title">' + esc(p.title) + '</div>'
+    + '<div class="pm-desc">' + esc(p.description || 'Produit digital de qualité sélectionné par DIGIFORM.') + '</div>'
+    + '<div class="pm-price-row">'
+    +   '<div class="pm-price">' + fmtPrix(p.price) + '</div>'
+    +   '<div style="font-size:.72rem;color:var(--text3);">(' + fmtFCFA(p.price) + ')</div>'
+    + '</div>'
+    + '<button class="pm-buy" onclick="acheter()">Acheter — ' + fmtPrix(p.price) + '</button>'
+    + waBtn;
+
+  pov.classList.add('open');
+}
+
+function fermerProduit() {
+  document.getElementById('pov').classList.remove('open');
+  curProduct = null;
+}
+
+/* ── ACHAT LEEKPAY ── */
+function acheter() {
+  if (!curProduct) return;
+  if (typeof LeekPay === 'undefined') {
+    toast('Chargement du paiement...', 'inf');
+    setTimeout(acheter, 1200);
+    return;
+  }
+  var sess = getSess();
+  var email = (sess && sess.user) ? (sess.user.email || '') : '';
+  var whatsapp = curProduct.whatsapp_number ? curProduct.whatsapp_number.replace(/[^0-9]/g,'') : '';
+
+  LeekPay.checkout({
+    amount: Number(curProduct.price) || 0,
+    currency: 'XOF',
+    apiKey: LEEKPAY_PK,
+    description: 'DIGIFORM — ' + curProduct.title,
+    customerEmail: email,
+    onSuccess: function() {
+      fermerProduit();
+      toast('Achat confirme ! Merci 🎉', 'ok');
+      if (whatsapp) {
+        setTimeout(function() {
+          window.open(
+            'https://wa.me/' + whatsapp + '?text=' + encodeURIComponent('Bonjour, je viens d acheter "' + curProduct.title + '" via DIGIFORM. Pouvez-vous me l envoyer ?'),
+            '_blank', 'noopener'
+          );
+        }, 1500);
+      }
+    },
+    onCancel: function() { toast('Achat annulé', 'warn'); }
+  });
+}
+
+function contactWA(phone, title) {
+  window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent('Bonjour, je suis intéressé par "' + title + '" sur DIGIFORM. Pouvez-vous me donner plus d infos ?'), '_blank', 'noopener');
+}
+
+function voirPanier() {
+  toast('Fonctionnalité bientôt disponible', 'inf');
+}
+
+/* ── SOUMISSION VENDEUR ── */
+function soumettreVendeur() {
+  var name  = (document.getElementById('s-name').value  || '').trim();
+  var phone = (document.getElementById('s-phone').value || '').trim();
+  var desc  = (document.getElementById('s-desc').value  || '').trim();
+  var type  = document.getElementById('s-type').value;
+  if (!name)  { toast('Votre nom est requis', 'err'); return; }
+  if (!phone) { toast('Votre WhatsApp est requis', 'err'); return; }
+  if (!desc)  { toast('Décrivez votre produit', 'err'); return; }
+  if (!type)  { toast('Choisissez un type', 'err'); return; }
+
+  var btn = document.getElementById('s-btn');
+  btn.disabled = true; btn.innerHTML = '<span class="sp"></span> Envoi...';
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', SB + '/rest/v1/newsletter', true);
+  xhr.setRequestHeader('apikey', ANON);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.setRequestHeader('Prefer', 'return=minimal');
+  xhr.onload = xhr.onerror = function() {
+    document.getElementById('s-ok').style.display = 'block';
+    document.getElementById('s-form').style.display = 'none';
+    toast('Demande envoyée ! On vous contacte sous 24h.', 'ok');
+  };
+  xhr.send(JSON.stringify({name:name, phone:phone, source:'shop', message:desc + ' | Type: ' + type, is_read:false}));
+}
+
+/* ── INIT ── */
+charger();
 </script>
 </body>
 </html>
