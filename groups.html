@@ -174,7 +174,7 @@ select.inp{cursor:pointer;-webkit-appearance:none;}
 
 <!-- BADGE CRÉDITS GROUPES -->
 <div id="grp-credits">
-  <div class="gc-left" id="gc-txt">&#128101; <b>5 groupes gratuits</b> inclus</div>
+  <div class="gc-left" id="gc-txt">&#128101; <b>10 groupes gratuits</b> inclus</div>
   <div class="gc-unlim" id="gc-unlim" style="display:none;">&#9854;&#65039; Acc&#232;s illimit&#233;</div>
 </div>
 
@@ -265,34 +265,91 @@ select.inp{cursor:pointer;-webkit-appearance:none;}
 var LEEKPAY_PK = 'pk_live_h0RQu365IhnhdXkW2YeWZiDmKQGo7Pn1';
 var SB   = 'https://rxhjuetoxyjrairroycb.supabase.co';
 var ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4aGp1ZXRveHlqcmFpcnJveWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwOTkxMjksImV4cCI6MjA5MTY3NTEyOX0.FTk6DNeI2FSsY6Eg1mKC64lj1-aS9fzTyzTlQbuGn-Q';
-var FREE_GROUPS = 5;
+var FREE_GROUPS = 10;
 var PRIX_GROUPES = 1000;
 
-/* ── CRÉDITS GROUPES ── */
-function getGC() {
-  try { var c=JSON.parse(localStorage.getItem('dg_gc')||'{"used":0,"unlim":false}'); return c; }
-  catch(e) { return {used:0,unlim:false}; }
+/* ── CRÉDITS GROUPES — Supabase DB ── */
+function getSess(){try{return JSON.parse(localStorage.getItem('dg_sess')||'null');}catch{return null;}}
+var _gc = null; /* cache session */
+
+function chargerGC(cb) {
+  var sess = getSess();
+  if (!sess || !sess.user) { _gc={used:0,unlim:false}; cb(_gc); return; }
+  var x = new XMLHttpRequest();
+  x.open('GET', SB+'/rest/v1/user_credits?user_id=eq.'+sess.user.id+'&select=groups_used,groups_unlimited', true);
+  x.setRequestHeader('apikey', ANON);
+  x.setRequestHeader('Authorization', 'Bearer '+(sess.access_token||ANON));
+  x.onload = function() {
+    try {
+      var d = JSON.parse(x.responseText);
+      if (Array.isArray(d) && d[0]) {
+        _gc = {used:Number(d[0].groups_used)||0, unlim:Boolean(d[0].groups_unlimited)};
+        cb(_gc); return;
+      }
+    } catch(e) {}
+    /* Fallback localStorage si DB pas encore migré */
+    try { var raw=localStorage.getItem('dg_gc'); if(raw){var c=JSON.parse(raw);_gc={used:Number(c.used)||0,unlim:Boolean(c.unlim)};cb(_gc);return;} } catch(e2) {}
+    _gc = {used:0, unlim:false}; cb(_gc);
+  };
+  x.onerror = function() { _gc={used:0,unlim:false}; cb(_gc); };
+  x.send();
 }
-function setGC(c) { try{localStorage.setItem('dg_gc',JSON.stringify(c));}catch(e){} }
-function isPremiumG() { return getGC().unlim; }
-function groupsRestants() { var c=getGC(); return Math.max(0, FREE_GROUPS - (c.used||0)); }
+
+function incrementerGC(cb) {
+  if (!_gc) _gc = {used:0, unlim:false};
+  _gc.used = (_gc.used||0) + 1;
+  /* Sync localStorage comme cache */
+  try { localStorage.setItem('dg_gc', JSON.stringify({used:_gc.used,unlim:_gc.unlim})); } catch(e) {}
+  var sess = getSess();
+  if (!sess || !sess.user) { if(cb) cb(_gc); return; }
+  var x = new XMLHttpRequest();
+  x.open('POST', SB+'/rest/v1/rpc/increment_groups', true);
+  x.setRequestHeader('apikey', ANON);
+  x.setRequestHeader('Authorization', 'Bearer '+(sess.access_token||ANON));
+  x.setRequestHeader('Content-Type', 'application/json');
+  x.onload = function() {
+    try { var d=JSON.parse(x.responseText); if(Array.isArray(d)&&d[0]){_gc={used:Number(d[0].groups_used)||0,unlim:Boolean(d[0].groups_unlimited)};} } catch(e) {}
+    if(cb) cb(_gc);
+  };
+  x.onerror = function() { if(cb) cb(_gc); };
+  x.send(JSON.stringify({p_uid:sess.user.id}));
+}
+
+function activerGCIllimite() {
+  if (!_gc) _gc = {used:0, unlim:false};
+  _gc.unlim = true;
+  try { localStorage.setItem('dg_gc', JSON.stringify({used:_gc.used,unlim:true})); } catch(e) {}
+  var sess = getSess();
+  if (sess && sess.user) {
+    var x = new XMLHttpRequest();
+    x.open('POST', SB+'/rest/v1/rpc/activate_groups_unlimited', true);
+    x.setRequestHeader('apikey', ANON);
+    x.setRequestHeader('Authorization', 'Bearer '+(sess.access_token||ANON));
+    x.setRequestHeader('Content-Type', 'application/json');
+    x.send(JSON.stringify({p_uid:sess.user.id}));
+  }
+}
+
+function isPremiumG()    { return _gc !== null && _gc.unlim; }
+function groupsRestants(){ return _gc ? Math.max(0, FREE_GROUPS - (_gc.used||0)) : FREE_GROUPS; }
 
 function majBadgeCredits() {
-  var c = getGC();
+  var c   = _gc || {used:0, unlim:false};
   var txt = document.getElementById('gc-txt');
   var unlimBadge = document.getElementById('gc-unlim');
-  var banner = document.getElementById('premium-banner');
+  var banner     = document.getElementById('premium-banner');
   if (c.unlim) {
     if(txt) txt.style.display='none';
     if(unlimBadge) unlimBadge.style.display='block';
     if(banner) banner.style.display='none';
   } else {
     var r = Math.max(0, FREE_GROUPS - (c.used||0));
-    if(txt){ txt.style.display='block'; txt.innerHTML = '&#128101; <b>' + r + ' groupe' + (r>1?'s':'') + ' gratuit' + (r>1?'s':'') + '</b> restant' + (r>1?'s':''); }
+    if(txt){ txt.style.display='block'; txt.innerHTML='&#128101; <b>'+r+' groupe'+(r>1?'s':'')+' gratuit'+(r>1?'s':'')+'</b> restant'+(r>1?'s':''); }
     if(unlimBadge) unlimBadge.style.display='none';
-    if(banner) banner.style.display = (r<=0?'block':'none');
+    if(banner) banner.style.display=(r<=0?'block':'none');
   }
 }
+
 
 /* ── DONNÉES : 33 GROUPES RÉELS ── */
 var GROUPS = [
@@ -367,26 +424,24 @@ function rejoindre(link, groupId) {
     window.open(link, '_blank', 'noopener');
     return;
   }
-  var c = getGC();
-  var used = c.used || 0;
-  if (used < FREE_GROUPS) {
-    /* Consommer un crédit */
-    c.used = used + 1;
-    setGC(c);
+  if (groupsRestants() <= 0) {
+    toast('Vos 10 groupes gratuits sont utilises. Debloquez l acces illimite !', 'warn');
+    setTimeout(ouvrirPaiement, 600);
+    return;
+  }
+  /* Ouvrir le groupe et incrémenter en DB */
+  window.open(link, '_blank', 'noopener');
+  incrementerGC(function(c) {
+    _gc = c;
     majBadgeCredits();
-    window.open(link, '_blank', 'noopener');
     var r = groupsRestants();
     if (r === 0) {
-      setTimeout(function() { toast('Vous avez utilise vos 5 groupes gratuits. Debloquez l acces illimite !', 'warn'); }, 800);
-      setTimeout(function() { document.getElementById('premium-banner').style.display='block'; }, 1500);
+      setTimeout(function() { toast('Vous avez utilise vos 10 groupes gratuits. Debloquez l acces illimite !', 'warn'); }, 800);
+      setTimeout(function() { var b=document.getElementById('premium-banner');if(b)b.style.display='block'; }, 1500);
     } else if (r <= 2) {
       toast('Plus que ' + r + ' groupe' + (r>1?'s':'') + ' gratuit' + (r>1?'s':'') + ' !', 'warn');
     }
-  } else {
-    /* Crédits épuisés */
-    toast('Vos 5 groupes gratuits sont utilises. Debloquez l acces illimite !', 'warn');
-    setTimeout(ouvrirPaiement, 600);
-  }
+  });
 }
 
 /* ── RENDER CARTE ── */
@@ -399,7 +454,7 @@ function renderCard(g, delay) {
   var d = delay || 0;
 
   var premium = isPremiumG();
-  var used = (getGC().used)||0;
+  var used = (_gc ? (_gc.used||0) : 0);
   var canJoin = premium || used < FREE_GROUPS;
 
   var btn;
@@ -507,8 +562,9 @@ function lancerPaiement() {
     description: 'DIGIFORM - Acces groupes WhatsApp illimite',
     customerEmail: (sess && sess.user) ? (sess.user.email || '') : '',
     onSuccess: function() {
-      var c = getGC(); c.unlim = true; setGC(c);
+      activerGCIllimite();
       fermerPaiement();
+      _gc.unlim = true;
       majBadgeCredits();
       applyFilter(); afficher();
       toast('Acces illimite active ! Rejoignez tous les groupes.', 'ok');
@@ -543,10 +599,10 @@ document.getElementById('pi-btn').onclick = function() {
 };
 
 /* ── INIT ── */
+chargerGC(function(c){ _gc=c; majBadgeCredits(); });
 buildChips();
 applyFilter();
 afficher();
-majBadgeCredits();
 </script>
 </body>
 </html>
