@@ -176,46 +176,78 @@ function toast(msg, t) {
 
 function tok() { return (sess && sess.access_token) ? sess.access_token : ANON; }
 
-function dbGet(path) {
-  return new Promise(function(resolve) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', SB + '/rest/v1/' + path, true);
-    xhr.setRequestHeader('apikey', ANON);
-    xhr.setRequestHeader('Authorization', 'Bearer ' + tok());
-    xhr.onload = function() {
-      try { resolve(JSON.parse(xhr.responseText)); }
-      catch(e) { resolve([]); }
-    };
-    xhr.onerror = function() { resolve([]); };
-    xhr.send();
-  });
+function refreshToken(cb) {
+  if (!sess || !sess.refresh_token) { cb(false); return; }
+  var x = new XMLHttpRequest();
+  x.open('POST', SB+'/auth/v1/token?grant_type=refresh_token', true);
+  x.setRequestHeader('apikey', ANON);
+  x.setRequestHeader('Content-Type', 'application/json');
+  x.timeout = 8000;
+  x.onload = function() {
+    try {
+      var d = JSON.parse(x.responseText);
+      if (d.access_token) {
+        sess.access_token  = d.access_token;
+        sess.refresh_token = d.refresh_token || sess.refresh_token;
+        try { localStorage.setItem('dg_sess', JSON.stringify(sess)); } catch(e) {}
+        cb(true); return;
+      }
+    } catch(e) {}
+    cb(false);
+  };
+  x.onerror = x.ontimeout = function() { cb(false); };
+  x.send(JSON.stringify({refresh_token: sess.refresh_token}));
 }
 
-function dbPatch(path, body) {
-  return new Promise(function(resolve) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', SB + '/rest/v1/' + path, true);
-    xhr.setRequestHeader('apikey', ANON);
-    xhr.setRequestHeader('Authorization', 'Bearer ' + tok());
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('X-HTTP-Method-Override', 'PATCH');
-    xhr.setRequestHeader('Prefer', 'return=minimal');
-    xhr.onload = xhr.onerror = function() { resolve(xhr.status); };
-    xhr.send(JSON.stringify(body));
-  });
+function dbGet(path, cb, tentative) {
+  tentative = tentative || 1;
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', SB + '/rest/v1/' + path, true);
+  xhr.setRequestHeader('apikey', ANON);
+  xhr.setRequestHeader('Authorization', 'Bearer ' + tok());
+  xhr.timeout = 10000;
+  xhr.onload = function() {
+    if (xhr.status === 401 && tentative <= 2) {
+      refreshToken(function(ok) {
+        if (ok) dbGet(path, cb, tentative+1);
+        else cb([]);
+      });
+      return;
+    }
+    try { cb(JSON.parse(xhr.responseText)); }
+    catch(e) { cb([]); }
+  };
+  xhr.onerror = function() {
+    if (tentative < 3) setTimeout(function(){ dbGet(path, cb, tentative+1); }, 1500*tentative);
+    else cb(null);
+  };
+  xhr.ontimeout = function() {
+    if (tentative < 3) dbGet(path, cb, tentative+1);
+    else cb(null);
+  };
+  xhr.send();
 }
 
-function dbPost(path, body) {
-  return new Promise(function(resolve) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', SB + '/rest/v1/' + path, true);
-    xhr.setRequestHeader('apikey', ANON);
-    xhr.setRequestHeader('Authorization', 'Bearer ' + tok());
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('Prefer', 'return=minimal');
-    xhr.onload = xhr.onerror = function() { resolve(xhr.status); };
-    xhr.send(JSON.stringify(body));
-  });
+function dbPatch(path, body, cb) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('PATCH', SB + '/rest/v1/' + path, true);
+  xhr.setRequestHeader('apikey', ANON);
+  xhr.setRequestHeader('Authorization', 'Bearer ' + tok());
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.setRequestHeader('Prefer', 'return=minimal');
+  xhr.onload = xhr.onerror = function() { if(cb) cb(xhr.status); };
+  xhr.send(JSON.stringify(body));
+}
+
+function dbPost(path, body, cb) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', SB + '/rest/v1/' + path, true);
+  xhr.setRequestHeader('apikey', ANON);
+  xhr.setRequestHeader('Authorization', 'Bearer ' + tok());
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.setRequestHeader('Prefer', 'return=minimal');
+  xhr.onload = xhr.onerror = function() { if(cb) cb(xhr.status); };
+  xhr.send(JSON.stringify(body));
 }
 
 function fmtDate(d) {
@@ -325,14 +357,25 @@ function init() {
     if (saved) reads = JSON.parse(saved);
   } catch(e) {}
 
-  // Charger les notifications
-  dbGet('notifications?order=created_at.desc').then(function(data) {
+  // Charger les notifications avec retry
+  dbGet('notifications?order=created_at.desc', function(data) {
+    if (data === null) {
+      /* Erreur réseau */
+      document.getElementById('shim').style.display = 'none';
+      document.getElementById('nlist').innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;padding:40px 20px;gap:14px;text-align:center;">'
+        +'<div style="font-size:2.5rem;">&#128246;</div>'
+        +'<div style="font-size:.9rem;font-weight:700;color:var(--navy);">Probleme de connexion</div>'
+        +'<div style="font-size:.8rem;color:var(--text2);">Verifiez votre connexion.</div>'
+        +'<button onclick="location.reload()" style="padding:11px 24px;border-radius:12px;background:var(--orange);color:#fff;border:none;cursor:pointer;font-weight:700;">&#8635; Reessayer</button>'
+        +'</div>';
+      return;
+    }
     notifs = Array.isArray(data) ? data : [];
     document.getElementById('shim').style.display = 'none';
 
     // Charger les lectures depuis la DB
-    if (sess.user) {
-      dbGet('notification_reads?user_id=eq.' + sess.user.id + '&select=notification_id').then(function(rdata) {
+    if (sess && sess.user) {
+      dbGet('notification_reads?user_id=eq.' + sess.user.id + '&select=notification_id', function(rdata) {
         if (Array.isArray(rdata)) {
           for (var i = 0; i < rdata.length; i++) {
             var rid = rdata[i].notification_id;
