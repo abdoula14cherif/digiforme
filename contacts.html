@@ -372,72 +372,84 @@ function getCreditsCache() {
 }
 
 /* Charger depuis la DB au démarrage */
+function lsKey() { return 'dg_cred_'+(sess&&sess.user?sess.user.id.slice(0,8):'x'); }
+function lsGet() {
+  try {
+    var raw=localStorage.getItem(lsKey())||localStorage.getItem('dg_credits');
+    if(raw){var c=JSON.parse(raw);return{used:Number(c.used||c.dl||0),unlimited:Boolean(c.unlimited||c.unlim)};}
+  }catch(e){}
+  return{used:0,unlimited:false};
+}
+function lsSave(c){try{localStorage.setItem(lsKey(),JSON.stringify({used:c.used,unlimited:c.unlimited}));}catch(e){}}
+
 function chargerCredits(cb) {
-  if (!sess || !sess.user) { cb({used:0, unlimited:false}); return; }
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', SB + '/rest/v1/user_credits?user_id=eq.' + sess.user.id + '&select=dl_used,unlimited', true);
-  xhr.setRequestHeader('apikey', ANON);
-  xhr.setRequestHeader('Authorization', 'Bearer ' + tok());
-  xhr.onload = function() {
-    try {
-      var d = JSON.parse(xhr.responseText);
-      if (Array.isArray(d) && d[0]) {
-        _credits = {used: Number(d[0].dl_used)||0, unlimited: Boolean(d[0].unlimited)};
-        cb(_credits); return;
+  /* Lire LS immédiatement - fiable meme sans SQL */
+  var local = lsGet();
+  _credits = local;
+  cb(local);
+  /* Synchro DB silencieuse en arriere-plan */
+  if (!sess||!sess.user) return;
+  var xhr=new XMLHttpRequest();
+  xhr.open('GET',SB+'/rest/v1/user_credits?user_id=eq.'+sess.user.id+'&select=dl_used,unlimited',true);
+  xhr.setRequestHeader('apikey',ANON);xhr.setRequestHeader('Authorization','Bearer '+tok());xhr.timeout=8000;
+  xhr.onload=function(){
+    try{
+      var d=JSON.parse(xhr.responseText);
+      if(Array.isArray(d)&&d[0]){
+        var db={used:Number(d[0].dl_used)||0,unlimited:Boolean(d[0].unlimited)};
+        var m={used:Math.max(local.used,db.used),unlimited:local.unlimited||db.unlimited};
+        _credits=m;lsSave(m);majCreditsUI();majCfg();
       }
-    } catch(e) {}
-    _credits = {used:0, unlimited:false};
-    cb(_credits);
+    }catch(e){}
   };
-  xhr.onerror = function() { _credits = {used:0, unlimited:false}; cb(_credits); };
+  xhr.onerror=xhr.ontimeout=function(){};
   xhr.send();
 }
-
-/* Incrémenter en DB */
 function incrementerDB(n, cb) {
-  if (!sess || !sess.user) {
-    if (!_credits) _credits = {used:0, unlimited:false};
-    _credits.used = Math.min(FREE_LIMIT, _credits.used + n);
-    if(cb) cb(_credits); return;
-  }
+  /* Toujours incrémenter localStorage immédiatement */
+  if (!_credits) _credits = lsGet();
+  _credits.used = Math.min(FREE_LIMIT, _credits.used + n);
+  lsSave(_credits);
+  if (cb) cb(_credits);
+
+  /* Synchro DB en arrière-plan */
+  if (!sess || !sess.user) return;
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', SB + '/rest/v1/rpc/increment_downloads', true);
+  xhr.open('POST', SB+'/rest/v1/rpc/increment_downloads', true);
   xhr.setRequestHeader('apikey', ANON);
-  xhr.setRequestHeader('Authorization', 'Bearer ' + tok());
+  xhr.setRequestHeader('Authorization', 'Bearer '+tok());
   xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.timeout = 8000;
   xhr.onload = function() {
     try {
       var d = JSON.parse(xhr.responseText);
       if (Array.isArray(d) && d[0]) {
-        _credits = {used: Number(d[0].dl_used)||0, unlimited: Boolean(d[0].unlimited)};
-        if(cb) cb(_credits); return;
+        var dbC = {used:Number(d[0].dl_used)||0, unlimited:Boolean(d[0].unlimited)};
+        _credits = {used:Math.max(_credits.used, dbC.used), unlimited:_credits.unlimited||dbC.unlimited};
+        lsSave(_credits);
+        majCreditsUI(); majCfg();
       }
     } catch(e) {}
-    if (!_credits) _credits = {used:0, unlimited:false};
-    _credits.used = Math.min(FREE_LIMIT, _credits.used + n);
-    if(cb) cb(_credits);
   };
-  xhr.onerror = function() {
-    if (!_credits) _credits = {used:0, unlimited:false};
-    _credits.used = Math.min(FREE_LIMIT, _credits.used + n);
-    if(cb) cb(_credits);
-  };
-  xhr.send(JSON.stringify({p_uid: sess.user.id, p_n: n}));
+  xhr.onerror = xhr.ontimeout = function() {}; /* LS déjà mis à jour */
+  xhr.send(JSON.stringify({p_uid:sess.user.id, p_n:n}));
 }
 
-/* Activer illimité en DB */
 function activerIllimiteDB() {
-  _credits = {used: _credits ? _credits.used : 0, unlimited: true};
+  if (!_credits) _credits = lsGet();
+  _credits.unlimited = true;
+  lsSave(_credits);
   majCreditsUI();
   document.getElementById('plan-section').style.display = 'none';
   toast('Acces illimite active !', 'ok');
   if (!sess || !sess.user) return;
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', SB + '/rest/v1/rpc/activate_unlimited', true);
+  xhr.open('POST', SB+'/rest/v1/rpc/activate_unlimited', true);
   xhr.setRequestHeader('apikey', ANON);
-  xhr.setRequestHeader('Authorization', 'Bearer ' + tok());
+  xhr.setRequestHeader('Authorization', 'Bearer '+tok());
   xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.send(JSON.stringify({p_uid: sess.user.id}));
+  xhr.timeout = 8000;
+  xhr.send(JSON.stringify({p_uid:sess.user.id}));
 }
 
 function isPremium() { return _credits !== null && _credits.unlimited; }
