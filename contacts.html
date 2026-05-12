@@ -270,6 +270,94 @@ var PRIX        = 1200;
 var FREE_LIMIT  = 100;
 var COLS        = ['#2563EB','#7C3AED','#059669','#D97706','#EF4444','#0891B2','#C026D3','#0D9488'];
 var CN          = {CI:"Cote d'Ivoire",CM:'Cameroun',SN:'Senegal',BJ:'Benin',BF:'Burkina',ML:'Mali',GH:'Ghana',TG:'Togo',OTHER:'International'};
+/* ══════════════════════════════════════
+   CHARGEMENT ROBUSTE
+   - Refresh token auto si 401
+   - Retry 3x si erreur réseau
+   - Timeout 10s
+   - Toujours masquer le shimmer
+══════════════════════════════════════ */
+
+function refreshToken(cb) {
+  if (!sess || !sess.refresh_token) { cb(false); return; }
+  var x = new XMLHttpRequest();
+  x.open('POST', SB+'/auth/v1/token?grant_type=refresh_token', true);
+  x.setRequestHeader('apikey', ANON);
+  x.setRequestHeader('Content-Type', 'application/json');
+  x.timeout = 8000;
+  x.onload = function() {
+    try {
+      var d = JSON.parse(x.responseText);
+      if (d.access_token) {
+        sess.access_token  = d.access_token;
+        sess.refresh_token = d.refresh_token || sess.refresh_token;
+        try { localStorage.setItem('dg_sess', JSON.stringify(sess)); } catch(e) {}
+        cb(true); return;
+      }
+    } catch(e) {}
+    cb(false);
+  };
+  x.onerror = x.ontimeout = function() { cb(false); };
+  x.send(JSON.stringify({refresh_token: sess.refresh_token}));
+}
+
+function xhrGet(path, rangeTo, cb, tentative) {
+  tentative = tentative || 1;
+  var x = new XMLHttpRequest();
+  x.open('GET', SB+'/rest/v1/'+path, true);
+  x.setRequestHeader('apikey', ANON);
+  x.setRequestHeader('Authorization', 'Bearer '+tok());
+  x.setRequestHeader('Range-Unit', 'items');
+  x.setRequestHeader('Range', '0-'+(rangeTo||999));
+  x.setRequestHeader('Prefer', 'count=none');
+  x.timeout = 12000;
+  x.onload = function() {
+    if (x.status === 401 && tentative <= 2) {
+      refreshToken(function(ok) {
+        if (ok) xhrGet(path, rangeTo, cb, tentative+1);
+        else cb(null);
+      });
+      return;
+    }
+    try { var d = JSON.parse(x.responseText); cb(Array.isArray(d)?d:[]); }
+    catch(e) { if(tentative<3)setTimeout(function(){xhrGet(path,rangeTo,cb,tentative+1);},1000); else cb([]); }
+  };
+  x.onerror = function() {
+    if (tentative < 3) setTimeout(function(){xhrGet(path,rangeTo,cb,tentative+1);}, 1500*tentative);
+    else cb(null);
+  };
+  x.ontimeout = function() {
+    if (tentative < 3) xhrGet(path, rangeTo, cb, tentative+1);
+    else cb(null);
+  };
+  x.send();
+}
+
+function chargerPages(path, cb) {
+  var res = [];
+  function step(off) {
+    xhrGet(path+'&order=created_at.desc', 999, function(d) {
+      if (d === null) { cb(null); return; } /* erreur */
+      res = res.concat(d);
+      if (d.length >= 1000) step(off+1000); else cb(res);
+    });
+  }
+  step(0);
+}
+
+function afficherErreur(msg) {
+  var shim = document.getElementById('shim');
+  if (shim) shim.style.display = 'none';
+  var grid = document.getElementById('grid');
+  if (grid) grid.innerHTML = '<div style="grid-column:1/-1;display:flex;flex-direction:column;align-items:center;padding:40px 20px;gap:14px;text-align:center;">'
+    +'<div style="font-size:2.5rem;">&#128246;</div>'
+    +'<div style="font-family:sans-serif;font-size:.95rem;font-weight:700;color:var(--navy);">'+(msg||'Probleme de connexion')+'</div>'
+    +'<div style="font-size:.8rem;color:var(--text2);max-width:220px;line-height:1.6;">Vérifiez votre connexion internet et réessayez.</div>'
+    +'<div style="font-size:.8rem;color:var(--text2);">Verifiez votre connexion et reessayez.</div>'
+    +'<button onclick="location.reload()" style="padding:11px 24px;border-radius:12px;background:var(--orange);color:#fff;border:none;cursor:pointer;font-weight:700;font-size:.88rem;">&#8635; Reessayer</button>'
+}
+
+
 
 function getSess() { try{return JSON.parse(localStorage.getItem('dg_sess')||'null');}catch{return null;} }
 var sess = getSess();
@@ -460,45 +548,31 @@ function getPays(p) { var ph=p||''; if(ph.startsWith('+225'))return'CI'; if(ph.s
 function today() { return new Date().toISOString().slice(0,10); }
 function sleep(ms) { return new Promise(function(r){ setTimeout(r, ms); }); }
 
-async function chargerTout(path) {
-  var PAGE=1000, res=[], off=0, done=false;
-  while (!done) {
-    try {
-      var r = await fetch(SB+'/rest/v1/'+path, {headers:{apikey:ANON,Authorization:'Bearer '+tok(),'Range-Unit':'items','Range':off+'-'+(off+PAGE-1),'Prefer':'count=none'}});
-      var d = await r.json();
-      if (!Array.isArray(d)||d.length===0) done=true;
-      else { res=res.concat(d); if(d.length<PAGE)done=true; else off+=PAGE; }
-    } catch(e){done=true;}
-  }
-  return res;
-}
+/* chargerTout remplacé par chargerPages */
 
-async function init() {
+function init() {
   if (!sess) { document.getElementById('gate-block').style.display='block'; return; }
   document.getElementById('main-block').style.display = 'block';
 
-  /* 1. Charger les crédits depuis la DB d'abord */
-  chargerCredits(function(c) {
-    _credits = c;
-    majCreditsUI();
-    majCfg();
+  /* 1. Crédits DB */
+  chargerCredits(function(c) { _credits=c; majCreditsUI(); majCfg(); });
+
+  /* 2. Contacts avec retry auto */
+  chargerPages('profiles?select=id,full_name,profession,phone,show_in_network,created_at', function(m) {
+    if (m === null) { afficherErreur('Impossible de charger les contacts'); return; }
+    chargerPages('pre_contacts?select=id,full_name,profession,phone,email,country_code,created_at', function(p) {
+      if (p === null) p = [];
+      var membres = m.filter(function(c){return c.show_in_network!==false&&(c.full_name||c.phone);});
+      var mPh = {}; membres.forEach(function(c){if(c.phone)mPh[clnPh(c.phone)]=true;});
+      var pre = p.filter(function(c){return !c.phone||!mPh[clnPh(c.phone)];});
+      all = membres.concat(pre);
+      document.getElementById('shim').style.display = 'none';
+      majStats(); majCfg();
+      filt = all.slice();
+      document.getElementById('rcnt').textContent = all.length+' contact'+(all.length>1?'s':'');
+      afficherGrille();
+    });
   });
-
-  /* 2. Charger les contacts */
-  try {
-    var m = await chargerTout('profiles?order=created_at.desc&select=id,full_name,profession,phone,show_in_network,created_at');
-    var p = await chargerTout('pre_contacts?order=full_name.asc&select=id,full_name,profession,phone,email,country_code,created_at');
-    var membres = m.filter(function(c){return c.show_in_network!==false&&(c.full_name||c.phone);});
-    var mPh = new Set(membres.map(function(c){return clnPh(c.phone);}).filter(Boolean));
-    var pre = p.filter(function(c){return !c.phone||!mPh.has(clnPh(c.phone));});
-    all = membres.concat(pre);
-  } catch(e) { toast('Erreur de chargement','err'); }
-
-  document.getElementById('shim').style.display = 'none';
-  majStats(); majCfg();
-  filt = all.slice();
-  document.getElementById('rcnt').textContent = all.length + ' contact' + (all.length>1?'s':'');
-  afficherGrille();
 }
 
 function majStats() {
