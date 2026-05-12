@@ -238,33 +238,43 @@ function tok(){return (sess&&sess.access_token)?sess.access_token:ANON;}
 /* ══ CRÉDITS SUPABASE DB ══ */
 var _credits = null;
 
+function lsKey(){return 'dg_cred_'+(sess&&sess.user?sess.user.id.slice(0,8):'x');}
+function lsGet(){try{var r=localStorage.getItem(lsKey())||localStorage.getItem('dg_credits');if(r){var c=JSON.parse(r);return{used:Number(c.used||c.dl||0),unlimited:Boolean(c.unlimited||c.unlim)};}}catch(e){}return{used:0,unlimited:false};}
+function lsSave(c){try{localStorage.setItem(lsKey(),JSON.stringify({used:c.used,unlimited:c.unlimited}));}catch(e){}}
+
 function chargerCredits(cb){
-  if(!sess||!sess.user){_credits={used:0,unlimited:false};cb(_credits);return;}
+  var local=lsGet();_credits=local;cb(local);
+  if(!sess||!sess.user)return;
   var x=new XMLHttpRequest();
   x.open('GET',SB+'/rest/v1/user_credits?user_id=eq.'+sess.user.id+'&select=dl_used,unlimited',true);
-  x.setRequestHeader('apikey',ANON);x.setRequestHeader('Authorization','Bearer '+tok());
-  x.onload=function(){try{var d=JSON.parse(x.responseText);if(Array.isArray(d)&&d[0]){_credits={used:Number(d[0].dl_used)||0,unlimited:Boolean(d[0].unlimited)};cb(_credits);return;}}catch(e){}
-    _credits={used:0,unlimited:false};cb(_credits);};
-  x.onerror=function(){_credits={used:0,unlimited:false};cb(_credits);};x.send();
+  x.setRequestHeader('apikey',ANON);x.setRequestHeader('Authorization','Bearer '+tok());x.timeout=8000;
+  x.onload=function(){
+    try{var d=JSON.parse(x.responseText);if(Array.isArray(d)&&d[0]){var db={used:Number(d[0].dl_used)||0,unlimited:Boolean(d[0].unlimited)};var m={used:Math.max(local.used,db.used),unlimited:local.unlimited||db.unlimited};_credits=m;lsSave(m);majNetCredit();}}catch(e){}
+  };
+  x.onerror=x.ontimeout=function(){};x.send();
 }
 function incrementerDB(n,cb){
-  if(!sess||!sess.user){if(!_credits)_credits={used:0,unlimited:false};_credits.used=Math.min(FREE_LIMIT,_credits.used+n);if(cb)cb(_credits);return;}
+  if(!_credits)_credits=lsGet();
+  _credits.used=Math.min(FREE_LIMIT,_credits.used+n);
+  lsSave(_credits);
+  if(cb)cb(_credits);
+  if(!sess||!sess.user)return;
   var x=new XMLHttpRequest();
   x.open('POST',SB+'/rest/v1/rpc/increment_downloads',true);
-  x.setRequestHeader('apikey',ANON);x.setRequestHeader('Authorization','Bearer '+tok());x.setRequestHeader('Content-Type','application/json');
-  x.onload=function(){try{var d=JSON.parse(x.responseText);if(Array.isArray(d)&&d[0]){_credits={used:Number(d[0].dl_used)||0,unlimited:Boolean(d[0].unlimited)};if(cb)cb(_credits);return;}}catch(e){}
-    if(!_credits)_credits={used:0,unlimited:false};_credits.used=Math.min(FREE_LIMIT,_credits.used+n);if(cb)cb(_credits);};
-  x.onerror=function(){if(!_credits)_credits={used:0,unlimited:false};_credits.used=Math.min(FREE_LIMIT,_credits.used+n);if(cb)cb(_credits);};
+  x.setRequestHeader('apikey',ANON);x.setRequestHeader('Authorization','Bearer '+tok());x.setRequestHeader('Content-Type','application/json');x.timeout=8000;
+  x.onload=function(){try{var d=JSON.parse(x.responseText);if(Array.isArray(d)&&d[0]){var db={used:Number(d[0].dl_used)||0,unlimited:Boolean(d[0].unlimited)};_credits={used:Math.max(_credits.used,db.used),unlimited:_credits.unlimited||db.unlimited};lsSave(_credits);majNetCredit();}}catch(e){}};
+  x.onerror=x.ontimeout=function(){};
   x.send(JSON.stringify({p_uid:sess.user.id,p_n:n}));
 }
 function activerIllimite(){
-  _credits={used:_credits?_credits.used:0,unlimited:true};
+  if(!_credits)_credits=lsGet();
+  _credits.unlimited=true;lsSave(_credits);
   majNetCredit();majBoutonsExport();
   toast('Acces illimite active !','ok');
   if(!sess||!sess.user)return;
   var x=new XMLHttpRequest();
   x.open('POST',SB+'/rest/v1/rpc/activate_unlimited',true);
-  x.setRequestHeader('apikey',ANON);x.setRequestHeader('Authorization','Bearer '+tok());x.setRequestHeader('Content-Type','application/json');
+  x.setRequestHeader('apikey',ANON);x.setRequestHeader('Authorization','Bearer '+tok());x.setRequestHeader('Content-Type','application/json');x.timeout=8000;
   x.send(JSON.stringify({p_uid:sess.user.id}));
 }
 function isPremium(){return _credits!==null&&_credits.unlimited;}
